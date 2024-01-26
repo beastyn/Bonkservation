@@ -1,0 +1,74 @@
+{
+    "name": "PlayerControls",
+    "maps": [
+        {
+            "name": "InputMap",
+            "id": "fe63057f-06e6-48b4-8e28-5ec6842ebe4f",
+            "actions": [
+                {
+                    "name": "Movement",
+                    "type": "Value",
+                    "id": "e7995566-34c4-401b-9353-599c176d866f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Bonk",
+                    "type": "Button",
+                    "id": "01458354-71dc-4502-9688-129b2e30bac1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Defend",
+                    "type": "Button",
+                    "id": "4e4f658f-4794-4644-a9bb-ecb388a3c859",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4d2188bf-4d0e-4cd3-96df-937062397b0f",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2dcf6b6-cab6-47b1-83e5-4e81a3e08d25",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Bonk",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "793c7cb4-57b7-47da-9a6f-ab83d3e48b5b",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Defend",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8fd8ac0df2a59b46a4cdd53c57198a1, type: 3}
+  m_Name: ShinrisVodKillers
+  m_EditorClassIdentifier: 
+  vodKillers:
+  - {fileID: 11400000, guid: cba5472789ed0c944874291e56c80223, type: 2}
+  - {fileID: 11400000, guid: 6919791dfc5dd1d4d8a7d2733c3a0acb, type: 2}
+  - {fileID: 11400000, guid: 2c1c4f15b08bd5e46a0d84759cb980f7, type: 2}
