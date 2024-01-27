@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-2763948134421190535
+--- !u!114 &-4665224595804195190
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Mat_LineEffect
+  m_Name: Mat_Shield
   m_Shader: {fileID: -6465566751694194690, guid: 21302fdeaa20aaa41bff535bd8c29bee, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 20feab90e06e80548bc3041a1fcaf437, type: 3}
+        m_Texture: {fileID: 2800000, guid: bc3ed6a4e9758ae41a61aa366610e5dc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -60,8 +60,8 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 4
-    - _Strength: 0.1
+    - _Speed: 1.97
+    - _Strength: 0.05
     m_Colors:
-    - _Color: {r: 0.038180865, g: 0.21802033, b: 0.6226415, a: 1}
+    - _Color: {r: 0.5149074, g: 0.8207547, b: 0.7849464, a: 0}
   m_BuildTextureStacks: []
