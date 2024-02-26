@@ -12,7 +12,7 @@ namespace Gameplay
         void Update()
         {
             if(this.energySO.IsRegenerating)
-                this.energySO.RestoreEnergy(this.energySO.RestoreEnergyValue * Time.deltaTime);
+                this.energySO.FullRestoreEnergy(this.energySO.RestoreEnergyValue * Time.deltaTime);
         }
     }
 }

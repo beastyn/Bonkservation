@@ -8,7 +8,7 @@ namespace AI.Tree.Idols
     using UnityEngine;
     using UnityEngine.AI;
     using AI.Skills;
-    using static UnityEditor.PlayerSettings;
+    using AI.Skills.Internal;
 
     public class PawAvoidHelper : MonoBehaviour
     {
@@ -33,7 +33,7 @@ namespace AI.Tree.Idols
         Vector3 randomDestination = Vector3.zero;
         bool destinationExists = false;
         bool skillWasActivated = false;
-        SkillSO currentskill = null;
+        Skill currentcastingskill = null;
 
         AIState aiState = AIState.Idle;
         public Node.Status CheckPaw()
@@ -84,7 +84,6 @@ namespace AI.Tree.Idols
 
         public Node.Status CheckUseSkill()
         {
-            //var rand = RandomFromDistribution.RandomRangeNormalDistribution(0, 10, RandomFromDistribution.ConfidenceLevel_e._999) * 100f;
             if (!this.skillManager.HaveActiveNormalSkill() && ManagersSOHolder.DifficultySettingsSO.GerNormalRandomNum() < ManagersSOHolder.DifficultySettingsSO.GetNormalSkillProbability())
                 return Node.Status.Success;
             return Node.Status.Failure;
@@ -92,38 +91,40 @@ namespace AI.Tree.Idols
 
         public Node.Status UseSkill()
         {
-            this.agent.speed = 0f;
-
             if ((int)ManagersSOHolder.GameStateSO.CurrentGameState != idolInfo.RoomNumber)
             {
-                this.currentskill?.SetStopCasting(true);
+                this.currentcastingskill?.SkillSO.StopSkill();
+                this.skillWasActivated = false;
+                this.currentcastingskill = null;
                 return Node.Status.Failure;
             }
 
-            if (!this.skillWasActivated)
-            {
-                this.currentskill = this.skillManager.RequestNormalSkill();
-                if (this.currentskill == null) return Node.Status.Failure;
+            this.currentcastingskill = this.skillManager.RequestNormalSkill();
+            if (this.currentcastingskill == null) return Node.Status.Failure;
 
-                this.skillManager.ActivateSkill(this.currentskill);
-                this.skillWasActivated = true;
-                Debug.LogWarning("Start cast");
-                return Node.Status.Running;
-            }
-            if (skillManager.HaveActiveNormalSkill())
-            {
-                Debug.LogWarning("Casting!");
-                return Node.Status.Running;
-            }
-            else if (this.skillWasActivated)
-            {
-                this.skillWasActivated = false;
-                this.currentskill = null;
-                Debug.LogWarning("StopCast!");
-                return Node.Status.Success;
-            }
-            this.currentskill = null;
-            return Node.Status.Failure;
+            this.skillManager.ActivateSkill(this.currentcastingskill);
+            Debug.LogWarning("Start Skill");
+            return Node.Status.Success;
+
+            /*           if (!this.skillWasActivated)
+                       {
+                           this.currentcastingskill = this.skillManager.RequestNormalSkill();
+                           if (this.currentcastingskill == null) return Node.Status.Failure;
+
+                           this.skillManager.ActivateSkill(this.currentcastingskill);
+                           this.skillWasActivated = true;
+                           Debug.LogWarning("Start Skill");
+                           return Node.Status.Running;
+                       }
+                       else if (this.skillWasActivated)
+                       {
+                           this.skillWasActivated = false;
+                           this.currentcastingskill = null;
+                           Debug.LogWarning("StopCast!");
+                           return Node.Status.Success;
+                       }
+                       this.currentcastingskill = null;
+            return Node.Status.Failure;*/
         }
 
         public Node.Status RunFromPaw()

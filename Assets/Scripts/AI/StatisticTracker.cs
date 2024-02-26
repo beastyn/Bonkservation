@@ -12,9 +12,9 @@ namespace AI
         void OnEnable() => this.idolHealth.EnergyChangeEvent += OnEnergyChangeEvent;
         void OnDisable() => this.idolHealth.EnergyChangeEvent -= OnEnergyChangeEvent;
 
-        void OnEnergyChangeEvent(float energy)
+        void OnEnergyChangeEvent(float energy, bool isRestoring)
         {
-            if(energy < this.idolHealth.StartValue)
+            if(!isRestoring)
                 ManagersSOHolder.ScoreManagerSO.AddBonk(this.idolInfo.Name);
         }
     }

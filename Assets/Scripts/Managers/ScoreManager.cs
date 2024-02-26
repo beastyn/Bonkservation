@@ -3,6 +3,7 @@ namespace Managers
 {
     using Gameplay;
     using Managers.Timer;
+    using BonkUtils;
     using System.Collections;
     using System.Collections.Generic;
     using Unity.VisualScripting;
@@ -17,14 +18,14 @@ namespace Managers
         void OnEnable() => this.gameStateSO.GameStateChangedEvent += this.OnGameStateChangeEvent;
         void OnDisable() => this.gameStateSO.GameStateChangedEvent -= this.OnGameStateChangeEvent;
 
-        void Start()
+        void Awake()
         {
             this.scoreManagerSO.ResetScore();
 
             var lastScore = FileHandler.ReadFromJSON<ScoreElement>("/LastScore.json");
             this.scoreManagerSO.SetLastScore(lastScore);
 
-            var highScore = FileHandler.ReadFromJSON<ScoreElement>("/HightScore.json");
+            var highScore = FileHandler.ReadFromJSON<ScoreElement>("/HighScore.json");
             this.scoreManagerSO.SetHighScore(highScore, false);
         }
 

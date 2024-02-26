@@ -1,6 +1,6 @@
 namespace Player.Actions
 {
-    using Gameplay;
+    using Gameplay.Buffs;
     using Player.Actions;
     using System.Collections;
     using System.Collections.Generic;
@@ -9,7 +9,7 @@ namespace Player.Actions
 
     public class DefendAction : ActionBase
     {
-        [SerializeField] Damageable player;
+        [SerializeField] BuffManager buffManager;
         [SerializeField] float protectionTime = 1f;
         bool canDefend = false;
         Collider2D currentIdol;
@@ -30,24 +30,13 @@ namespace Player.Actions
         }
         void OnActionEvent()
         {
-            if (this.activated && canDefend)
-            {
-                this.player.SetProtection(true);
-                StartCoroutine(this.RemoveProtection());
-            }
+                this.buffManager.ActivateFastShield();
         }
 
-        IEnumerator RemoveProtection()
-        {
-            yield return new WaitForSeconds(this.protectionTime);
-            this.player.SetProtection(false);
-        }
-
-        public void OnTriggerEnter2D(Collider2D collision)
+        /*public void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.CompareTag("Skill"))
             {
-                Debug.Log("See skill");
                 this.canDefend = true;
             }
         }
@@ -58,6 +47,6 @@ namespace Player.Actions
             {
                 this.canDefend = false;
             }
-        }
+        }*/
     }
 }

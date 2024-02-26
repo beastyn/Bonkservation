@@ -15,4 +15,5 @@ MonoBehaviour:
   startDamage: 1
   currentDamage: 10
   animationTime: 1
-  cooldown: 1
+  cooldown: 0.2
+  audioClip: {fileID: 8300000, guid: 17ce502b6407c7d4a859cc1728355d60, type: 3}

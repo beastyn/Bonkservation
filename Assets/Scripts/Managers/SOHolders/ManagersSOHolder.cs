@@ -18,6 +18,8 @@ namespace Managers
         [SerializeField] DifficultySettingsSO difficultySettingsSO;
         [SerializeField] ScoreManagerSO scoreManagerSO;
         [SerializeField] LightPresetSO lights;
+        [SerializeField] AudioManagerSO audioManagerSO;
+        [SerializeField] SceneManagerSO sceneManagerSO;
 
         public static CameraEventsSO CameraEvent;
         public static GameStateSO GameStateSO;
@@ -26,6 +28,9 @@ namespace Managers
         public static DifficultySettingsSO DifficultySettingsSO;
         public static ScoreManagerSO ScoreManagerSO;
         public static LightPresetSO Lights;
+        public static AudioManagerSO AudioManagerSO;
+        public static SceneManagerSO SceneManagerSO;
+
 
 
         void Awake()
@@ -37,6 +42,8 @@ namespace Managers
             DifficultySettingsSO= this.difficultySettingsSO;
             ScoreManagerSO = this.scoreManagerSO;
             Lights = this.lights;
+            AudioManagerSO = this.audioManagerSO;
+            SceneManagerSO = this.sceneManagerSO;
         }
     }
 }

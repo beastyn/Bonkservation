@@ -8,6 +8,11 @@ namespace Player
         [SerializeField] ActionsSO bonkAction;
         [SerializeField] ActionsSO defendAction;
 
+        void Start()
+        {
+            if (this.animator == null) this.animator = this.gameObject.GetComponent<Animator>(); 
+        }
+
         void OnEnable()
         {
             this.bonkAction.ActionEvent += OnBonkActionEvent;

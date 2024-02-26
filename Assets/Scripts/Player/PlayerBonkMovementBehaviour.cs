@@ -13,12 +13,15 @@ namespace Player
         bool allowMovement = true;
         public Vector2 Velocity { get; private set; }
 
+        void Start () {this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition); }
+
         void OnEnable()
         {
-            this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             PlayerBonkInputController.MovementEvent += OnMovementEvent;
             ManagersSOHolder.GameStateSO.GameStateChangedEvent += OnGameStateChangeEvent;
             ManagersSOHolder.TimeManagerSO.PrepareToSleepEvent += OnPrepareToSleep;
+
+            this.allowMovement = ManagersSOHolder.GameStateSO.CurrentGameState != GameState.DayChanges;
         }
 
         void OnDisable()
@@ -34,11 +37,12 @@ namespace Player
             var worldPos = Camera.main.ScreenToWorldPoint(velocity);
             this.Velocity = velocity;
             this.transform.position = new Vector3(worldPos.x, worldPos.y, 0f);
+            this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0f);
         }
 
         void OnGameStateChangeEvent(GameState gameState)
         {
-            this.allowMovement = gameState == GameState.DayChanges || gameState == GameState.GameOver;
+            this.allowMovement = gameState != GameState.DayChanges;
         }
 
         void OnPrepareToSleep() => this.allowMovement = false;

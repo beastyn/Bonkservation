@@ -18,10 +18,13 @@ namespace Player
         [SerializeField] float animationTime = 1f;
         [SerializeField] float cooldown = 1f;
 
+        [SerializeField] AudioClip audioClip;
+
         float nextActivationTime = 0f;
         public int CurrentDamage => this.currentDamage;
         public float AnimationTime => this.animationTime;
         public float Delay => this.cooldown;
+        public AudioClip AudioClip => this.audioClip;
 
         public void UpdateDamageValue(int bonus) => this.currentDamage += bonus;
 

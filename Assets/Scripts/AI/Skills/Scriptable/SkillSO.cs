@@ -5,13 +5,15 @@ namespace AI.Skills
     using UnityEngine;
     using UnityEngine.Events;
     using MEC;
+    using Gameplay;
 
     [CreateAssetMenu(fileName = "Skill", menuName = "Bonk/Skill")]
     public class SkillSO : ScriptableObject
     {
         public UnityAction<SkillSO> SkillStartActivateEvent;
         public UnityAction<SkillSO> SkillActivatedEvent;
-        public UnityAction<SkillSO> SkillInterruptedEvent;
+        public UnityAction<SkillSO> SkillCastInterruptedEvent;
+        public UnityAction<SkillSO> SkillFinishedEvent;
 
         [SerializeField] float activationTime = 2f;
         [SerializeField] float damage = 10f;
@@ -19,9 +21,16 @@ namespace AI.Skills
         [SerializeField] AnimationClip animation;
         [SerializeField] ParticleSystem activationParticles;
 
+        [Header("For repeated projectiles")]
+        [SerializeField] float defaulAttackerFrequency = 0.5f;
+        [SerializeField] float duration = 5f;
+
         float currentActivatingTime = 0f;
-        bool isActivating;
-        bool stopCast = false;
+
+        bool isActivating = false;
+        bool isWorking = false;
+
+        float currentFrequency;
 
         public float ActivationTime => this.activationTime;
         public float Damage => this.damage;
@@ -31,31 +40,38 @@ namespace AI.Skills
 
         public float CurrentActivatingTime => this.currentActivatingTime;
         public bool IsActivating => this.isActivating;
-        public bool StopCast => this.stopCast;
 
+        public float CurrentAttackersFrequency => this.defaulAttackerFrequency * DifficultySettingsSO.GetAttackersSkillDifficultyModificator();
+        public float Duration => this.duration;
         public void ActivateSkill()
         {
             this.isActivating = true;
             SkillStartActivateEvent?.Invoke(this);
-            Timing.RunCoroutine(_StopActivation());
+            Timing.RunCoroutine(FinishCastSequence());
         }
         public void SetCurrentActivatingTime(float time) => this.currentActivatingTime = time;
-        public void SetStopCasting(bool stopCast) => this.stopCast = stopCast;
-
-        IEnumerator<float> _StopActivation()
+        public void StopSkill()
         {
-            yield return Timing.WaitForSeconds(activationTime);
-            if (!stopCast)
-            {
-                this.isActivating = false;
-                SkillActivatedEvent?.Invoke(this);
-            }
-            else
-            {
-                this.isActivating = false;
-                this.stopCast = false;
-                SkillInterruptedEvent?.Invoke(this);
-            }
+            Timing.KillCoroutines();
+            this.isActivating = false;
+            this.isWorking = false;
+            this.SkillCastInterruptedEvent?.Invoke(this);
+        }
+
+        IEnumerator<float> FinishCastSequence()
+        {
+            yield return Timing.WaitForSeconds(this.activationTime);
+
+            this.isActivating = false;
+            this.isWorking = true;
+            this.SkillActivatedEvent?.Invoke(this);
+            Timing.RunCoroutine(StartSkillSequence());
+        }
+
+        IEnumerator<float> StartSkillSequence()
+        {
+            yield return Timing.WaitForSeconds(this.duration);
+            this.SkillFinishedEvent?.Invoke(this);
         }
     }
 }

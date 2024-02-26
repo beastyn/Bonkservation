@@ -9,7 +9,7 @@ namespace Gameplay
     [CreateAssetMenu(fileName = "Happiness", menuName = "Bonk/Managers/Happiness")]
     public class EnergySO : ScriptableObject
     {
-        public UnityAction<float> EnergyChangeEvent;
+        public UnityAction<float, bool> EnergyChangeEvent;
 
         [SerializeField] float startValue = 100;
         [SerializeField] float maxValue = 100;
@@ -30,22 +30,30 @@ namespace Gameplay
                 this.currentValue -= damage;
 
             this.currentValue = Mathf.Clamp(this.currentValue, 0f, this.maxValue);
-            this.EnergyChangeEvent?.Invoke(this.currentValue);
+            this.EnergyChangeEvent?.Invoke(this.currentValue, false);
         }
 
         public void SetEnergy(float value)
         {
             this.currentValue = value;
-            this.EnergyChangeEvent?.Invoke(value);
+            this.EnergyChangeEvent?.Invoke(value, true);
         }
 
         public void SetEnergyRestore(bool isRestoring) => this.isRegenerating = isRestoring;
 
-        public void RestoreEnergy(float tickValue)
+        public void FullRestoreEnergy(float tickValue)
         {
             this.currentValue += tickValue;
             this.currentValue = Mathf.Clamp(this.currentValue, 0f, this.maxValue);
             if (this.currentValue >= this.maxValue) this.isRegenerating = false;
+            this.EnergyChangeEvent?.Invoke(this.currentValue, true);
+        }
+
+        public void RestoreEnergyTick(float tickValue)
+        {
+            this.currentValue += tickValue;
+            this.currentValue = Mathf.Clamp(this.currentValue, 0f, this.maxValue);
+            this.EnergyChangeEvent?.Invoke(this.currentValue, true);
         }
     }
 }

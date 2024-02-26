@@ -14,16 +14,18 @@ namespace Gameplay
 
         [SerializeField] int baseDodgeProbability = 5;
         [SerializeField] int baseNormalSkillProbablity = 5;
-        [SerializeField] int currentDifficultyLevel = 1;
+        [SerializeField] static int baseSkillFrequencyModificator = 1;
+        [SerializeField] static int currentDifficultyLevel = 1;
 
 
         public int GetDodgeProbability() => this.baseDodgeProbability * currentDifficultyLevel;
         public int GetNormalSkillProbability() => this.baseNormalSkillProbablity * currentDifficultyLevel;
 
+        public static float GetAttackersSkillDifficultyModificator() => baseSkillFrequencyModificator / currentDifficultyLevel;
+
         public float GerNormalRandomNum()
         {
             var rand = RandomFromDistribution.RandomRangeNormalDistribution(minrand, maxrand, RandomFromDistribution.ConfidenceLevel_e._999) * multiplyer;
-            Debug.Log($"Number {rand}");
             return rand;
         }
     }

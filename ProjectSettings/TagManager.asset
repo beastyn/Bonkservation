@@ -59,6 +59,9 @@ TagManager:
   - name: UI
     uniqueID: 2220009267
     locked: 0
+  - name: Cursor
+    uniqueID: 3587189053
+    locked: 0
   - name: Bonker
     uniqueID: 2798500229
     locked: 0

@@ -8,12 +8,10 @@ namespace UI
     public class EnergyUI : MonoBehaviour
     {
         [SerializeField] Slider energySlider;
-        [SerializeField] EnergySO happinessSO;
+        [SerializeField] EnergySO energySO;
         [SerializeField] Transform parent;
 
         float initialY;
-        /*        void OnEnable() => this.happinessSO.EnergyChangeEvent += OnHappinessChangeEvent;
-                void OnDisable() => this.happinessSO.EnergyChangeEvent -= OnHappinessChangeEvent;*/
 
         void Awake()
         {
@@ -23,7 +21,7 @@ namespace UI
 
         void Update()
         {
-            this.energySlider.value = this.happinessSO.CurrentValue / this.happinessSO.MaxValue;
+            this.energySlider.value = this.energySO.CurrentValue / this.energySO.MaxValue;
         }
 
         void LateUpdate()

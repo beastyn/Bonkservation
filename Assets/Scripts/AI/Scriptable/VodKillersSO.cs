@@ -28,7 +28,6 @@ namespace AI
         public void SetKillerUsage(bool canUse)
         {
             this.canUse = canUse;
-            Debug.Log($"Killers are {this.canUse} to use");
         }
 
     }

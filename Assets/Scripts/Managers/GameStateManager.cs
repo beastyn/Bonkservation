@@ -1,5 +1,6 @@
 namespace Managers
 {
+    using Utils;
     using UnityEditor.Rendering;
     using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace Managers
         void Start()
         {
             ManagersSOHolder.GameStateSO.ResetGame();
-            Time.timeScale= 1.0f;
+            GamePause.SetPause(false);
         }
 
         void OnCameraTransitionEndEvent(int camNum)
@@ -58,7 +59,7 @@ namespace Managers
             }
         }
 
-        void OnEnergyChangeEvent(float value)
+        void OnEnergyChangeEvent(float value, bool isReastoring)
         {
             if (value == 0)
             {

@@ -8,12 +8,15 @@ namespace Managers
     public class BonkerManager : MonoBehaviour
     {
         [SerializeField] GameObject bonker;
+        [SerializeField] GameObject cursor;
 
         void OnEnable()
         {
             ManagersSOHolder.CameraEvent.CameraTransitionStartEvent += this.OnCameraTransitionStartEvent;
             ManagersSOHolder.CameraEvent.CameraTransitionEndEvent += this.OnCameraTransitionEndEvent;
             ManagersSOHolder.GameStateSO.GameStateChangedEvent += OnGameStateChangeEvent;
+
+            PlayerSOHolder.SetPaw(this.bonker);
         }
         void OnDisable()
         {
@@ -26,17 +29,18 @@ namespace Managers
         void Start()
         {
             this.bonker.SetActive(false);
+            this.cursor.SetActive(true);
         }
         void OnCameraTransitionStartEvent(int camNum)
         {
-            if (camNum == 0)
-                this.bonker.SetActive(false);
+            this.bonker.SetActive(false);
+            this.cursor.SetActive(false);
         }
 
         void OnCameraTransitionEndEvent(int camNum)
         {
-            if(camNum != 0)
-                this.bonker.SetActive(true);
+            this.bonker.SetActive(camNum != 0);
+            this.cursor.SetActive(camNum == 0);
         }
 
         void OnGameStateChangeEvent(GameState gameState)
@@ -45,7 +49,5 @@ namespace Managers
                 this.bonker.SetActive(false);*/
 
         }
-
-
     }
 }

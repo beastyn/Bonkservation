@@ -6,7 +6,11 @@ namespace Managers
 
     public class CursorManager : MonoBehaviour
     {
-        void OnEnable()
+        void Start()
+        {
+            Cursor.visible = false;
+        }
+        /*void OnEnable()
         {
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent += OnCameraNumRequestEvent;
             ManagersSOHolder.GameStateSO.GameStateChangedEvent += OnGameStateChangeEvent;
@@ -22,10 +26,10 @@ namespace Managers
 
         void OnCameraNumRequestEvent(int camNum)
         {
-          /*  if (camNum == 0 && this.managers.GameStateSO.CurrentGameState != GameState.DayChanges)
+          *//*  if (camNum == 0 && this.managers.GameStateSO.CurrentGameState != GameState.DayChanges)
                 Cursor.visible = true;
             if (camNum != 0)
-                Cursor.visible = false;*/
+                Cursor.visible = false;*//*
         }
 
         void OnGameStateChangeEvent(GameState gameState)
@@ -37,7 +41,7 @@ namespace Managers
         void OnScoreSavedEvent()
         {
             Cursor.visible = true;
-        }
+        }*/
 
     }
 }

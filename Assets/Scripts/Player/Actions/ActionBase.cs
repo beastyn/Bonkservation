@@ -1,5 +1,6 @@
 namespace Player.Actions
 {
+    using Managers;
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
@@ -23,6 +24,7 @@ namespace Player.Actions
             if (this.activated && this.actionSO.CanBeUsed(Time.time))
             {
                 this.actionSO.SetNextActivation(Time.time);
+                ManagersSOHolder.AudioManagerSO.PlaySFX(this.actionSO.AudioClip, this.transform, 1f);
             }
             this.activated = false;
         }

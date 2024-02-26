@@ -17,7 +17,7 @@ namespace UI
 
         void Start() => this.sanityBar.value = 1f;
 
-        void OnHappinessChangeEvent(float currentHap)
+        void OnHappinessChangeEvent(float currentHap, bool isReastoring)
         {
             this.sanityBar.value = (float)PlayerSOHolder.PlayerSanity.CurrentValue / (float)PlayerSOHolder.PlayerSanity.MaxValue;
         }

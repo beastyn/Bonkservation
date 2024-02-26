@@ -2,6 +2,7 @@ namespace Managers.UI
 {
     using System.Collections;
     using System.Collections.Generic;
+    using Unity.VisualScripting;
     using UnityEngine;
 
     public class UIManager : MonoBehaviour
@@ -17,7 +18,7 @@ namespace Managers.UI
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent += OnCameraNumRequestEvent;
             ManagersSOHolder.ScoreManagerSO.ScoreSavedEvent += OnScoreSavedEvent;
 
-            this.activeUIs = this.MainRoomUIs;
+            if(this.MainRoomUIs != null) this.activeUIs = this.MainRoomUIs;
         }
 
         void OnDisable()
@@ -67,6 +68,10 @@ namespace Managers.UI
         {
             this.ScoreBoardUI.SetActive(true);
         }
+
+        public static void CloseUI(GameObject UI) => UI.SetActive(false);
+        public static void OpenUI(GameObject UI) => UI.SetActive(true);
+        public void OpenScoreBoard() => this.ScoreBoardUI?.SetActive(true);
 
         //public void OpenScoreBoard() => this.ScoreBoardUI.SetActive(true);
         //public void CloseScoreBoard() => this.ScoreBoardUI.SetActive(false);
