@@ -1,0 +1,21 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/BrainDesigner/Scripts/Editor/USS/NodeView.uss?fileID=7433441132597879392&amp;guid=db666f3857e53d34bbc30a051c92a3fb&amp;type=3#NodeView" />
+    <engine:VisualElement name="node-state" style="flex-grow: 1;" />
+    <engine:VisualElement name="node-border" picking-mode="Ignore">
+        <engine:VisualElement name="contents">
+            <engine:VisualElement name="top">
+                <engine:VisualElement name="input" />
+                <engine:VisualElement name="divider" class="vertical" />
+                <engine:VisualElement name="title" style="-unity-text-align: middle-center; font-size: 15px; margin-top: 4px; margin-bottom: 4px; margin-left: 3px; margin-right: 3px;">
+                    <engine:Label name="title-label" text="Empty Node" class="unity-text-element unity-label" style="white-space: normal;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="details" style="-unity-text-align: middle-center; font-size: 12px; margin-bottom: 4px; -unity-font-style: italic; margin-right: 3px; margin-left: 3px;">
+                    <engine:Label name="details-label" class="unity-text-element unity-label" style="white-space: normal;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="divider" class="horizontal" />
+                <engine:VisualElement name="output" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+    </engine:VisualElement>
+    <engine:VisualElement name="selection-border" picking-mode="Ignore" />
+</engine:UXML>

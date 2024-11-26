@@ -1,0 +1,365 @@
+.title {
+    font-size: 18px;
+    -unity-font-style: normal;
+}
+
+.entryTitle {
+}
+
+.header {
+    flex-direction: row;
+    height: 28px;
+    flex-shrink: 0;
+    -unity-text-align: middle-center;
+    align-self: stretch;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 0;
+    font-size: 14px;
+}
+
+.header > .unity-label {
+    color: rgb(228, 239, 240);
+    height: 20px;
+    font-size: 16px;
+}
+
+.toolbarButton {
+    -unity-text-align: middle-center;
+    background-color: rgb(0, 36, 57);
+    color: rgb(120, 204, 226);
+    transition-property: all;
+    transition-duration: 0s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-color: rgb(120, 204, 226);
+    border-right-color: rgb(120, 204, 226);
+    border-top-color: rgb(120, 204, 226);
+    border-bottom-color: rgb(120, 204, 226);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.toolbarButton:hover {
+    background-color: rgb(2, 59, 91);
+}
+
+.buttonAddRemove {
+    width: 20px;
+    height: 20px;
+    flex-direction: column;
+    -unity-text-align: upper-center;
+    background-color: rgb(0, 36, 57);
+    color: rgb(120, 204, 226);
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-color: rgb(120, 204, 226);
+    border-right-color: rgb(120, 204, 226);
+    border-top-color: rgb(120, 204, 226);
+    border-bottom-color: rgb(120, 204, 226);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.buttonAddRemove:hover {
+    width: 20px;
+    height: 20px;
+    flex-direction: column;
+    -unity-text-align: upper-center;
+    background-color: rgb(2, 59, 91);
+}
+
+.executionToollistButton {
+    width: 90px;
+    background-color: rgb(0, 36, 57);
+    color: rgb(120, 204, 226);
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    border-left-color: rgb(120, 204, 226);
+    border-right-color: rgb(120, 204, 226);
+    border-top-color: rgb(120, 204, 226);
+    border-bottom-color: rgb(120, 204, 226);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.executionToollistButton:hover {
+    width: 90px;
+    background-color: rgb(2, 59, 91);
+    color: rgb(195, 244, 247);
+}
+
+.entryHeader {
+    flex-direction: row;
+    margin-bottom: 8px;
+    height: 30px;
+}
+
+.considerationValueContainer {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.considerationValueLabel {
+    width: 120px;
+    margin-left: 3px;
+}
+
+.inspectorSubtitle {
+    margin-left: 3px;
+    margin-top: 20px;
+    margin-bottom: 3px;
+    font-size: 14px;
+    -unity-font-style: bold-and-italic;
+}
+
+.textFieldBordered {
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: rgb(117, 136, 135);
+    border-right-color: rgb(117, 136, 135);
+    border-top-color: rgb(117, 136, 135);
+    border-bottom-color: rgb(117, 136, 135);
+}
+
+.panel {
+    padding-top: 5px;
+    background-color: rgb(0, 36, 57);
+    border-right-width: 0;
+    border-left-color: rgba(120, 204, 226, 0.59);
+    border-right-color: rgba(120, 204, 226, 0.59);
+    border-top-color: rgba(120, 204, 226, 0.59);
+    border-bottom-color: rgba(120, 204, 226, 0.59);
+    padding-bottom: 5px;
+}
+
+.setContainer {
+    padding-top: 10px;
+    padding-right: 0;
+}
+
+.setContent {
+    padding-top: 10px;
+}
+
+.setContent > .unity-collection-view > .unity-scroll-view > .unity-scroll-view__content-and-vertical-scroll-container {
+    flex-direction: row-reverse;
+}
+
+.adaptiveTab {
+    margin-top: 0;
+    padding-top: 0;
+    margin-right: 5px;
+}
+
+.dataContent {
+    padding-top: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-left-color: rgba(120, 204, 226, 0.27);
+    border-right-color: rgba(120, 204, 226, 0.59);
+    border-top-color: rgba(120, 204, 226, 0.59);
+    border-bottom-color: rgba(120, 204, 226, 0.59);
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.manualContent {
+}
+
+.properties {
+    margin-top: 10px;
+}
+
+.tab {
+    background-color: rgb(5, 18, 26);
+    border-left-color: rgba(120, 204, 226, 0.59);
+    border-right-color: rgba(120, 204, 226, 0.59);
+    border-top-color: rgba(120, 204, 226, 0.59);
+    border-bottom-color: rgba(120, 204, 226, 0.59);
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
+    margin-top: 0;
+    flex-shrink: 1;
+    flex-grow: 0;
+}
+
+.unity-text-element {
+    color: rgb(169, 215, 230);
+}
+
+.commonText {
+    color: rgb(228, 239, 240);
+}
+
+.list-view-item:hover {
+    background-color: rgb(0, 50, 79);
+    margin-left: 0;
+    background-position-x: right 10px;
+}
+
+.list-view-item:selected {
+    background-color: rgb(16, 53, 73);
+    margin-left: 0;
+    background-position-x: left -5px;
+}
+
+.unity-toolbar-menu {
+    border-top-color: rgb(11, 177, 254);
+    border-left-color: rgb(11, 177, 254);
+    border-right-color: rgb(11, 177, 254);
+    border-bottom-color: rgb(11, 177, 254);
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.unity-toolbar-menu__arrow {
+    -unity-background-image-tint-color: rgb(11, 142, 197);
+}
+
+.unity-base-field__input {
+    background-color: rgb(5, 18, 26);
+    margin-left: 0;
+    border-left-color: rgb(11, 177, 254);
+    border-right-color: rgb(11, 177, 254);
+    border-top-color: rgb(11, 177, 254);
+    border-bottom-color: rgb(11, 177, 254);
+    border-top-width: 1px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    font-size: 12px;
+}
+
+.unity-toggle > .unity-base-field__input {
+    border-left-color: rgba(245, 57, 57, 0);
+    border-right-color: rgba(245, 57, 57, 0);
+    border-top-color: rgba(245, 57, 57, 0);
+    border-bottom-color: rgba(245, 57, 57, 0);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.unity-base-field__input > .unity-base-popup-field__arrow {
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(11, 142, 197);
+}
+
+.unity-enum-field__input > .unity-enum-field__arrow {
+    -unity-background-image-tint-color: rgb(11, 142, 197);
+}
+
+.unity-base-field > .unity-label {
+    color: rgb(228, 239, 240);
+    font-size: 12px;
+    height: 20px;
+    background-color: rgba(5, 18, 26, 0);
+}
+
+.unity-tab-view__header-container {
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.unity-tab-view__header-container > .unity-tab__header {
+    background-color: rgb(5, 18, 26);
+    height: 28px;
+    color: rgb(228, 239, 240);
+    font-size: 14px;
+}
+
+.unity-tab-view__header-container > .unity-tab__header > .unity-tab__header-label {
+    background-color: rgba(5, 18, 26, 0);
+    height: 28px;
+    color: rgba(228, 239, 240, 0.67);
+    font-size: 14px;
+    -unity-text-align: middle-left;
+}
+
+.unity-tab-view__header-container > .unity-tab__header:selected {
+    background-color: rgb(0, 36, 57);
+}
+
+.unity-tab-view__header-container > .unity-tab__header:selected > .unity-tab__header-label {
+    background-color: rgb(0, 36, 57);
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    color: rgb(228, 239, 240);
+}
+
+.unity-tab-view__header-container > .unity-tab__header-underline {
+}
+
+.unity-repeat-button {
+    -unity-background-image-tint-color: rgb(11, 177, 254);
+}
+
+.unity-scroller--vertical {
+    margin-right: 3px;
+}
+
+#unity-dragger {
+    background-color: rgb(16, 53, 73);
+    width: 10px;
+}
+
+#unity-checkmark {
+    background-color: rgb(5, 18, 26);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(11, 177, 254);
+    border-right-color: rgb(11, 177, 254);
+    border-top-color: rgb(11, 177, 254);
+    border-bottom-color: rgb(11, 177, 254);
+}
+
+.table-list-view {
+    flex-direction: row;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 100px;
+}
+
+.table-list-view > .unity-scroll-view {
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.table-list-view > .unity-scroll-view > #unity-content-and-vertical-scroll-container > #unity-content-viewport > #unity-content-container {
+    flex-direction: row;
+    flex-grow: 1;
+    height: 100px;
+}
+
+.table-list-view-item {
+}
+
+.unity-base-field__label {
+    min-width: 0;
+}

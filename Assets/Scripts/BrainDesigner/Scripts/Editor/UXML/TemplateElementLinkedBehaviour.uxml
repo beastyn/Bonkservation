@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Scripts/BrainDesigner/Scripts/Editor/USS/BrainDesigner.uss?fileID=7433441132597879392&amp;guid=011b3d9b0dc52854c861a03adc6cb530&amp;type=3#BrainDesigner" />
+    <engine:VisualElement name="Container" class="list-view-item" style="height: 35px; justify-content: center; border-top-width: 1px; border-bottom-width: 1px; border-right-width: 0; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); margin-left: 0; border-left-width: 1px; left: 0; right: auto; background-position-x: left -10px; padding-left: 5px;">
+        <engine:VisualElement name="Title" class="header">
+            <engine:Label tabindex="-1" text="Behaviour num" display-tooltip-when-elided="true" name="LabelTitle" style="font-size: 14px;" />
+            <engine:VisualElement name="Spacer" style="flex-grow: 1;" />
+            <engine:Button text="-" name="ButtonRemoveElement" class="buttonAddRemove" style="-unity-text-align: upper-center;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="Behaviours" />
+    </engine:VisualElement>
+</engine:UXML>
