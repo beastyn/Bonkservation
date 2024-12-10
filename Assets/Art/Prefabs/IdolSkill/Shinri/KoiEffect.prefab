@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7213917032458823529}
   - component: {fileID: 7803360415899492613}
   m_Layer: 0
-  m_Name: KsishEffect
+  m_Name: KoiEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

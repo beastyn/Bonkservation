@@ -28,9 +28,6 @@ namespace AI.Skills
         float currentActivatingTime = 0f;
 
         bool isActivating = false;
-        bool isWorking = false;
-
-        float currentFrequency;
 
         public float ActivationTime => this.activationTime;
         public float Damage => this.damage;
@@ -54,7 +51,6 @@ namespace AI.Skills
         {
             Timing.KillCoroutines();
             this.isActivating = false;
-            this.isWorking = false;
             this.SkillCastInterruptedEvent?.Invoke(this);
         }
 
@@ -63,7 +59,6 @@ namespace AI.Skills
             yield return Timing.WaitForSeconds(this.activationTime);
 
             this.isActivating = false;
-            this.isWorking = true;
             this.SkillActivatedEvent?.Invoke(this);
             Timing.RunCoroutine(StartSkillSequence());
         }

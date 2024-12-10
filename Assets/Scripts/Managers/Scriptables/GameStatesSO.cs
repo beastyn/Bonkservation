@@ -22,11 +22,14 @@ namespace Managers
         public UnityAction<GameState> GameStateChangedEvent;
 
         public GameState CurrentGameState => this.currentGameState;
+        public GameState PreviousGameState => this.previousGameState;
 
-        GameState currentGameState;
+        GameState currentGameState = GameState.Start;
+        GameState previousGameState;
 
         public void SetGameState(GameState state)
         {
+            this.previousGameState = this.currentGameState;
             this.currentGameState = state;
             this.GameStateChangedEvent?.Invoke(state);
         }

@@ -1,6 +1,7 @@
 namespace Managers
 {
     using Gameplay;
+    using Player;
     using System.Collections;
     using System.Collections.Generic;
     using Unity.VisualScripting;

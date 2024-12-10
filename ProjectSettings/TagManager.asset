@@ -11,7 +11,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Cursor
   - Water
   - UI
   - 
@@ -50,17 +50,29 @@ TagManager:
   - name: Room1
     uniqueID: 2420050437
     locked: 0
-  - name: Stuff
+  - name: Room2
+    uniqueID: 1310021077
+    locked: 0
+  - name: Room3
+    uniqueID: 4009027989
+    locked: 0
+  - name: Stuff1
     uniqueID: 1347315371
+    locked: 0
+  - name: Stuff2
+    uniqueID: 537086405
+    locked: 0
+  - name: Stuff3
+    uniqueID: 797122597
+    locked: 0
+  - name: Stuff4
+    uniqueID: 232543267
     locked: 0
   - name: Idol
     uniqueID: 368500733
     locked: 0
   - name: UI
     uniqueID: 2220009267
-    locked: 0
-  - name: Cursor
-    uniqueID: 3587189053
     locked: 0
   - name: Bonker
     uniqueID: 2798500229
@@ -70,4 +82,7 @@ TagManager:
     locked: 0
   - name: OnTopUI
     uniqueID: 2444878045
+    locked: 0
+  - name: Cursor
+    uniqueID: 3587189053
     locked: 0

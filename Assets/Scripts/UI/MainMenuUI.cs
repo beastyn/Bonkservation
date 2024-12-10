@@ -6,14 +6,11 @@ namespace UI
     using System.Collections.Generic;
     using UnityEngine;
 
-    public class MainMenuUI : MonoBehaviour
+    public class MenuWindowsUI : MonoBehaviour
     {
-        [SerializeField] GameObject scoreBoard;
-        [SerializeField] GameObject settings;
-
         public void Play() => ManagersSOHolder.SceneManagerSO.StartLevel();
-        public void OpenScoreBoard() => UIManager.OpenUI(scoreBoard);
-        public void OpenSettings() => UIManager.OpenUI(settings);
+        public void OpenScoreBoard() => UIManager.OpenScoreBoard();
+        public void OpenSettings() => UIManager.OpenSettings();
 
 
     }

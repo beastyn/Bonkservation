@@ -6,13 +6,19 @@ namespace Managers.Cameras
     using UnityEngine.Rendering.Universal;
     using DG.Tweening;
     using System;
+    using Unity.VisualScripting;
+    using Player;
 
     public class CameraController : MonoBehaviour
     {
         [SerializeField] CinemachineVirtualCamera mainCamera;
         [SerializeField] CinemachineVirtualCamera[] idolsCameras;
         [SerializeField] Volume ppVolume;
- 
+        [Header("Hit Shake")]
+        [SerializeField] Vector3 shakeStrength = new Vector3(2f, 1f, 0f);
+        [SerializeField] float shakeDuration = 0.5f;
+        [SerializeField] int frequency = 50;
+        [Header("Blink Sequence")]
         [SerializeField] float gameOverSaturation = -100f;
         [SerializeField] float gameOverExposure = -4f;
         [SerializeField] float gameOvervIntensity = 0.3f;
@@ -38,6 +44,7 @@ namespace Managers.Cameras
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent += OnCameraNumRequestEvent;
             ManagersSOHolder.GameStateSO.GameStateChangedEvent += OnGameStateChangeEvent;
             ManagersSOHolder.TimeManagerSO.PrepareToSleepEvent += OnPrepareToSleep;
+            PlayerEvents.LandHitEvent += OnLandHitEvent;
         }
 
         void OnDisable()
@@ -45,6 +52,7 @@ namespace Managers.Cameras
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent -= OnCameraNumRequestEvent;
             ManagersSOHolder.GameStateSO.GameStateChangedEvent -= OnGameStateChangeEvent;
             ManagersSOHolder.TimeManagerSO.PrepareToSleepEvent -= OnPrepareToSleep;
+            PlayerEvents.LandHitEvent -= OnLandHitEvent;
         }
 
         void Start()
@@ -86,11 +94,16 @@ namespace Managers.Cameras
             {
                 this.activeCamera.gameObject.SetActive(false);
                 this.mainCamera.gameObject.SetActive(true);
+                var curState = ManagersSOHolder.GameStateSO.CurrentGameState;
+                var prevState = ManagersSOHolder.GameStateSO.PreviousGameState;
+                if (ManagersSOHolder.GameStateSO.CurrentGameState != GameState.DayChanges) 
+                    this.BlinkEyesTween(2f);
                 return;
             }
             this.idolsCameras[camNum-1].gameObject.SetActive(true);
             this.mainCamera.gameObject.SetActive(false);
             this.activeCamera = this.idolsCameras[camNum-1];
+            if(ManagersSOHolder.GameStateSO.PreviousGameState != GameState.DayChanges) this.BlinkEyesTween(2f);
         }
 
         public void OnPrepareToSleep()
@@ -122,13 +135,22 @@ namespace Managers.Cameras
             DOTween.To(() => this.coloring.postExposure.value, x => this.coloring.postExposure.value = x, this.closedEyesExposure, speed + 0.5f).SetUpdate(true);
         }
 
-        void BlinkEyesTween()
+        void BlinkEyesTween(float closeEyesSpeed)
         {
             DOTween.Kill(this);
 
-            DOTween.To(() => this.vignette.intensity.value, x => this.vignette.intensity.value = x, this.blinkIntensity, this.blinkTweenTime).SetUpdate(true);
-            DOTween.To(() => this.coloring.saturation.value, x => this.coloring.saturation.value = x, this.blinkSaturation, this.blinkTweenTime).SetUpdate(true);
-            DOTween.To(() => this.coloring.postExposure.value, x => this.coloring.postExposure.value = x, this.blinkExposure, this.blinkTweenTime + 1f).SetUpdate(true);
+            var sequence = DOTween.Sequence();
+
+            sequence.Append(DOTween.To(() => this.vignette.intensity.value, x => this.vignette.intensity.value = x, this.closedEyesIntensity, this.blinkTweenTime).SetUpdate(true))
+                    .Join(DOTween.To(() => this.coloring.saturation.value, x => this.coloring.saturation.value = x, this.closedEyesSaturation, this.blinkTweenTime).SetUpdate(true))
+                    .Join(DOTween.To(() => this.coloring.postExposure.value, x => this.coloring.postExposure.value = x, this.closedEyesExposure, this.blinkTweenTime).SetUpdate(true));
+
+            sequence.Append(DOTween.To(() => this.vignette.intensity.value, x => this.vignette.intensity.value = x, 0f, closeEyesSpeed).SetUpdate(true))
+                    .Join(DOTween.To(() => this.coloring.saturation.value, x => this.coloring.saturation.value = x, 0f, closeEyesSpeed).SetUpdate(true))
+                    .Join(DOTween.To(() => this.coloring.postExposure.value, x => this.coloring.postExposure.value = x, 0f, closeEyesSpeed).SetUpdate(true));//.OnComplete(() => ManagersSOHolder.CameraEvent.CameraEndAnimationEvent?.Invoke(GameState.DayChanges));
+
+            sequence.Play().SetUpdate(true);
+
         }
 
         void BlinkSequence(float closeEyesSpeed)
@@ -154,6 +176,14 @@ namespace Managers.Cameras
                     .Join(DOTween.To(() => this.coloring.postExposure.value, x => this.coloring.postExposure.value = x, 0f, closeEyesSpeed).SetUpdate(true)).OnComplete(() => ManagersSOHolder.CameraEvent.CameraEndAnimationEvent?.Invoke(GameState.DayChanges));
 
             sequence.Play().SetUpdate(true);
+        }
+
+        void OnLandHitEvent()
+        {
+            if (DOTween.IsTweening(1))
+                DOTween.Restart(1);
+            else
+                DOTween.Shake(() => this.activeCamera.transform.position, pos => this.activeCamera.transform.position = pos, this.shakeDuration, this.shakeStrength, this.frequency).SetEase(Ease.InOutBack).SetId(1);
         }
     }
 }

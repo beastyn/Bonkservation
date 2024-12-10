@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1846281315641680138}
   - component: {fileID: 9197305435098434343}
   - component: {fileID: 3912486071141502376}
+  - component: {fileID: 7485890086246986564}
   - component: {fileID: 3193129240945596615}
   m_Layer: 0
   m_Name: Koi
@@ -108,6 +109,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillSO: {fileID: 11400000, guid: aad7f4b74c55c1c45a7267ef485558ea, type: 2}
+  impactScale: 4
+  destroyOnScale: 1
+  destroyOutScreen: 0
+--- !u!114 &7485890086246986564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3220115680454069828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9401b457af7b7664eb99ffefe0d865a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   timeToReach: 1
   impactScale: 4
 --- !u!58 &3193129240945596615

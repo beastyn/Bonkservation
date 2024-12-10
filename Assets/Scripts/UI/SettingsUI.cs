@@ -8,7 +8,7 @@ namespace UI
 
     public class SettingsUI : MonoBehaviour
     {
-        public void CloseSettings() => UIManager.CloseUI(this.gameObject);
+        public void CloseSettings() => UIManager.ToggleUI(this.gameObject);
         public void OpenMainMenu() => ManagersSOHolder.SceneManagerSO.StartMainMenu();
 
     }

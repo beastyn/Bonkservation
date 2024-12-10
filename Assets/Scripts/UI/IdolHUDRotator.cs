@@ -31,12 +31,10 @@ namespace UI
         [SerializeField] SpriteRenderer roomBorder;
 
         bool needChangePos = false;
-        bool animated = false;
         Vector3 offset;
 
         void OnEnable()
         {
-            this.animated = false;
             this.needChangePos = true;
             this.transform.localScale = Vector3.zero;
             this.offset = Vector3.zero;
@@ -64,10 +62,13 @@ namespace UI
 
         public static OverflawType GetOverflowType(Vector3[] container, Vector3[] innerSprite)
         {
-            if (container[0].y < innerSprite[0].y) return OverflawType.Top;
-            if (container[0].x < innerSprite[0].x) return OverflawType.Right;
-            if (container[2].y > innerSprite[2].y) return OverflawType.Bottom;
-            if (container[2].x > innerSprite[2].x) return OverflawType.Left;
+            foreach (var innerPoint in innerSprite)
+            {
+                if (container[0].y < innerPoint.y) return OverflawType.Top;
+                if (container[0].x < innerPoint.x) return OverflawType.Right;
+                if (container[2].y > innerPoint.y) return OverflawType.Bottom;
+                if (container[2].x > innerPoint.x) return OverflawType.Left;
+            }
 
             return OverflawType.None;
         }

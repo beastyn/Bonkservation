@@ -3,6 +3,8 @@ namespace Gameplay
     using System.Collections;
     using System.Collections.Generic;
     using Unity.Collections.LowLevel.Unsafe;
+    using Unity.VisualScripting;
+    using UnityEditor;
     using UnityEngine;
 
     [CreateAssetMenu(fileName = "Difficulty", menuName = "Bonk/DifficultySettings")]
@@ -15,6 +17,9 @@ namespace Gameplay
         [SerializeField] int baseDodgeProbability = 5;
         [SerializeField] int baseNormalSkillProbablity = 5;
         [SerializeField] static int baseSkillFrequencyModificator = 1;
+        [SerializeField] static float baseRandomAppearanceSpeed = 2f;
+        [SerializeField] static float baseRandomStayTime = 2f;
+        [SerializeField] static float baseRandomAppearDelay = 2f;
         [SerializeField] static int currentDifficultyLevel = 1;
 
 
@@ -22,6 +27,11 @@ namespace Gameplay
         public int GetNormalSkillProbability() => this.baseNormalSkillProbablity * currentDifficultyLevel;
 
         public static float GetAttackersSkillDifficultyModificator() => baseSkillFrequencyModificator / currentDifficultyLevel;
+
+        public static float GetRandomAppearanceSpeed() => baseRandomAppearanceSpeed/currentDifficultyLevel;
+        public static float GetRandomStayTime() => baseRandomStayTime/currentDifficultyLevel;
+        public static float GetRandomAppearDelay() => baseRandomAppearDelay/currentDifficultyLevel;
+
 
         public float GerNormalRandomNum()
         {

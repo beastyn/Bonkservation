@@ -20,7 +20,6 @@ namespace AI.Tree.Idols
         [SerializeField] float minDistance = 2f;
         [SerializeField] IdolInfoSO idolInfo;
         [SerializeField] EnergySO idolEnergy;
-        [SerializeField] VodKillersSO killersSO;
 
         AIState aiState = AIState.Idle;
         float startMischieveTime = 0f;
@@ -47,20 +46,13 @@ namespace AI.Tree.Idols
             this.idolInfo.SetRotSpeed(this.idolInfo.RotSpeed);
 
             if (this.idolEnergy.CurrentValue < this.idolEnergy.MaxValue && !this.idolEnergy.IsRegenerating) this.idolEnergy.SetEnergyRestore(true);
-            if (!this.killersSO.CanUse) this.killersSO.SetKillerUsage(true);
+            if (!this.vodKillers.CanUse) this.vodKillers.SetKillerUsage(true);
 
-            return AIUtils.GoToLocation(this.targetMischieve.position, ref this.aiState, this.agent, this.minDistance, Color.red, AIUtils.SawThePaw(this.idolInfo));
+            return AIUtils.GoToLocation(this.targetMischieve.position, ref this.aiState, this.agent, this.minDistance, Color.red, false);
         }
 
         public Node.Status StayAtMischieveObject()
         {
-            if (AIUtils.SawThePaw(this.idolInfo))
-            {
-                this.aiState = AIState.Idle;
-                this.startMischieveTime = 0f;
-                return Node.Status.Failure;
-            }
-
             if (this.startMischieveTime < 3f)
             {
                 this.startMischieveTime += Time.deltaTime;
@@ -75,7 +67,7 @@ namespace AI.Tree.Idols
             }
         }
 
-        public void FailHandler() => this.killersSO.SetKillerUsage(false);
+        public void FailHandler() => this.vodKillers.SetKillerUsage(false);
 
         /*Node.Status GoToLocation(Vector3 destination)
         {

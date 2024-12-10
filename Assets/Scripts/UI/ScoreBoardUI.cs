@@ -67,7 +67,7 @@ public class ScoreBoardUI : MonoBehaviour
 
         for (var i = 0; i < ManagersSOHolder.ScoreManagerSO.HighScore.Bonks.Count; i++)
         {
-            this.highIdolsRecords[i].SetText($"{ManagersSOHolder.ScoreManagerSO.HighScore.Bonks[i].Name} -> <size=200%>{ManagersSOHolder.ScoreManagerSO.LastScore.Bonks[i].Times}</size> times");
+            this.highIdolsRecords[i].SetText($"{ManagersSOHolder.ScoreManagerSO.HighScore.Bonks[i].Name} -> <size=200%>{ManagersSOHolder.ScoreManagerSO.HighScore.Bonks[i].Times}</size> times");
             this.highIdolsRecords[i].gameObject.SetActive(true);
         }
         for (var i = 0; i < ManagersSOHolder.ScoreManagerSO.LastScore.Bonks.Count; i++)
@@ -80,5 +80,5 @@ public class ScoreBoardUI : MonoBehaviour
     public void RestartObservation() => SceneManager.LoadScene(1);
     public void LoadTitleScreen() => SceneManager.LoadScene(0);
 
-    public void Close() => UIManager.CloseUI(this.gameObject);
+    public void Close() => UIManager.ToggleUI(this.gameObject);
 }

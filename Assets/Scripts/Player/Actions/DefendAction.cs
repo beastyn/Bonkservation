@@ -10,9 +10,7 @@ namespace Player.Actions
     public class DefendAction : ActionBase
     {
         [SerializeField] BuffManager buffManager;
-        [SerializeField] float protectionTime = 1f;
-        bool canDefend = false;
-        Collider2D currentIdol;
+
         protected override void OnEnable()
         {
             PlayerBonkInputController.SecondActionEvent += OnSecondActionEvent;

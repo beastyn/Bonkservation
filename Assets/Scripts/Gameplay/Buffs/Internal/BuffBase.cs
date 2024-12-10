@@ -16,8 +16,6 @@ namespace Gameplay.Buffs.Internal
         protected BuffSO buffSO;
         bool isActive;
 
-        float currentBuffTime = 0f;
-
         public BuffBase() { }
 
         public BuffBase(EnergySO energy, BuffSO buffSO)

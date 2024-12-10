@@ -10,6 +10,7 @@ namespace AI.Skills.Internal
     {
         public SkillSO SkillSO;
         public GameObject SkillObject;
+        public GameObject SkillCastEffect;
 
         public virtual void ActivateSkill() { }
 

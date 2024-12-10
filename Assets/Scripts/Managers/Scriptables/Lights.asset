@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DirectinalColor:
     serializedVersion: 2
-    key0: {r: 0.16078432, g: 0.105882354, b: 0.09803922, a: 1}
-    key1: {r: 0.35246372, g: 0.29071608, b: 0.27602723, a: 1}
-    key2: {r: 0.38039216, g: 0.31764707, b: 0.3019608, a: 0}
-    key3: {r: 0.31924596, g: 0.26741982, b: 0.25828493, a: 0}
-    key4: {r: 0.050980393, g: 0.047058824, b: 0.06666667, a: 0}
+    key0: {r: 0.254717, g: 0.14432962, b: 0.12855999, a: 1}
+    key1: {r: 0.5529412, g: 0.48627454, b: 0.41960788, a: 1}
+    key2: {r: 0.6901961, g: 0.60784316, b: 0.5254902, a: 0}
+    key3: {r: 0.5529412, g: 0.48627454, b: 0.41960788, a: 0}
+    key4: {r: 0.083659634, g: 0.04561232, b: 0.23584908, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
@@ -45,18 +45,18 @@ MonoBehaviour:
   RoomsColor:
   - serializedVersion: 2
     key0: {r: 1, g: 0.5803922, b: 0.5058824, a: 1}
-    key1: {r: 1, g: 0.96461755, b: 0.9009434, a: 1}
-    key2: {r: 1, g: 1, b: 1, a: 0}
-    key3: {r: 1, g: 0.9647059, b: 0.9019608, a: 0}
-    key4: {r: 0.18431373, g: 0.14901961, b: 0.25490198, a: 0}
+    key1: {r: 0.6901961, g: 0.60784316, b: 0.5254902, a: 1}
+    key2: {r: 0.18431373, g: 0.14901961, b: 0.25490198, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
-    ctime1: 22359
-    ctime2: 33346
-    ctime3: 44718
-    ctime4: 65535
+    ctime1: 33153
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
@@ -70,5 +70,63 @@ MonoBehaviour:
     atime7: 0
     m_Mode: 0
     m_ColorSpace: -1
-    m_NumColorKeys: 5
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  - serializedVersion: 2
+    key0: {r: 1, g: 0.5803922, b: 0.5058824, a: 1}
+    key1: {r: 0.6901961, g: 0.60784316, b: 0.5254902, a: 1}
+    key2: {r: 0.18431373, g: 0.14901961, b: 0.25490198, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 33153
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  - serializedVersion: 2
+    key0: {r: 0.6226415, g: 0.09389039, b: 0, a: 1}
+    key1: {r: 0.6901961, g: 0.60784316, b: 0.5254902, a: 1}
+    key2: {r: 0.074136734, g: 0.031016378, b: 0.16037738, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 31611
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
     m_NumAlphaKeys: 2

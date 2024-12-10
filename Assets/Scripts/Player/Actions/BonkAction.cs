@@ -28,6 +28,7 @@ namespace Player.Actions
             if (this.canDamage && this.activated)
             {
                 this.currentIdol.gameObject.GetComponent<Damageable>()?.InflictDamage(this.actionSO.CurrentDamage);
+                PlayerEvents.LandHitEvent?.Invoke();
             }
         }
         public void OnTriggerEnter2D(Collider2D collision)

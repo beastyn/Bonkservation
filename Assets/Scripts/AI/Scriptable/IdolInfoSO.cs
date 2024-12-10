@@ -15,7 +15,6 @@ namespace AI
         [SerializeField] int roomNumber = 1;
 
         [Header("General")]
-        [SerializeField] float speedRate = 0.2f;
         [SerializeField] float restingTimeRate = 0.3f;
 
         [Header("Walking")]

@@ -32,7 +32,6 @@ namespace AI.Tree.Idols
 
         Vector3 randomDestination = Vector3.zero;
         bool destinationExists = false;
-        bool skillWasActivated = false;
         Skill currentcastingskill = null;
 
         AIState aiState = AIState.Idle;
@@ -94,7 +93,6 @@ namespace AI.Tree.Idols
             if ((int)ManagersSOHolder.GameStateSO.CurrentGameState != idolInfo.RoomNumber)
             {
                 this.currentcastingskill?.SkillSO.StopSkill();
-                this.skillWasActivated = false;
                 this.currentcastingskill = null;
                 return Node.Status.Failure;
             }

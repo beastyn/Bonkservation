@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5e0fb06368a4af40af2a5d63cfe7ffb, type: 3}
   m_Name: Time
   m_EditorClassIdentifier: Assembly-CSharp:Managers.Timer:TimeManagerSO
-  secondsPerDay: 300
+  secondsPerDay: 60

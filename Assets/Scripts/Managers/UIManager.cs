@@ -1,6 +1,8 @@
+using UI;
 namespace Managers.UI
 {
-    using System.Collections;
+    using Player;
+    using System;
     using System.Collections.Generic;
     using Unity.VisualScripting;
     using UnityEngine;
@@ -9,47 +11,55 @@ namespace Managers.UI
     {
         [SerializeField] List<GameObject> MainRoomUIs;
         [SerializeField] List<GameObject> RoomUIs;
-        [SerializeField] GameObject ScoreBoardUI;
 
-        List<GameObject> activeUIs;
+        [NonSerialized] public static TopWindowsUI TopWindowsUI;
+        List<GameObject> activeRooms;
+        static GameObject activeUI;
+
+        void Awake()
+        {
+            this.SetUpTopUis();
+        }
 
         void OnEnable()
         {
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent += OnCameraNumRequestEvent;
             ManagersSOHolder.ScoreManagerSO.ScoreSavedEvent += OnScoreSavedEvent;
+            PlayerBonkInputController.SettingsToggle += OnSettingsToggle;
 
-            if(this.MainRoomUIs != null) this.activeUIs = this.MainRoomUIs;
+            if (this.MainRoomUIs != null) this.activeRooms = this.MainRoomUIs;
         }
 
         void OnDisable()
         {
             ManagersSOHolder.CameraEvent.CameraNumRequestEvent -= OnCameraNumRequestEvent;
             ManagersSOHolder.ScoreManagerSO.ScoreSavedEvent -= OnScoreSavedEvent;
+            PlayerBonkInputController.SettingsToggle -= OnSettingsToggle;
         }
 
         void Start()
         {
-            this.activeUIs = new();
+            this.activeRooms = new();
         }
 
         void OnCameraNumRequestEvent(int camNum)
         {
 
             //Main Room view
-            if (camNum == 0 && this.activeUIs != this.MainRoomUIs)
+            if (camNum == 0 && this.activeRooms != this.MainRoomUIs)
             {
-                this.activeUIs.Clear();
+                this.activeRooms.Clear();
 
                 this.RoomUIs.ForEach(ui => ui.SetActive(false));
                 foreach (var ui in this.MainRoomUIs)
                 {
                     ui.SetActive(true);
-                    this.activeUIs.Add(ui);
+                    this.activeRooms.Add(ui);
                 }
                 return;
             }
 
-            this.activeUIs.Clear();
+            this.activeRooms.Clear();
             this.MainRoomUIs.ForEach(ui => ui.SetActive(false));
 
             //Idol room view
@@ -59,19 +69,47 @@ namespace Managers.UI
                 if (i == 0 || i == camNum)
                 {
                     ui.SetActive(true);
-                    this.activeUIs.Add(ui);
+                    this.activeRooms.Add(ui);
                 }
             }
         }
-
-        void OnScoreSavedEvent()
+        public static void ToggleUI(GameObject UI)
         {
-            this.ScoreBoardUI.SetActive(true);
+            if (activeUI == UI)
+            {
+                UI.SetActive(false);
+                activeUI = null;
+                return;
+            }
+            if (activeUI == null)
+                UI.SetActive(true);
+            else
+            {
+                activeUI.SetActive(false);
+                UI.SetActive(true);
+            }
+            activeUI = UI;
         }
+        /*
+                public static void CloseUI(GameObject UI) { if (UI.activeSelf) UI.SetActive(false); }
+                public static void OpenUI(GameObject UI) { if (!UI.activeSelf) UI.SetActive(true); }*/
 
-        public static void CloseUI(GameObject UI) => UI.SetActive(false);
-        public static void OpenUI(GameObject UI) => UI.SetActive(true);
-        public void OpenScoreBoard() => this.ScoreBoardUI?.SetActive(true);
+        public static void OpenScoreBoard() => ToggleUI(TopWindowsUI.ScoreBoard);
+        public static void OpenSettings() => ToggleUI(TopWindowsUI.Settings);
+
+
+        void SetUpTopUis()
+        {
+            var uiCamera = GameObject.Find("UICamera").GetComponent<Camera>();
+            //Create menu.
+            var topUIObj = GameObject.Instantiate(ManagersSOHolder.UIManagerSO.MenuUis);
+            TopWindowsUI = topUIObj.GetComponent<TopWindowsUI>();
+            var topUICanvas = topUIObj.GetComponent<Canvas>();
+            topUICanvas.renderMode = RenderMode.ScreenSpaceCamera;
+            topUICanvas.worldCamera = uiCamera;
+        }
+        void OnSettingsToggle() {if(ManagersSOHolder.GameStateSO.CurrentGameState != GameState.GameOver) OpenSettings(); }
+        void OnScoreSavedEvent() => OpenScoreBoard();
 
         //public void OpenScoreBoard() => this.ScoreBoardUI.SetActive(true);
         //public void CloseScoreBoard() => this.ScoreBoardUI.SetActive(false);

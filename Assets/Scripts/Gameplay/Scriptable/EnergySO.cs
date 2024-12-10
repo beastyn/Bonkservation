@@ -10,6 +10,7 @@ namespace Gameplay
     public class EnergySO : ScriptableObject
     {
         public UnityAction<float, bool> EnergyChangeEvent;
+        public UnityAction NoEnergyEvent;
 
         [SerializeField] float startValue = 100;
         [SerializeField] float maxValue = 100;
@@ -31,6 +32,8 @@ namespace Gameplay
 
             this.currentValue = Mathf.Clamp(this.currentValue, 0f, this.maxValue);
             this.EnergyChangeEvent?.Invoke(this.currentValue, false);
+            if (this.currentValue == 0) this.NoEnergyEvent?.Invoke();
+
         }
 
         public void SetEnergy(float value)

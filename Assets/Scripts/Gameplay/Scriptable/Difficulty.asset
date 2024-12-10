@@ -15,6 +15,5 @@ MonoBehaviour:
   minrand: 0
   maxrand: 1
   multiplyer: 100
-  baseDodgeProbability: 40
+  baseDodgeProbability: 5
   baseNormalSkillProbablity: 10
-  currentDifficultyLevel: 1

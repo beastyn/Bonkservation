@@ -19,9 +19,9 @@ namespace AI
 
             foreach (var normalSkill in skillManager.NormalSkills)
             {
-                normalSkill.SkillSO.SkillStartActivateEvent += OnSkillStartActivateEvent;
-                normalSkill.SkillSO.SkillActivatedEvent += OnSkillActivatedEvent;
-                normalSkill.SkillSO.SkillCastInterruptedEvent += OnSkillInterruptedEvent;
+                //normalSkill.SkillSO.SkillStartActivateEvent += OnSkillStartActivateEvent;
+                //normalSkill.SkillSO.SkillActivatedEvent += OnSkillActivatedEvent;
+                //normalSkill.SkillSO.SkillCastInterruptedEvent += OnSkillInterruptedEvent;
             }
         }
 
@@ -31,24 +31,24 @@ namespace AI
 
             foreach (var normalSkill in skillManager.NormalSkills)
             {
-                normalSkill.SkillSO.SkillStartActivateEvent -= OnSkillStartActivateEvent;
-                normalSkill.SkillSO.SkillActivatedEvent -= OnSkillActivatedEvent;
-                normalSkill.SkillSO.SkillCastInterruptedEvent -= OnSkillInterruptedEvent;
+                //normalSkill.SkillSO.SkillStartActivateEvent -= OnSkillStartActivateEvent;
+                //normalSkill.SkillSO.SkillActivatedEvent -= OnSkillActivatedEvent;
+                //normalSkill.SkillSO.SkillCastInterruptedEvent -= OnSkillInterruptedEvent;
             }
         }
 
-        void OnSkillStartActivateEvent(SkillSO skill)
+      /*  void OnSkillStartActivateEvent(SkillSO skill)
         {
             this.currentSkillEffect = GameObject.Instantiate(skill.ActivationParticles, transform.position, Quaternion.identity, this.transform);
-        }
-        void OnSkillActivatedEvent(SkillSO skill)
+        }*/
+/*        void OnSkillActivatedEvent(SkillSO skill)
         {
             GameObject.Destroy(this.currentSkillEffect.gameObject);
-        }
-        void OnSkillInterruptedEvent(SkillSO skill)
+        }*/
+/*        void OnSkillInterruptedEvent(SkillSO skill)
         {
             GameObject.Destroy(this.currentSkillEffect);
-        }
+        }*/
 
         void OnDodgeEvent()
         {

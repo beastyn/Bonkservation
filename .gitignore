@@ -469,3 +469,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#Third Party and temps
+/[Aa]ssets/ThirdParty*
+/[Aa]ssets/KadaXuanwu*

@@ -431,8 +431,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6763257242567191686}
   - component: {fileID: 6158810577009357987}
+  - component: {fileID: 3827103798672587439}
   m_Layer: 0
-  m_Name: BgMusicManager
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -549,3 +550,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3827103798672587439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5182850145887070370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d1859c74d566314c8d898317876c31e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

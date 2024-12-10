@@ -1,6 +1,7 @@
 namespace UI
 {
     using Gameplay.Buffs;
+    using Player;
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
@@ -9,26 +10,24 @@ namespace UI
 
     public class SlotUI : MonoBehaviour
     {
-        public static UnityAction<BuffSO> SlotActivatedEvent; 
+        public static UnityAction<BuffSO> SlotActivatedEvent;
 
         [SerializeField] Image buffImage;
-        [SerializeField] Button buffActivationButton;
+        [SerializeField] float slotNum;
         BuffSO buffSO;
 
-        void OnEnable()
-        {
-            this.buffActivationButton.onClick.AddListener(ActivateBuff);
-        }
+        void OnEnable() => PlayerBonkInputController.SlotButton += OnSlotButton;
+        void OnDisable() => PlayerBonkInputController.SlotButton -= OnSlotButton;
 
         public void InitBuffSlot(BuffSO buffSO)
         {
             this.buffSO = buffSO;
             this.buffImage.sprite = buffSO.BuffItemVisual;
-            this.buffActivationButton.interactable = true;
         }
 
-        void ActivateBuff()
+        void OnSlotButton(float slotButton)
         {
+            if (slotButton != slotNum) return;
             this.buffSO.BuffAction();
             SlotActivatedEvent?.Invoke(this.buffSO);
         }
@@ -37,7 +36,6 @@ namespace UI
         {
             this.buffSO = null;
             this.buffImage.sprite = null;
-            this.buffActivationButton.interactable = false;
         }
 
     }

@@ -10,6 +10,8 @@ namespace UI
         [SerializeField] Slider energySlider;
         [SerializeField] EnergySO energySO;
         [SerializeField] Transform parent;
+        [SerializeField] bool adjustPosition = true;
+
 
         float initialY;
 
@@ -26,11 +28,13 @@ namespace UI
 
         void LateUpdate()
         {
-            this.transform.rotation = Quaternion.identity;
-            var direction = (this.transform.position - this.parent.position).normalized;
-            var angle =Vector3.SignedAngle(direction, Vector3.up, Vector3.forward);
-            this.transform.localPosition = Quaternion.AngleAxis(angle, Vector3.forward) * this.transform.localPosition;
-
+            if (adjustPosition)
+            {
+                this.transform.rotation = Quaternion.identity;
+                var direction = (this.transform.position - this.parent.position).normalized;
+                var angle = Vector3.SignedAngle(direction, Vector3.up, Vector3.forward);
+                this.transform.localPosition = Quaternion.AngleAxis(angle, Vector3.forward) * this.transform.localPosition;
+            }
         }
     }
 }

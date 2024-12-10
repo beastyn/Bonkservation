@@ -98,6 +98,7 @@ MonoBehaviour:
   lights: {fileID: 11400000, guid: 16c70b08c77688744809aa7ff36b4084, type: 2}
   audioManagerSO: {fileID: 11400000, guid: 6aded262ac26f5948bb9f2326588b8e6, type: 2}
   sceneManagerSO: {fileID: 11400000, guid: 9320ed9c5c4852e4d83f5f470e670d95, type: 2}
+  uiManagerSO: {fileID: 11400000, guid: 155d32694b076dc47a59815e0f1cd478, type: 2}
 --- !u!1 &6589447514292963213
 GameObject:
   m_ObjectHideFlags: 0

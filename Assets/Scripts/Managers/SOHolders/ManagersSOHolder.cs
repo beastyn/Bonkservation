@@ -20,6 +20,7 @@ namespace Managers
         [SerializeField] LightPresetSO lights;
         [SerializeField] AudioManagerSO audioManagerSO;
         [SerializeField] SceneManagerSO sceneManagerSO;
+        [SerializeField] UIManagerSO uiManagerSO;
 
         public static CameraEventsSO CameraEvent;
         public static GameStateSO GameStateSO;
@@ -30,6 +31,7 @@ namespace Managers
         public static LightPresetSO Lights;
         public static AudioManagerSO AudioManagerSO;
         public static SceneManagerSO SceneManagerSO;
+        public static UIManagerSO UIManagerSO;
 
 
 
@@ -44,6 +46,7 @@ namespace Managers
             Lights = this.lights;
             AudioManagerSO = this.audioManagerSO;
             SceneManagerSO = this.sceneManagerSO;
+            UIManagerSO = this.uiManagerSO;
         }
     }
 }

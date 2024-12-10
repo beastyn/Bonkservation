@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75b816cf0df6714fac2cf3ac4238561, type: 3}
   m_Name: AudioManager
   m_EditorClassIdentifier: 
+  masterVolume: 1
+  musicVolume: 0.3
+  sfxVolume: 1
   soundFXObject: {fileID: 5547182040730813105, guid: a13d3401300ffcb47b2d69b0076e384e, type: 3}
+  audioMixer: {fileID: 24100000, guid: 338bf516b955e0947be123ffad08b6dd, type: 2}
