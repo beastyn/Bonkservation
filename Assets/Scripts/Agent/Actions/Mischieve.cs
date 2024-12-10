@@ -14,9 +14,9 @@ namespace Agent
        
 
         NavMeshAgent navMeshAgent;
-
-        float currIdleTime = 0f;
         float goalIdleTime = 1f;
+        float startTime;
+        float currentTime;
 
         protected override void OnAwake()
         {
@@ -35,6 +35,8 @@ namespace Agent
 
             this.navMeshAgent.speed = 0f;
             this.goalIdleTime = this.GetRandomIdleTime();
+
+            this.startTime = Time.realtimeSinceStartup;
         }
 
         protected override NodeState OnUpdate()
@@ -43,19 +45,21 @@ namespace Agent
             if (this.ReferenceMissing)
                 return NodeState.Failure;
 
-            if (this.currIdleTime < this.goalIdleTime)
-            {
-                this.currIdleTime += Time.deltaTime;
+            this.currentTime = Time.realtimeSinceStartup;
+
+            if (this.currentTime - this.startTime < this.goalIdleTime)
                 return NodeState.Running;
-            }
 
             return NodeState.Success;
         }
 
         protected override void OnDisable()
         {
-            this.currIdleTime = 0f;
+            this.startTime = 0f;
+            this.currentTime = 0f;
         }
+
+        protected override void OnInterrupt() => this.OnDisable();
 
         public float GetRandomIdleTime() => Random.Range(this.MinIdleTime, this.MaxIdleTime); // Return the valid point inside the NavMesh volume
     }

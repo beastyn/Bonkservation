@@ -7,6 +7,13 @@ namespace BrainDesigner.Scripts.Runtime
     {
         [SerializeReference] internal List<Node> children = new();
 
+        internal override void Interrupt()
+        {
+            foreach (var child in children)
+                child.Interrupt();
+            base.Interrupt();
+        }
+
         /// <summary>Disable every children if node is terminated.</summary>
         internal override void Disable()
         {

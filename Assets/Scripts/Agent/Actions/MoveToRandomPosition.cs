@@ -66,6 +66,8 @@ namespace Agent
             this.navMeshAgent.stoppingDistance = this.MinDistance;
         }
 
+        protected override void OnInterrupt() => this.OnDisable();
+
         public Vector3 GetRandomPointInNavMeshVolume()
         {
             // Get the bounds of the NavMesh surface

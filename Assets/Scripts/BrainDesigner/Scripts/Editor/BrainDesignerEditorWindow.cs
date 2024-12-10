@@ -16,12 +16,6 @@ namespace BrainDesigner.Scripts.Editor
 {
     using Utils;
     using Runtime;
-    using System.Globalization;
-    using static UnityEditor.PlayerSettings;
-    using Codice.CM.SEIDInfo;
-    using System.Runtime.CompilerServices;
-    using Codice.Client.BaseCommands.Download;
-    using Codice.Client.Common.FsNodeReaders;
 
     public class BrainDesignerEditorWindow : EditorWindow
     {
@@ -37,10 +31,6 @@ namespace BrainDesigner.Scripts.Editor
         TextField textFieldFileName;
 
         // Behaviour Sets
-        VisualElement behaviourSetPanel;
-        ToolbarMenu menuBehaviourSets;
-        readonly List<int> behavioureSetIdsOrdered = new();
-
         VisualElement behavioursContent;
         ListView behavioursListView;
         Behaviour selectedBehaviour;
@@ -52,6 +42,7 @@ namespace BrainDesigner.Scripts.Editor
 
         //Behavipur
         Toggle toggleBehaviourActive;
+        Toggle toggleBehaviourCritical;
         TextField textFieldBehaviourName;
 
         //Behaviour sequence
@@ -66,15 +57,13 @@ namespace BrainDesigner.Scripts.Editor
         VisualTreeAsset templateElementLinkedTask;
         VisualElement taskToLinkData;
         ScrollView scrollViewTasksToLink;
-        Task selectedTaskInLinker;
+
         ListView taskListInLinker;
         readonly Dictionary<Task, VisualElement> taskInLinkerToElement = new();
 
         //Tasks generator panel
         //Sensors
-        ToolbarMenu menuSensorSets;
         ToolbarMenu menuSensorType;
-        readonly List<int> sensorSetIdsOrdered = new();
         VisualElement sensorsContent;
         VisualElement sensorData;
         VisualElement sensorProperties;
@@ -86,8 +75,6 @@ namespace BrainDesigner.Scripts.Editor
         Type selectedSensorType;
 
         //Indicators
-        ToolbarMenu menuIndicatorSets;
-        readonly List<int> indicatorSetIdsOrdered = new();
         VisualElement indicatorsContent;
         VisualElement indicatorData;
         VisualElement indicatorProperties;
@@ -97,8 +84,6 @@ namespace BrainDesigner.Scripts.Editor
         readonly Dictionary<Indicator, VisualElement> indicatorToElement = new();
 
         //Tasks
-        ToolbarMenu menuTaskSets;
-        readonly List<int> taskSetIdsOrdered = new();
         VisualElement tasksContent;
         VisualElement taskData;
         VisualElement taskProperties;
@@ -110,8 +95,12 @@ namespace BrainDesigner.Scripts.Editor
         readonly Dictionary<Task, VisualElement> taskToElement = new();
         DropdownField dropdownSensors;
         DropdownField dropdownIndicators;
-        EnumField enumFieldComparator;
-        FloatField floatFieldValue;
+        EnumField enumFieldComparatorFirst;
+        FloatField floatFieldValueFirst;
+        VisualElement secondConditionContainer;
+        Toggle toggleNeedSecondCondition;
+        EnumField enumFieldComparatorSecond;
+        FloatField floatFieldValueSecond;
 
 
         internal static void OpenWindow()
@@ -191,34 +180,29 @@ namespace BrainDesigner.Scripts.Editor
         void SetupUIElements(VisualElement root, string rootDir)
         {
             this.textFieldFileName = root.Q<TextField>("TextFieldFileName");
-            this.menuBehaviourSets = root.Q<ToolbarMenu>("MenuBehaviourSets");
-
-            this.behaviourSetPanel = root.Q<VisualElement>("BehaviourSetPanel");
             this.behavioursContent = root.Q<VisualElement>("BehavioursContent");
             this.templateElementInSet = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>($"{rootDir}/UXML/TemplateElementInSet.uxml");
 
             this.behaviourData = root.Q<VisualElement>("BehaviourData");
             this.behaviourSequence = root.Q<VisualElement>("BehaviourSequence");
             this.toggleBehaviourActive = this.behaviourData.Q<Toggle>("ToggleBehaviourActive");
+            this.toggleBehaviourCritical = this.behaviourData.Q<Toggle>("ToggleBehaviourCritical");
             this.textFieldBehaviourName = this.behaviourData.Q<TextField>("TextFieldBehaviourName");
             this.labelNodeDescription = this.behaviourSequence.Q<Label>("LabelNodeDescription");
             this.nodeInspectorContent = root.Q<VisualElement>("NodeInspectorContent");
             this.behaviourEditView = root.Q<BehaviourEditView>();
 
-            this.menuSensorSets = root.Q<ToolbarMenu>("MenuSensorsSets");
             this.menuSensorType = root.Q<ToolbarMenu>("MenuSensorsTypes");
             this.sensorsContent = root.Q<VisualElement>("SensorsContent");
             this.sensorData = root.Q<VisualElement>("SensorData");
             this.sensorProperties = root.Q<VisualElement>("SensorProperties");
             this.textFieldSensorName = root.Q<TextField>("TextFieldSensorName");
 
-            this.menuIndicatorSets = root.Q<ToolbarMenu>("MenuIndicatorSets");
             this.indicatorsContent = root.Q<VisualElement>("IndicatorsContent");
             this.indicatorData = root.Q<VisualElement>("IndicatorData");
             this.indicatorProperties = root.Q<VisualElement>("IndicatorProperties");
             this.textFieldIndicatorName = root.Q<TextField>("TextFieldIndicatorName");
 
-            this.menuTaskSets = root.Q<ToolbarMenu>("MenuTaskSets");
             this.tasksContent = root.Q<VisualElement>("TasksContent");
             this.taskData = root.Q<VisualElement>("TaskData");
             this.taskProperties = root.Q<VisualElement>("TaskProperties");
@@ -226,8 +210,12 @@ namespace BrainDesigner.Scripts.Editor
             this.dropdownSensors = root.Q<DropdownField>("DropdownSensors");
             this.dropdownIndicators = root.Q<DropdownField>("DropdownIndicators");
             this.generatedTasks = root.Q<VisualElement>("GeneratedTasks");
-            this.enumFieldComparator = root.Q<EnumField>("EnumFieldComparator");
-            this.floatFieldValue = root.Q<FloatField>("FloatFieldValue");
+            this.enumFieldComparatorFirst = root.Q<EnumField>("EnumFieldComparatorFirst");
+            this.floatFieldValueFirst = root.Q<FloatField>("FloatFieldValueFirst");
+            this.toggleNeedSecondCondition = root.Q <Toggle>("ToggleNeedSecondCondition");
+            this.secondConditionContainer = root.Q<VisualElement>("SecondConditionContainer");
+            this.enumFieldComparatorSecond = root.Q<EnumField>("EnumFieldComparatorSecond");
+            this.floatFieldValueSecond = root.Q<FloatField>("FloatFieldValueSecond");
 
             this.labelTaskSetName = root.Q<Label>("LabelTaskSetName");
             this.taskSetContent = root.Q<VisualElement>("TaskSetContent");
@@ -245,19 +233,16 @@ namespace BrainDesigner.Scripts.Editor
 
         void PrepareSensorsPanel(VisualElement root)
         {
-            root.Q<Button>("ButtonAddSensorsSet").clicked += AddSensorSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
+            
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddSensor").clicked += AddSensor;
             this.sensorData.style.visibility = Visibility.Hidden;
 
-            SetUtils.LoadSetDropdown(this.menuSensorSets, this.sensorSetIdsOrdered, brainDesigner.GetSensorSets(), this.LoadSensorSet);
-
             //LoadData
-            if (brainDesigner.GetSensorSets().Count == 0)
+            if (brainDesigner.SensorSet == null)
                 this.AddSensorSet();
             else
-                this.LoadSensorSet(brainDesigner.selectedSensorSetId);
+                this.LoadSensorSet();
 
             //Prepare constant fields.
             this.textFieldSensorName.RegisterValueChangedCallback(change =>
@@ -271,43 +256,36 @@ namespace BrainDesigner.Scripts.Editor
 
         void PrepareIndicatorsPanel(VisualElement root)
         {
-            root.Q<Button>("ButtonAddIndicatorSet").clicked += AddIndicatorSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
+           
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddIndicator").clicked += AddIndicator;
             this.indicatorData.style.visibility = Visibility.Hidden;
 
-            SetUtils.LoadSetDropdown(this.menuIndicatorSets, this.indicatorSetIdsOrdered, brainDesigner.GetIndicatorSets(), this.LoadIndicatorSet);
-
             //LoadData
-            if (brainDesigner.GetIndicatorSets().Count == 0)
+            if (brainDesigner.IndicatorSet == null)
                 this.AddIndicatorSet();
             else
-                this.LoadIndicatorSet(brainDesigner.selectedSensorSetId);
+                this.LoadIndicatorSet();
 
             //Prepare constant fields.
             this.textFieldIndicatorName.RegisterValueChangedCallback(change =>
             {
-                this.selectedIndicator.Name = change.newValue;
+               this.selectedIndicator.Name = change.newValue;
                 this.indicatorListView.Rebuild();
             });
         }
 
         void PrepareTasksPanel(VisualElement root)
         {
-            root.Q<Button>("ButtonAddTaskSet").clicked += AddTaskSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddTask").clicked += AddTask;
             this.taskData.style.visibility = Visibility.Hidden;
 
-            SetUtils.LoadSetDropdown(this.menuTaskSets, this.taskSetIdsOrdered, brainDesigner.GetTaskSets(), this.LoadTaskSet);
-
             //LoadData
-            if (brainDesigner.GetTaskSets().Count == 0)
+            if (brainDesigner.TaskSet == null)
                 this.AddTaskSet();
             else
-                this.LoadTaskSet(brainDesigner.selectedTaskSetId);
+                this.LoadTaskSet();
 
             //Prepare constant fields.
             this.textFieldTaskName.RegisterValueChangedCallback(change =>
@@ -322,23 +300,18 @@ namespace BrainDesigner.Scripts.Editor
 
         void PrepareBehavoirSetsPanel(VisualElement root)
         {
-            root.Q<Button>("ButtonAddBehaviourSet").clicked += AddBehaviourSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddBehaviour").clicked += AddBehaviour;
 
-            SetUtils.LoadSetDropdown(this.menuBehaviourSets, this.behavioureSetIdsOrdered, brainDesigner.GetBehaviourSets(), this.LoadBehaviourSet);
-
             //LoadData
-            if (brainDesigner.GetBehaviourSets().Count == 0)
+            if (brainDesigner.BehaviourSet == null)
                 this.AddBehaviourSet();
             else
-                this.LoadBehaviourSet(brainDesigner.selectedBehaviourSetId);
+                this.LoadBehaviourSet();
         }
 
         void PrepareBehaviourDataPanel()
         {
-
             VisualElement root = this.behaviourData;
             //Propogate inpector
 
@@ -347,7 +320,12 @@ namespace BrainDesigner.Scripts.Editor
                 this.selectedBehaviour.Name = change.newValue;
                 this.behavioursListView.Rebuild();
             });
-
+            // Register value changed callbacks
+            this.toggleBehaviourCritical.RegisterValueChangedCallback(evt =>
+            {
+                this.selectedBehaviour.critical = evt.newValue;
+                this.behavioursListView.Rebuild();
+            });
             // Add button events
             root.Q<Button>("ButtonAddNode").clicked += AddNode;
 
@@ -360,9 +338,8 @@ namespace BrainDesigner.Scripts.Editor
             //Init selected task set name.
             //this.taskToLinkData.style.visibility = Visibility.Hidden;
 
-            this.LoadTaskSetFoLinking();
-            this.menuTaskSets.RegisterValueChangedCallback(change => this.LoadTaskSetFoLinking());
-            brainDesigner.SelectedTaskSet.ListChangedEvent += this.LoadTaskSetFoLinking;
+            this.LoadTaskSetFoLinking();           
+            brainDesigner.TaskSet.ListChangedEvent += this.LoadTaskSetFoLinking;
 
         }
 
@@ -374,24 +351,18 @@ namespace BrainDesigner.Scripts.Editor
             root.Q<Button>("ButtonSave").clicked -= Save;
             root.Q<Button>("ButtonLoad").clicked -= Load;
 
-            root.Q<Button>("ButtonAddBehaviourSet").clicked -= AddBehaviourSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddBehaviour").clicked -= AddBehaviour;
             behaviourDataPanel.Q<Button>("ButtonAddNode").clicked -= AddNode;
 
-            root.Q<Button>("ButtonAddSensorsSet").clicked -= AddSensorSet;
             root.Q<Button>("ButtonAddSensor").clicked -= AddSensor;
 
-            root.Q<Button>("ButtonAddIndicatorSet").clicked -= AddIndicatorSet;
             root.Q<Button>("ButtonAddIndicator").clicked -= AddIndicator;
 
-            root.Q<Button>("ButtonAddTaskSet").clicked -= AddTaskSet;
-            //root.Q<Button>("ButtonRemoveBehaviourSet").clicked += RemoveBehaviourSet;
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddTask").clicked -= AddTask;
 
-            brainDesigner.SelectedTaskSet.ListChangedEvent -= this.LoadTaskSetFoLinking;
+            brainDesigner.TaskSet.ListChangedEvent -= this.LoadTaskSetFoLinking;
         }
 
         void Save()
@@ -445,18 +416,15 @@ namespace BrainDesigner.Scripts.Editor
 
         #region BEHAVIOUR SET
 
-        void LoadBehaviourSet(int id)
+        void LoadBehaviourSet()
         {
-            brainDesigner.selectedBehaviourSetId = id; ;
-            this.menuBehaviourSets.text = brainDesigner.GetBehaviourSets()[id].Name;
-
             this.selectedBehaviour = null;
             this.behaviourData.style.visibility = Visibility.Hidden;
 
-            var newSetData = SetUtils.CreateSetList<Behaviour>(new SetUtils.SetData<Behaviour>(this.behavioursContent, this.behavioursListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.SelectedBehaviourSet, this.behaviourToElement, this.selectedBehaviour, SelectionType.Single), this.LoadBehaviour, this.behaviourData);
+            var newSetData = SetUtils.CreateSetList<Behaviour>(new SetUtils.SetData<Behaviour>(this.behavioursContent, this.behavioursListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.BehaviourSet, this.behaviourToElement, this.selectedBehaviour, SelectionType.Single), this.LoadBehaviour, this.behaviourData);
 
             this.behavioursListView = newSetData.listView;
-            if (brainDesigner.SelectedBehaviourSet.list.Count > 0)
+            if (brainDesigner.BehaviourSet.list.Count > 0)
             {
                 this.behavioursListView.SetSelection(0);
             }
@@ -464,18 +432,10 @@ namespace BrainDesigner.Scripts.Editor
 
         void AddBehaviourSet()
         {
-            int currentId = brainDesigner.GetBehaviourSets().Count;
-            string newBehaviourSetName = $"Behaviour Set {currentId + 1}";
-            brainDesigner.AddBehaviourSet(currentId, new BehaviourSet
-            {
-                Name = newBehaviourSetName
-            });
+            string newBehaviourSetName = $"Behaviour Set";
+            brainDesigner.BehaviourSet = new BehaviourSet { Name = newBehaviourSetName };
 
-            this.menuBehaviourSets.menu.AppendAction(newBehaviourSetName, action => LoadBehaviourSet(currentId));
-
-            this.behavioureSetIdsOrdered.Add(currentId);
-
-            LoadBehaviourSet(currentId);
+            LoadBehaviourSet();
         }
 
         /* private void RemoveStateSet()
@@ -537,7 +497,7 @@ namespace BrainDesigner.Scripts.Editor
 
         void AddBehaviour()
         {
-            var currentSetBehaviours = brainDesigner.SelectedBehaviourSet.list;
+            var currentSetBehaviours = brainDesigner.BehaviourSet.list;
             currentSetBehaviours.Add(new Behaviour
             {
                 active = true,
@@ -558,6 +518,7 @@ namespace BrainDesigner.Scripts.Editor
         void LoadBehaviourProperties()
         {
             this.toggleBehaviourActive.value = this.selectedBehaviour.active;
+            this.toggleBehaviourCritical.value = this.selectedBehaviour.critical;
             this.textFieldBehaviourName.value = this.selectedBehaviour.Name;
         }
 
@@ -582,19 +543,15 @@ namespace BrainDesigner.Scripts.Editor
 
         #region SENSORS
 
-
-        void LoadSensorSet(int id)
+        void LoadSensorSet()
         {
-            brainDesigner.selectedSensorSetId = id;
-            this.menuSensorSets.text = brainDesigner.GetSensorSets()[id].Name;
-
             this.selectedSensor = null;
             this.sensorData.style.visibility = Visibility.Hidden;
 
-            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Sensor>(this.sensorsContent, this.sensorsListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.SelectedSensorSet, this.sensorToElement, this.selectedSensor, SelectionType.Single), this.LoadSensor, this.sensorData);
+            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Sensor>(this.sensorsContent, this.sensorsListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.SensorSet, this.sensorToElement, this.selectedSensor, SelectionType.Single), this.LoadSensor, this.sensorData);
 
             this.sensorsListView = newSetData.listView;
-            if (brainDesigner.SelectedSensorSet.list.Count > 0)
+            if (brainDesigner.SensorSet.list.Count > 0)
             {
                 this.sensorsListView.SetSelection(0);
             }
@@ -602,18 +559,9 @@ namespace BrainDesigner.Scripts.Editor
 
         void AddSensorSet()
         {
-            int currentId = brainDesigner.GetSensorSets().Count;
-            string newSensorSetName = $"Sensor Set {currentId + 1}";
-            brainDesigner.AddSensorSet(currentId, new SensorSet
-            {
-                Name = newSensorSetName
-            });
-            //
-            this.menuSensorSets.menu.AppendAction(newSensorSetName, action => LoadSensorSet(currentId));
-
-            this.sensorSetIdsOrdered.Add(currentId);
-
-            LoadSensorSet(currentId);
+            string newSensorSetName = $"Sensor Set";
+            brainDesigner.SensorSet = new SensorSet {Name = newSensorSetName};
+            LoadSensorSet();
         }
 
         void LoadSensorTypesDropdown()
@@ -642,7 +590,7 @@ namespace BrainDesigner.Scripts.Editor
             else
             {
                 sensor.Name = Utils.AddSpacesBeforeUppercase(sensor.GetType().Name);
-                var currentSensorSet = brainDesigner.SelectedSensorSet.list;
+                var currentSensorSet = brainDesigner.SensorSet.list;
                 currentSensorSet.Add(sensor);
                 this.sensorsListView.style.height = currentSensorSet.Count * elementInSetHeight;
                 this.sensorsListView.ClearSelection();
@@ -682,18 +630,15 @@ namespace BrainDesigner.Scripts.Editor
         #region Indicators
 
 
-        void LoadIndicatorSet(int id)
+        void LoadIndicatorSet()
         {
-            brainDesigner.selectedIndicatorSetId = id;
-            this.menuIndicatorSets.text = brainDesigner.GetIndicatorSets()[id].Name;
-
             this.selectedIndicator = null;
             this.indicatorData.style.visibility = Visibility.Hidden;
 
-            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Indicator>(this.indicatorsContent, this.indicatorListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.SelectedIndicatorSet, this.indicatorToElement, this.selectedIndicator, SelectionType.Single), this.LoadIndicator, this.indicatorData);
+            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Indicator>(this.indicatorsContent, this.indicatorListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.IndicatorSet, this.indicatorToElement, this.selectedIndicator, SelectionType.Single), this.LoadIndicator, this.indicatorData);
 
             this.indicatorListView = newSetData.listView;
-            if (brainDesigner.SelectedIndicatorSet.list.Count > 0)
+            if (brainDesigner.IndicatorSet.list.Count > 0)
             {
                 this.indicatorListView.SetSelection(0);
             }
@@ -701,24 +646,15 @@ namespace BrainDesigner.Scripts.Editor
 
         void AddIndicatorSet()
         {
-            int currentId = brainDesigner.GetIndicatorSets().Count;
-            string newIndicatorSetName = $"Indicator Set {currentId + 1}";
-            brainDesigner.AddIndicatorSet(currentId, new IndicatorSet
-            {
-                Name = newIndicatorSetName
-            });
-
-            this.menuIndicatorSets.menu.AppendAction(newIndicatorSetName, action => this.LoadIndicatorSet(currentId));
-
-            this.indicatorSetIdsOrdered.Add(currentId);
-
-            this.LoadIndicatorSet(currentId);
+            string newIndicatorSetName = $"Indicator Set";
+            brainDesigner.IndicatorSet = new IndicatorSet{ Name = newIndicatorSetName };
+            this.LoadIndicatorSet();
         }
 
    
         void AddIndicator()
         {
-            var currentIndicatorSet = brainDesigner.SelectedIndicatorSet.list;
+            var currentIndicatorSet = brainDesigner.IndicatorSet.list;
             currentIndicatorSet.Add(new Indicator
             {
                 Name = $"Indicator {currentIndicatorSet.Count + 1}"
@@ -753,47 +689,33 @@ namespace BrainDesigner.Scripts.Editor
 
         #region TaskSet
 
-        void LoadTaskSet(int id)
+        void LoadTaskSet()
         {
-            brainDesigner.selectedTaskSetId = id;
-            this.menuTaskSets.text = brainDesigner.GetTaskSets()[id].Name;
-
             this.selectedTask = null;
             this.taskData.style.visibility = Visibility.Hidden;
 
-            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Task>(this.tasksContent, this.tasksListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.SelectedTaskSet, this.taskToElement, this.selectedTask, SelectionType.Single), this.LoadTask, this.taskData);
+            var newSetData = SetUtils.CreateSetList(new SetUtils.SetData<Task>(this.tasksContent, this.tasksListView, this.templateElementInSet, this.elementInSetHeight, brainDesigner.TaskSet, this.taskToElement, this.selectedTask, SelectionType.Single), this.LoadTask, this.taskData);
 
             this.tasksListView = newSetData.listView;
-            if (brainDesigner.SelectedTaskSet.list.Count > 0)
+            if (brainDesigner.TaskSet.list.Count > 0)
             {
                 this.tasksListView.SetSelection(0);
-            }
-            
+            }            
         }
 
         void AddTaskSet()
         {
-            int currentId = brainDesigner.GetTaskSets().Count;
-            string newTaskSetName = $"Task Set {currentId + 1}";
-            brainDesigner.AddTaskSet(currentId, new TaskSet
-            {
-                Name = newTaskSetName
-            });
-
-            this.menuTaskSets.menu.AppendAction(newTaskSetName, action => this.LoadTaskSet(currentId));
-
-            this.taskSetIdsOrdered.Add(currentId);
-
-            this.LoadTaskSet(currentId);
+            string newTaskSetName = $"Task Set";
+            brainDesigner.TaskSet = new TaskSet{ Name = newTaskSetName };
+            this.LoadTaskSet();
         }
-
 
         void AddTask()
         {
-            var currentTaskSet = brainDesigner.SelectedTaskSet.list;
-            brainDesigner.SelectedTaskSet.AddSetElement(new Task
+            var currentTaskSet = brainDesigner.TaskSet.list;
+            brainDesigner.TaskSet.AddSetElement(new Task
             {
-                Name = $"Indicator {currentTaskSet.Count + 1}"
+                Name = $"Task {currentTaskSet.Count + 1}"
             });
 
             this.tasksListView.style.height = currentTaskSet.Count * elementInSetHeight;
@@ -830,23 +752,41 @@ namespace BrainDesigner.Scripts.Editor
 
         void InitializeSensorsDropdown()
         {
-            this.dropdownSensors.choices = brainDesigner.SelectedSensorSet.list.Select(item => item.Name).ToList();
+            this.dropdownSensors.choices = brainDesigner.SensorSet.list.Select(item => item.Name).ToList();
             this.dropdownSensors.RegisterValueChangedCallback(evt => this.selectedTask.SensorToCheckName = evt.newValue);
             this.dropdownSensors.SetValueWithoutNotify(this.dropdownSensors.choices.Contains(this.selectedTask.SensorToCheckName) ? $"{this.selectedTask.SensorToCheckName}" : "");
         }
 
         void InitializeIndicatorsDropdown()
         {
-            this.dropdownIndicators.choices = brainDesigner.SelectedIndicatorSet.list.Select(item => item.Name).ToList();
+            this.dropdownIndicators.choices = brainDesigner.IndicatorSet.list.Select(item => item.Name).ToList();
             this.dropdownIndicators.RegisterValueChangedCallback(evt => this.selectedTask.IndicatorToCheckName = evt.newValue);
             this.dropdownIndicators.SetValueWithoutNotify(this.dropdownIndicators.choices.Contains(this.selectedTask.IndicatorToCheckName) ? $"{this.selectedTask.IndicatorToCheckName}" : "");
-            
-            this.enumFieldComparator.RegisterValueChangedCallback(evt => this.selectedTask.Comparator = (Comparator)evt.newValue);
-            this.enumFieldComparator.SetValueWithoutNotify(this.selectedTask.Comparator);
-            
-            this.floatFieldValue.RegisterValueChangedCallback(evt => this.selectedTask.CompareValue = evt.newValue);
-            this.floatFieldValue.SetValueWithoutNotify(this.selectedTask.CompareValue);
-            
+
+            this.toggleNeedSecondCondition.RegisterValueChangedCallback(evt =>
+            {
+                this.selectedTask.NeedSecondCondition = evt.newValue;
+                this.SetSecondConditionContainer(this.selectedTask.NeedSecondCondition);
+                this.tasksListView.Rebuild();
+            });
+            this.toggleNeedSecondCondition.value = this.selectedTask.NeedSecondCondition;
+         
+            this.enumFieldComparatorFirst.RegisterValueChangedCallback(evt => this.selectedTask.ComparatorFirst = (Comparator)evt.newValue);
+            this.enumFieldComparatorFirst.SetValueWithoutNotify(this.selectedTask.ComparatorFirst);
+            this.floatFieldValueFirst.RegisterValueChangedCallback(evt => this.selectedTask.CompareValueFirst = evt.newValue);
+            this.floatFieldValueFirst.SetValueWithoutNotify(this.selectedTask.CompareValueFirst);
+
+            this.SetSecondConditionContainer(this.selectedTask.NeedSecondCondition);
+
+            this.enumFieldComparatorSecond.RegisterValueChangedCallback(evt => this.selectedTask.ComparatorSecond = (Comparator)evt.newValue);
+            this.enumFieldComparatorSecond.SetValueWithoutNotify(this.selectedTask.ComparatorSecond);
+            this.floatFieldValueSecond.RegisterValueChangedCallback(evt => this.selectedTask.CompareValueSecond = evt.newValue);
+            this.floatFieldValueSecond.SetValueWithoutNotify(this.selectedTask.CompareValueSecond);            
+        }
+
+        void SetSecondConditionContainer(bool show)
+        {
+            this.secondConditionContainer.style.visibility = show ? Visibility.Visible : Visibility.Hidden;
         }
 
         #endregion
@@ -855,11 +795,10 @@ namespace BrainDesigner.Scripts.Editor
 
         void LoadTaskSetFoLinking()
         {
-            this.labelTaskSetName.text = brainDesigner.SelectedTaskSet.Name;
+            this.labelTaskSetName.text = brainDesigner.TaskSet.Name;
             this.scrollViewTasksToLink.Clear();
-            this.selectedTaskInLinker = null;
 
-            foreach (var task in brainDesigner.SelectedTaskSet.list)
+            foreach (var task in brainDesigner.TaskSet.list)
                 this.AddElement(task);
 
             this.scrollViewTasksToLink.contentContainer.style.flexDirection = FlexDirection.Row;
@@ -872,26 +811,80 @@ namespace BrainDesigner.Scripts.Editor
             newElement.style.flexShrink = 0;
 
             newElement.Q<Label>("LabelTitle").text = task.Name;
-            this.LoadBehaviourList(task, newElement);
-            this.LoadBehaviourDropdown(task, newElement);
+            ListView elementBehaviourList = null;
+
+            this.LoadBehaviourList(task, newElement, ref elementBehaviourList);
+            this.LoadBehaviourDropdown(task, newElement, elementBehaviourList);
 
             this.scrollViewTasksToLink.contentContainer.Add(newElement);
         }
 
-        void LoadBehaviourList(Task task, TemplateContainer element)
-        {            
-            var linkedBehavioursContant = element.Q<VisualElement>("LinkedTaskBehaviours");
+        void LoadBehaviourList(Task task, TemplateContainer element, ref ListView listView)
+        {
+            var linkedBehavioursContent = element.Q<VisualElement>("LinkedTaskBehaviours");
+            listView = CreateBehaviourList(linkedBehavioursContent, this.templateElementInSet, task, task.LinkedBehaviours, listView, 20);
             
         }
 
-        void LoadBehaviourDropdown(Task task, TemplateContainer element)
+        void LoadBehaviourDropdown(Task task, TemplateContainer element, ListView listView)
         {
             var dropdownBehaviours = element.Q<DropdownField>("DropdownBehaviours");
             var buttonLinkBehaviour = element.Q<Button>("ButtonLinkBehaviour");
-            var currenBehaviourList = brainDesigner.SelectedBehaviourSet.list;
+            var currenBehaviourList = brainDesigner.BehaviourSet.list;
 
             dropdownBehaviours.choices = currenBehaviourList.Select(item => item.Name).ToList();
             dropdownBehaviours.SetValueWithoutNotify(currenBehaviourList.Count > 0 ? currenBehaviourList.FirstOrDefault().Name : "-");
+
+            buttonLinkBehaviour.clickable.clicked += () =>
+            {
+                if (brainDesigner.BehaviourSet.TryGetElementByName(dropdownBehaviours.value, out var behaviourToAdd))
+                {
+                    task.LinkUniqueBehaviour(behaviourToAdd);
+                    listView.Rebuild();
+                }
+            };
+        }
+
+        internal static ListView CreateBehaviourList(VisualElement parentContainer, VisualTreeAsset templateElement, Task task, List<Behaviour> linkedBehaviours, ListView listView, float elementHeight)
+        {
+            System.Action currentRemoveButtonAction = null;
+            parentContainer.Clear();
+
+            VisualElement CreateElement() => templateElement.Instantiate();
+
+            static void OnButtonRemoveElementClick(Task task, List<Behaviour> linkedBehaviours, ListView listView, int i, Behaviour behaviourReference)
+            {
+                task.UnlinqBehaviorAt(i, linkedBehaviours[i]);
+                listView.Rebuild();
+            }
+
+            //additional method Û
+
+            void BindElement(VisualElement e, int i)
+            {
+                var elementReference = linkedBehaviours[i];
+
+                if (elementReference is not Named)
+                {
+                    Utils.ShowHelpBoxInEditor(parentContainer, "Type of element is not Named");
+                    return;
+                }
+
+                e.Q<Label>("LabelTitle").text = elementReference.Name;
+                e.AddToClassList("list-view-item");
+
+
+                currentRemoveButtonAction ??= () => OnButtonRemoveElementClick(task, linkedBehaviours, listView, i, elementReference);
+
+                var removeButton = e.Q<Button>("ButtonRemoveElement");
+                removeButton.clickable.clicked -= currentRemoveButtonAction;
+                removeButton.clickable.clicked += currentRemoveButtonAction;
+            }
+
+            listView = new ListView(linkedBehaviours, elementHeight, CreateElement, BindElement) { selectionType = SelectionType.None};
+            parentContainer.Add(listView);
+            return listView;
+
         }
 
         #endregion

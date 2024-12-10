@@ -33,7 +33,7 @@ namespace BrainDesigner.Scripts.Utils
             }
         }
 
-        internal static SetData<T> CreateSetList<T>(SetData<T> setData, Action<IEnumerable<object>> LoadElement, VisualElement additionalInfoContainer = null, bool defaultSet = true) where T : Named
+        internal static SetData<T> CreateSetList<T>(SetData<T> setData, Action<IEnumerable<object>> LoadElement, VisualElement additionalInfoContainer = null) where T : Named
         {
             Action currentRemoveButtonAction = null;
             setData.parentVisualElement.Clear();
@@ -81,8 +81,6 @@ namespace BrainDesigner.Scripts.Utils
                 setData.typeToElement[(T)elementReference] = e.Q<VisualElement>("Container");
 
                 e.Q<Label>("LabelTitle").text = elementReference.Name;
-
-                if (!defaultSet) return;
 
                 e.AddToClassList("list-view-item");
 

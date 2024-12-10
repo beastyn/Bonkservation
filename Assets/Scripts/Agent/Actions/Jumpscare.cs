@@ -23,6 +23,7 @@ namespace Agent
         Transform jumpObjectsParent;
         int jumpObjectsCount;
         Vector3 positionToJump;
+        NavMeshAgent navMeshAgent;
 
         protected override void RegisterDropdowns()
         {
@@ -35,15 +36,21 @@ namespace Agent
         {
             base.OnAwake();
 
+            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
             this.jumpObjectsParent = this.SceneRefs.GetRef<Transform>(this.transformIndex);
 
-            if (this.jumpObjectsParent)
+            if (this.jumpObjectsParent == null && this.navMeshAgent == null)
                 this.ReferenceMissing = true;
         }
 
         protected override void OnEnable()
         {
-            var objectToJump = this.jumpObjectsParent.GetChild(Random.Range(0, this.jumpObjectsParent.childCount));
+            if (this.ReferenceMissing)
+                return;
+
+            this.navMeshAgent.speed = 0f;
+            this.jumpObjectsCount = this.jumpObjectsParent.childCount;
+            var objectToJump = this.jumpObjectsParent.GetChild(Random.Range(0, this.jumpObjectsCount));
             this.positionToJump = new Vector3(objectToJump.position.x, this.AgentObject.transform.position.y, objectToJump.position.z);
         }
 

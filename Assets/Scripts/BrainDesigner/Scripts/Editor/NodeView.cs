@@ -183,6 +183,9 @@ namespace BrainDesigner.Scripts.Editor
                 case Node.NodeState.Success:
                     AddToClassList("success");
                     break;
+                case Node.NodeState.Interrupted:
+                    AddToClassList("interrupted");
+                    break;
             }
         }
     }

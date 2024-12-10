@@ -13,12 +13,15 @@ namespace BrainDesigner.Scripts.Runtime
         ////[SerializeField] internal List<Precondition> preconditions = new();
         //[SerializeField] internal List<Evaluator> evaluators = new();
         //[SerializeField] internal Sequence actionSequence = new();
+        internal List<Task> ActivationTasks => this.activationTask;
+        internal Node.NodeState State => this.behaviourSequence.State;
+
         [SerializeField] internal bool active;
-       
+        [SerializeField] internal bool critical;
         [SerializeField] internal float baseScore;
         [SerializeReference] internal Sequence behaviourSequence;
  
-        [NonSerialized] internal Task activationTask = null;
+        [SerializeReference] List<Task> activationTask = new();
         internal List<Node> nodes = new();
 
         /*        [SerializeField] internal string designation;
@@ -55,6 +58,7 @@ namespace BrainDesigner.Scripts.Runtime
             this.behaviourSequence.Update();
         }
 
+        internal void Interrupt() => this.behaviourSequence.Interrupt();
         void InitializeNodeList()
         {
             this.nodes.Add(this.behaviourSequence);

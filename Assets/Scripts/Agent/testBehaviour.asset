@@ -12,81 +12,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e8d67d5b7e67ba4b910dc0d982e8402, type: 3}
   m_Name: testBehaviour
   m_EditorClassIdentifier: 
-  behaviourSets:
-  - name: Behaviour Set 1
+  behaviourSet:
+    name: Behaviour Set
     list:
-    - rid: 1471280059498365028
-    - rid: 1471280059498365029
-    - rid: 1471280059498365030
+    - rid: 1471280243836453322
+    - rid: 1471280243836453323
+    - rid: 1471280243836453324
     tasks:
       name: 
       list: []
-  sensorSets:
-  - name: Sensor Set 1
+  sensorSet:
+    name: Sensor Set
     list:
-    - rid: 1471280059498365031
-  - name: Sensor Set 2
-    list: []
-  indicatorSets:
-  - name: Indicator Set 1
+    - rid: 1471280243836453325
+  indicatorSet:
+    name: Indicator Set
     list:
-    - rid: 1471280059498365032
-  - name: Indicator Set 2
-    list: []
-  tasksSets:
-  - name: Task Set 1
+    - rid: 1471280243836453326
+  tasksSet:
+    name: Task Set
     list:
-    - rid: 1471280175171764853
-  - name: Task Set 2
-    list: []
-  - name: Task Set 3
-    list: []
-  - name: Task Set 4
-    list: []
-  - name: Task Set 5
-    list: []
-  - name: Task Set 6
-    list: []
-  - name: Task Set 7
-    list: []
-  - name: Task Set 8
-    list: []
-  - name: Task Set 9
-    list: []
+    - rid: 1471280243836453327
+    - rid: 1471280243836453328
+    - rid: 1471280243836453329
   references:
     version: 2
     RefIds:
-    - rid: 1471280059498365028
+    - rid: 1471280243836453322
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
         name: Roam
         active: 1
+        critical: 0
         baseScore: 0
         behaviourSequence:
-          rid: 1471280059498365036
-    - rid: 1471280059498365029
+          rid: 1471280243836453330
+        activationTask:
+        - rid: 1471280243836453327
+    - rid: 1471280243836453323
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
         name: Mischieve
         active: 1
+        critical: 0
         baseScore: 0
         behaviourSequence:
-          rid: 1471280059498365037
-    - rid: 1471280059498365030
+          rid: 1471280243836453331
+        activationTask:
+        - rid: 1471280243836453328
+    - rid: 1471280243836453324
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
-        name: Hide
+        name: Jump Holes
         active: 1
+        critical: 1
         baseScore: 0
         behaviourSequence:
-          rid: 1471280059498365038
-    - rid: 1471280059498365031
+          rid: 1471280243836453332
+        activationTask:
+        - rid: 1471280243836453329
+    - rid: 1471280243836453325
       type: {class: SphereSensor, ns: Agent, asm: Assembly-CSharp}
       data:
-        name: Mane Bonk Sensors
+        name: Mane Bonk Sensor
         tag: Bonker
         radius: 20
-    - rid: 1471280059498365032
+    - rid: 1471280243836453326
       type: {class: Indicator, ns: BrainDesigner.Scripts, asm: BrainDesigner}
       data:
         name: Fear
@@ -98,80 +89,119 @@ MonoBehaviour:
         changedOutside: 1
         changePerSecond: 10
         useRealTime: 1
-    - rid: 1471280059498365036
+    - rid: 1471280243836453327
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Rest Task
+        sensorToCheckName: 
+        indicatorToCheckName: Fear
+        comparatorFirst: 1
+        compareValueFirst: 50
+        needSecondCondition: 1
+        comparatorSecond: 0
+        compareValueSecond: 20
+        linkedBehaviour:
+        - rid: 1471280243836453322
+    - rid: 1471280243836453328
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Roam Task
+        sensorToCheckName: 
+        indicatorToCheckName: Fear
+        comparatorFirst: 3
+        compareValueFirst: 20
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 1471280243836453323
+    - rid: 1471280243836453329
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Hide Task
+        sensorToCheckName: 
+        indicatorToCheckName: Fear
+        comparatorFirst: 2
+        compareValueFirst: 50
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 1471280243836453324
+    - rid: 1471280243836453330
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
         name: 
-        guid: b4a87e15ce48b8e4e880124b65454c4c
+        guid: 657c39ba72abb3540adfabde6ddc8376
         position: {x: 375, y: 10}
         children:
-        - rid: 1471280059498365039
-        - rid: 1471280059498365040
-    - rid: 1471280059498365037
+        - rid: 1471280243836453333
+        - rid: 1471280243836453334
+    - rid: 1471280243836453331
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
         name: 
-        guid: 0b831df47d664d54ca20df6bd1c6e488
+        guid: bd5bc9ead0c8deb4e8cc0bddbf10c5d0
         position: {x: 375, y: 10}
         children:
-        - rid: 1471280059498365041
-        - rid: 1471280059498365042
-    - rid: 1471280059498365038
+        - rid: 1471280243836453335
+        - rid: 1471280243836453336
+    - rid: 1471280243836453332
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
         name: 
-        guid: 3fde9cc5002f8784fbeb3c380c3fe340
+        guid: 8e10392503166ea4bbff0b85bc3501db
         position: {x: 375, y: 10}
         children:
-        - rid: 1471280059498365043
-    - rid: 1471280059498365039
+        - rid: 1471280243836453337
+        - rid: 1471280243836453338
+    - rid: 1471280243836453333
       type: {class: MoveToRandomPosition, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
-        guid: aa50d241c3b0b68479b29a140b706245
-        position: {x: 204.85005, y: 144}
+        guid: 70073e13e0fb8854aa7c067cffcdcc91
+        position: {x: 218.56262, y: 164.00005}
         MaxDistance: 300
         MinDistance: 1
-        InitialSpeed: 5
+        InitialSpeed: 20
         transformIndex: 2
-    - rid: 1471280059498365040
+    - rid: 1471280243836453334
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
-        guid: e7487a2d48c160245b66c44f731fc07f
-        position: {x: 541, y: 144.51999}
-        MinIdleTime: 0.5
-        MaxIdleTime: 1
-    - rid: 1471280059498365041
+        guid: 4bd037db763c557409fded35b8b0f0ca
+        position: {x: 592.2612, y: 266.71588}
+        MinIdleTime: 0.2
+        MaxIdleTime: 0.4
+    - rid: 1471280243836453335
       type: {class: MoveToMischieve, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
-        guid: a749a175724b81a4abc05deb0409038d
-        position: {x: 116, y: 143}
+        guid: d82fdd0fab0798342b031dfbad3b2239
+        position: {x: 185.04176, y: 236.81747}
         MinDistance: 1
-        InitialSpeed: 40
+        InitialSpeed: 50
         transformIndex: 0
-    - rid: 1471280059498365042
+    - rid: 1471280243836453336
       type: {class: Mischieve, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
-        guid: 4263aa4d6fc37274fbb813f2d3160679
-        position: {x: 528, y: 143}
+        guid: 56d50a2b1beb1204e85c75de08777305
+        position: {x: 504.85483, y: 224.55849}
         MinIdleTime: 0.1
-        MaxIdleTime: 0.3
-    - rid: 1471280059498365043
+        MaxIdleTime: 0.4
+    - rid: 1471280243836453337
       type: {class: Jumpscare, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
-        guid: 3a6e5d1bea775cb49bc10686ea7e3b17
-        position: {x: 151, y: 138}
-        transformIndex: 0
-    - rid: 1471280175171764853
-      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+        guid: 900dd9a09fda7f9489974458e57f92b8
+        position: {x: 71, y: 119.56}
+        transformIndex: 1
+    - rid: 1471280243836453338
+      type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
-        name: Indicator 3
-        sensorToCheckName: 
-        indicatorToCheckName: 
-        comparator: 0
-        compareValue: 0
-        avaibleBehaviours: []
+        name: 
+        guid: c1c2509e6f6d8074c9b74ebe6cd6e2e7
+        position: {x: 520, y: 94}
+        MinIdleTime: 0.1
+        MaxIdleTime: 0.2

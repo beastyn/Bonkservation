@@ -80,6 +80,8 @@ namespace Agent
             this.currDestination = Vector3.zero;
         }
 
+        protected override void OnInterrupt() => this.OnDisable();
+
         public Vector3 GetRandomMischieve()
         {
             this.currentMischieve = this.parentForMischives.GetChild(Random.Range(0, this.parentForMischives.childCount));

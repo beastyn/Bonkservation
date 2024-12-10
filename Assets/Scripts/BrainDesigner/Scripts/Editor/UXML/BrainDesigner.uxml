@@ -8,10 +8,9 @@
                         <engine:VisualElement name="SensorsSetsPanel" style="flex-grow: 0; flex-direction: column; background-color: rgb(0, 36, 57); padding-right: 0; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; color: rgb(0, 0, 0); height: auto; width: 200px;">
                             <engine:VisualElement name="SensorsPanel" style="width: auto; flex-direction: column;">
                                 <editor:Toolbar name="Toolbar" style="height: 21px; background-color: rgba(60, 60, 60, 0); padding-right: 5px; border-bottom-width: 0; border-right-width: -1px; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59);">
-                                    <editor:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" name="MenuSensorsSets" text="-" tooltip="All State Sets." class="toolbarMenu" style="-unity-text-align: middle-left; flex-grow: 1; background-color: rgb(5, 18, 26); color: rgb(252, 246, 227); margin-right: 5px;" />
-                                    <editor:ToolbarButton text="&quot; &quot;" display-tooltip-when-elided="true" name="ButtonRenameSensorsSet" tooltip="Rename the selected State Set." class="toolbarButton" />
-                                    <editor:ToolbarButton text="+" name="ButtonAddSensorsSet" display-tooltip-when-elided="true" tooltip="Add a new State Set." class="toolbarButton" style="width: 20px;" />
-                                    <editor:ToolbarButton text="-" name="ButtonRemoveSensorsSet" display-tooltip-when-elided="true" tooltip="DELETE the selected State Set." class="toolbarButton" style="width: 20px;" />
+                                    <engine:VisualElement name="Header" class="header" style="flex-grow: 1; border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59); border-bottom-width: 1px; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59);">
+                                        <engine:Label text="SetName" name="Label" />
+                                    </engine:VisualElement>
                                 </editor:Toolbar>
                                 <engine:VisualElement name="SensorsContainer" class="setContainer" style="flex-grow: 1;">
                                     <engine:VisualElement name="Header" class="header">
@@ -37,13 +36,12 @@
                         </engine:VisualElement>
                     </engine:VisualElement>
                     <engine:VisualElement name="IndicatorPanel" class="panel" style="flex-grow: 1; width: 50%; flex-shrink: 1; flex-direction: row; margin-left: 5px; display: flex; border-left-width: 1px;">
-                        <engine:VisualElement name="IndicatorsSetsPanel" style="flex-grow: 0; flex-direction: column; background-color: rgb(0, 36, 57); padding-right: 0; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; color: rgb(0, 0, 0); border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 1px; border-left-color: rgba(111, 192, 214, 0.16); border-right-color: rgba(111, 192, 214, 0.16); border-top-color: rgba(111, 192, 214, 0.16); border-bottom-color: rgba(111, 192, 214, 0.16); height: auto; width: 200px;">
+                        <engine:VisualElement name="IndicatorsSetsPanel" style="flex-grow: 0; flex-direction: column; background-color: rgb(0, 36, 57); padding-right: 0; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; color: rgb(0, 0, 0); border-top-width: 0; border-left-width: 0; border-bottom-width: 1px; border-right-width: 1px; border-left-color: rgba(111, 192, 214, 0.16); border-right-color: rgba(111, 192, 214, 0.16); border-top-color: rgba(111, 192, 214, 0.16); border-bottom-color: rgba(111, 192, 214, 0.16); height: auto; width: 200px;">
                             <engine:VisualElement name="IndicatorsPanel" style="width: auto; flex-direction: column;">
                                 <editor:Toolbar name="Toolbar" style="height: 21px; background-color: rgba(60, 60, 60, 0); padding-right: 5px; border-bottom-width: 0; border-right-width: -1px; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59);">
-                                    <editor:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" name="MenuIndicatorSets" text="-" tooltip="All State Sets." class="toolbarMenu" style="-unity-text-align: middle-left; flex-grow: 1; background-color: rgb(5, 18, 26); color: rgb(252, 246, 227); border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(11, 177, 254); border-right-color: rgb(11, 177, 254); border-top-color: rgb(11, 177, 254); border-bottom-color: rgb(11, 177, 254); margin-right: 5px;" />
-                                    <editor:ToolbarButton text="&quot; &quot;" display-tooltip-when-elided="true" name="ButtonRenameIndicatorSet" tooltip="Rename the selected State Set." class="toolbarButton" />
-                                    <editor:ToolbarButton text="+" name="ButtonAddIndicatorSet" display-tooltip-when-elided="true" tooltip="Add a new State Set." class="toolbarButton" style="width: 20px;" />
-                                    <editor:ToolbarButton text="-" name="ButtonRemoveIndicatorSet" display-tooltip-when-elided="true" tooltip="DELETE the selected State Set." class="toolbarButton" style="width: 20px;" />
+                                    <engine:VisualElement name="Header" class="header" style="flex-grow: 1; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59); border-bottom-width: 1px;">
+                                        <engine:Label text="SetName" name="Label" />
+                                    </engine:VisualElement>
                                 </editor:Toolbar>
                                 <engine:VisualElement name="IndicatorsContainer" class="setContainer" style="flex-grow: 1;">
                                     <engine:VisualElement name="Header" class="header">
@@ -72,10 +70,9 @@
                         <engine:VisualElement name="TaskSetsPanel" style="flex-grow: 0; flex-direction: column; background-color: rgb(0, 36, 57); padding-right: 0; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; color: rgb(0, 0, 0); height: auto; width: 200px;">
                             <engine:VisualElement name="TaskListPanel" style="width: auto; flex-direction: column;">
                                 <editor:Toolbar name="Toolbar" style="height: 21px; background-color: rgba(60, 60, 60, 0); padding-right: 5px; border-bottom-width: 0; border-right-width: -1px; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59);">
-                                    <editor:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" name="MenuTaskSets" text="-" tooltip="All State Sets." class="toolbarMenu" style="-unity-text-align: middle-left; flex-grow: 1; background-color: rgb(5, 18, 26); color: rgb(252, 246, 227); border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(11, 177, 254); border-right-color: rgb(11, 177, 254); border-top-color: rgb(11, 177, 254); border-bottom-color: rgb(11, 177, 254); margin-right: 5px;" />
-                                    <editor:ToolbarButton text="&quot; &quot;" display-tooltip-when-elided="true" name="ButtonRenameTaskSet" tooltip="Rename the selected State Set." class="toolbarButton" />
-                                    <editor:ToolbarButton text="+" name="ButtonAddTaskSet" display-tooltip-when-elided="true" tooltip="Add a new State Set." class="toolbarButton" style="width: 20px;" />
-                                    <editor:ToolbarButton text="-" name="ButtonRemoveTaskSet" display-tooltip-when-elided="true" tooltip="DELETE the selected State Set." class="toolbarButton" style="width: 20px;" />
+                                    <engine:VisualElement name="Header" class="header" style="flex-grow: 1; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59); border-bottom-width: 1px;">
+                                        <engine:Label text="SetName" name="Label" />
+                                    </engine:VisualElement>
                                 </editor:Toolbar>
                                 <engine:VisualElement name="TasksContainer" class="setContainer" style="flex-grow: 1;">
                                     <engine:VisualElement name="Header" class="header">
@@ -98,19 +95,16 @@
                                     <engine:Label text="Conditions to appear" name="Header" class="commonText" />
                                     <engine:DropdownField label="Sensor to check" name="DropdownSensors" tooltip="Consideration used to compare." class="dropdown" />
                                     <engine:DropdownField label="Indicator" name="DropdownIndicators" tooltip="Consideration used to compare." class="dropdown" />
-                                    <engine:EnumField label="should be" type="BrainDesigner.Scripts.Utils.Comparator, BrainDesigner" name="EnumFieldComparator" tooltip="Comparison operator." class="dropdown" style="margin-top: 5px;" />
-                                    <engine:FloatField label="value" name="FloatFieldValue" tooltip="Value the Consideration needs to meet to fulfil the Precondition." style="margin-top: 5px;" />
+                                    <engine:EnumField label="should be" type="BrainDesigner.Scripts.Utils.Comparator, BrainDesigner" name="EnumFieldComparatorFirst" tooltip="Comparison operator." class="dropdown" style="margin-top: 5px;" />
+                                    <engine:FloatField label="value" name="FloatFieldValueFirst" tooltip="Value the Consideration needs to meet to fulfil the Precondition." style="margin-top: 5px;" />
+                                    <engine:Toggle label="AND need second condition" name="ToggleNeedSecondCondition" tooltip="Should this state even be considered?" style="flex-direction: row; flex-shrink: 0; flex-grow: 0; align-items: stretch; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-wrap: nowrap; width: auto; overflow: hidden; transform-origin: center; flex-basis: auto; max-width: none;" />
+                                    <engine:VisualElement name="SecondConditionContainer" style="flex-grow: 1; display: flex;">
+                                        <engine:EnumField label="should be" type="BrainDesigner.Scripts.Utils.Comparator, BrainDesigner" name="EnumFieldComparatorSecond" tooltip="Comparison operator." class="dropdown" style="margin-top: 5px;" />
+                                        <engine:FloatField label="value" name="FloatFieldValueSecond" tooltip="Value the Consideration needs to meet to fulfil the Precondition." style="margin-top: 5px;" />
+                                    </engine:VisualElement>
                                 </engine:VisualElement>
                                 <engine:VisualElement name="TaskProperties" class="properties" style="flex-grow: 1; min-height: 50px;" />
                             </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:VisualElement>
-                    <engine:VisualElement name="TaskGeneratorPanel" class="panel" style="flex-grow: 1;">
-                        <engine:VisualElement name="TaskGenerator" style="flex-grow: 1; margin-left: 5px;">
-                            <engine:VisualElement name="Title" class="header" style="flex-grow: 1; margin-right: 5px;">
-                                <engine:Label text="Task Generator" name="Header" style="align-content: center; align-self: flex-start;" />
-                            </engine:VisualElement>
-                            <engine:VisualElement name="GeneratedTasks" style="flex-grow: 1; margin-top: 5px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px; min-height: 50px;" />
                         </engine:VisualElement>
                     </engine:VisualElement>
                 </engine:VisualElement>
@@ -122,10 +116,9 @@
                     <engine:VisualElement name="Behaviours" class="panel" style="flex-grow: 1; flex-direction: row; color: rgb(0, 0, 0); height: 60%;">
                         <engine:VisualElement name="BehaviourSetPanel" style="width: 200px; background-color: rgb(0, 36, 57); padding-top: 5px; padding-bottom: 5px; padding-left: 5px;">
                             <editor:Toolbar name="Toolbar" style="height: 21px; background-color: rgba(60, 60, 60, 0); padding-right: 5px; border-bottom-width: 0; border-right-width: 0; border-left-color: rgba(120, 204, 226, 0); border-right-color: rgba(120, 204, 226, 0); border-top-color: rgba(120, 204, 226, 0); border-bottom-color: rgba(120, 204, 226, 0);">
-                                <editor:ToolbarMenu tabindex="-1" display-tooltip-when-elided="true" name="MenuBehaviourSets" text="-" tooltip="All State Sets." style="-unity-text-align: middle-left; flex-grow: 1; background-color: rgb(5, 18, 26); color: rgb(252, 246, 227); border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(11, 177, 254); border-right-color: rgb(11, 177, 254); border-top-color: rgb(11, 177, 254); border-bottom-color: rgb(11, 177, 254); margin-right: 5px;" />
-                                <editor:ToolbarButton text="&quot; &quot;" display-tooltip-when-elided="true" name="ButtonRenameBehaviourSet" tooltip="Rename the selected State Set." class="toolbarButton" />
-                                <editor:ToolbarButton text="+" name="ButtonAddBehaviourSet" display-tooltip-when-elided="true" tooltip="Add a new State Set." class="toolbarButton" style="width: 20px;" />
-                                <editor:ToolbarButton text="-" name="ButtonRemoveBehaviourSet" display-tooltip-when-elided="true" tooltip="DELETE the selected State Set." class="toolbarButton" style="width: 20px;" />
+                                <engine:VisualElement name="Header" class="header" style="flex-grow: 1; border-left-color: rgba(120, 204, 226, 0.59); border-right-color: rgba(120, 204, 226, 0.59); border-top-color: rgba(120, 204, 226, 0.59); border-bottom-color: rgba(120, 204, 226, 0.59); border-bottom-width: 1px;">
+                                    <engine:Label text="SetName" name="Label" />
+                                </engine:VisualElement>
                             </editor:Toolbar>
                             <engine:VisualElement name="BehavioursContainer" class="setContainer" style="flex-grow: 1;">
                                 <engine:VisualElement name="Header" class="header">
@@ -145,8 +138,9 @@
                                             <engine:Label text="Inspector&#10;" name="Title" style="font-size: 16px;" />
                                         </engine:VisualElement>
                                         <engine:VisualElement name="BehaviourProperties" class="properties" style="flex-grow: 1;">
-                                            <engine:Toggle label="Active" name="ToggleBehaviourActive" tooltip="Should this state even be considered?" style="flex-direction: row; flex-shrink: 0; flex-grow: 0; align-items: stretch; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-wrap: nowrap; width: auto; overflow: hidden; transform-origin: center; flex-basis: auto; max-width: none;" />
                                             <engine:TextField picking-mode="Ignore" label="Name" name="TextFieldBehaviourName" tooltip="Name of this State" style="border-right-width: 0; border-left-width: 0; border-top-width: 0; border-bottom-width: 0; border-left-color: rgb(195, 244, 247); border-right-color: rgb(195, 244, 247); border-top-color: rgb(195, 244, 247); border-bottom-color: rgb(195, 244, 247); align-items: stretch; flex-direction: row; justify-content: flex-start; align-self: auto;" />
+                                            <engine:Toggle label="Active" name="ToggleBehaviourActive" tooltip="Should this state even be considered?" style="flex-direction: row; flex-shrink: 0; flex-grow: 0; align-items: stretch; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-wrap: nowrap; width: auto; overflow: hidden; transform-origin: center; flex-basis: auto; max-width: none;" />
+                                            <engine:Toggle label="Critical" name="ToggleBehaviourCritical" tooltip="Should this state even be considered?" style="flex-direction: row; flex-shrink: 0; flex-grow: 0; align-items: stretch; align-content: flex-start; align-self: auto; justify-content: flex-start; flex-wrap: nowrap; width: auto; overflow: hidden; transform-origin: center; flex-basis: auto; max-width: none;" />
                                         </engine:VisualElement>
                                     </engine:VisualElement>
                                     <engine:VisualElement name="Line" style="width: 1px; background-color: rgba(111, 192, 214, 0.59); margin-left: 2px; margin-right: 2px;" />
@@ -184,6 +178,14 @@
                                     </engine:VisualElement>
                                 </engine:VisualElement>
                             </engine:VisualElement>
+                        </engine:VisualElement>
+                    </engine:VisualElement>
+                    <engine:VisualElement name="TaskGeneratorPanel" class="panel" style="flex-grow: 1;">
+                        <engine:VisualElement name="TaskGenerator" style="flex-grow: 1; margin-left: 5px;">
+                            <engine:VisualElement name="Title" class="header" style="flex-grow: 1; margin-right: 5px;">
+                                <engine:Label text="Task Generator" name="Header" style="align-content: center; align-self: flex-start;" />
+                            </engine:VisualElement>
+                            <engine:VisualElement name="GeneratedTasks" style="flex-grow: 1; margin-top: 5px; margin-bottom: 5px; margin-left: 5px; margin-right: 5px; min-height: 50px;" />
                         </engine:VisualElement>
                     </engine:VisualElement>
                     <engine:VisualElement name="TaskLinker" class="panel" style="flex-grow: 1; flex-direction: row; color: rgb(0, 0, 0); height: 40%; display: flex; width: auto; margin-top: 5px;">

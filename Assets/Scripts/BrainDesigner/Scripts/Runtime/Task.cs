@@ -11,20 +11,24 @@ namespace BrainDesigner.Scripts.Runtime
     [Serializable]
     public class Task : Named
     {
-        internal List<Behaviour> AvailableBehaviours { get => this.avaibleBehaviours; set { this.avaibleBehaviours = value; } }
-        internal HashSet<Behaviour> LinkedBehaviours { get => this.linkedBehaviour; set { this.linkedBehaviour = value; } }
+        internal List<Behaviour> LinkedBehaviours => this.linkedBehaviour;
 
         internal string SensorToCheckName { get => this.sensorToCheckName;  set { this.sensorToCheckName = value; } }
         internal string IndicatorToCheckName { get => this.indicatorToCheckName; set { this.indicatorToCheckName = value; } }
-        internal Comparator Comparator { get => this.comparator; set { this.comparator = value; } }
-        internal float CompareValue { get => this.compareValue; set { this.compareValue = value; } }
+        internal Comparator ComparatorFirst { get => this.comparatorFirst; set { this.comparatorFirst = value; } }
+        internal float CompareValueFirst { get => this.compareValueFirst; set { this.compareValueFirst = value; } }
+        internal Comparator ComparatorSecond { get => this.comparatorSecond; set { this.comparatorSecond = value; } }
+        internal float CompareValueSecond { get => this.compareValueSecond; set { this.compareValueSecond = value; } }
+        internal bool NeedSecondCondition { get => this.needSecondCondition; set { this.needSecondCondition = value; } }
 
         [SerializeField] string sensorToCheckName;
         [SerializeField] string indicatorToCheckName;
-        [SerializeField] Comparator comparator;
-        [SerializeField] float compareValue;
-        [SerializeField] List<Behaviour> avaibleBehaviours;
-        [SerializeField] HashSet<Behaviour> linkedBehaviour;
+        [SerializeField] Comparator comparatorFirst;
+        [SerializeField] float compareValueFirst;
+        [SerializeField] bool needSecondCondition = false;
+        [SerializeField] Comparator comparatorSecond;
+        [SerializeField] float compareValueSecond;
+        [SerializeReference] List<Behaviour> linkedBehaviour = new();
 
         Sensor sensor;
         Indicator indicator;
@@ -43,45 +47,73 @@ namespace BrainDesigner.Scripts.Runtime
             if (this.sensor == null)
                 this.lastSensoredFound = true;
             if (this.indicator == null)
-                this.lastConditionMet= true;
+                this.lastConditionMet = true;
 
             if (this.sensor == null && this.indicator == null)
                 return true;
 
             //Check for Sensor condition
 
-            if(this.sensor != null) this.lastSensoredFound = this.sensor.TryGetSensoredObject(out List<Transform> foundObjects);
+            if (this.sensor != null) this.lastSensoredFound = this.sensor.TryGetSensoredObject(out List<Transform> foundObjects);
 
             //Check for indicator cinditions
             var indicatorValue = this.indicator.GetValue();
-            switch (comparator)
-            {
-                case Comparator.GreaterThan:
-                    this.lastConditionMet = indicatorValue > this.compareValue;
-                    break;
-                case Comparator.LessThan:
-                    lastConditionMet = indicatorValue < this.compareValue;
-                    break;
-                case Comparator.GreaterThanOrEqualTo:
-                    lastConditionMet = indicatorValue >= this.compareValue;
-                    break;
-                case Comparator.LessThanOrEqualTo:
-                    lastConditionMet = indicatorValue <= this.compareValue;
-                    break;
-                case Comparator.EqualTo:
-                    lastConditionMet = Mathf.RoundToInt(indicatorValue) == Mathf.RoundToInt(this.compareValue);
-                    break;
-                case Comparator.NotEqualTo:
-                    lastConditionMet = Mathf.RoundToInt(indicatorValue) != Mathf.RoundToInt(this.compareValue);
-                    break;
-                default:
-                    lastConditionMet = Mathf.RoundToInt(indicatorValue) == Mathf.RoundToInt(this.compareValue);
-                    break;
-            }
+            var firstComparatorMet = true;
+            var secondComparatorMet = true;
+
+            firstComparatorMet = this.CheckComparator(this.comparatorFirst, indicatorValue, this.compareValueFirst);
+            if (this.needSecondCondition)
+                secondComparatorMet = this.CheckComparator(this.comparatorSecond, indicatorValue, this.compareValueSecond);
+
+            this.lastConditionMet = firstComparatorMet && secondComparatorMet;
 
             return this.lastSensoredFound && this.lastConditionMet;
         }
 
+        bool CheckComparator(Comparator comparator, float indicatorValue, float valueToCompare)
+        {
+            bool comporatorMet;
+            switch (comparator)
+            {
+                case Comparator.GreaterThan:
+                    comporatorMet = indicatorValue > valueToCompare;
+                    break;
+                case Comparator.LessThan:
+                    comporatorMet = indicatorValue < valueToCompare;
+                    break;
+                case Comparator.GreaterThanOrEqualTo:
+                    comporatorMet = indicatorValue >= valueToCompare;
+                    break;
+                case Comparator.LessThanOrEqualTo:
+                    comporatorMet = indicatorValue <= valueToCompare;
+                    break;
+                case Comparator.EqualTo:
+                    comporatorMet = Mathf.RoundToInt(indicatorValue) == Mathf.RoundToInt(valueToCompare);
+                    break;
+                case Comparator.NotEqualTo:
+                    comporatorMet = Mathf.RoundToInt(indicatorValue) != Mathf.RoundToInt(valueToCompare);
+                    break;
+                default:
+                    comporatorMet = Mathf.RoundToInt(indicatorValue) == Mathf.RoundToInt(valueToCompare);
+                    break;
+            }
+
+            return comporatorMet;
+        }
+
         internal bool Update() => this.ConditionMet();
+
+        internal void LinkUniqueBehaviour(Behaviour behaviour)
+        {
+            if(this.linkedBehaviour.Contains(behaviour)) return;
+            this.linkedBehaviour.Add(behaviour);
+            behaviour.ActivationTasks.Add(this); 
+        }
+
+        internal void UnlinqBehaviorAt(int index, Behaviour behavior)
+        {
+            this.LinkedBehaviours.RemoveAt(index);
+            behavior.ActivationTasks.Remove(this);
+        }
     }
 }

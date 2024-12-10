@@ -8,9 +8,9 @@ namespace BrainDesigner.Scripts
 
     public class BrainDesignerData : ScriptableObject
     {
-        [SerializeField][HideInInspector] internal List<BehaviourSet> behaviourSets;
-        [SerializeField][HideInInspector] internal List<SensorSet> sensorSets;
-        [SerializeField][HideInInspector] internal List<IndicatorSet> indicatorSets;
-        [SerializeField][HideInInspector] internal List<TaskSet> tasksSets;
+        [SerializeField][HideInInspector] internal BehaviourSet behaviourSet;
+        [SerializeField][HideInInspector] internal SensorSet sensorSet;
+        [SerializeField][HideInInspector] internal IndicatorSet indicatorSet;
+        [SerializeField][HideInInspector] internal TaskSet tasksSet;
     }
 }

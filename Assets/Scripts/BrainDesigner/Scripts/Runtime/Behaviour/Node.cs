@@ -19,6 +19,7 @@ namespace BrainDesigner.Scripts.Runtime
             Success,
             Running,
             Failure,
+            Interrupted,
             Disabled
         } 
         public string Description { get; }
@@ -45,6 +46,7 @@ namespace BrainDesigner.Scripts.Runtime
         [NonSerialized] NodeState nodeState = NodeState.Disabled;
         [NonSerialized] bool started;
         [NonSerialized] bool enabled;
+        [NonSerialized] bool interrupted;
 
         [SerializeField] string guid; //Unique id.
         [SerializeField] Vector2 position;
@@ -62,6 +64,7 @@ namespace BrainDesigner.Scripts.Runtime
             this.agentObject = thisGameObject;
             this.brainDesigner = brainDesigner;
         }
+
 
         internal NodeState Update()
         {
@@ -89,6 +92,17 @@ namespace BrainDesigner.Scripts.Runtime
             return nodeState;
         }
 
+        internal virtual void Interrupt()
+        {
+            if (nodeState == NodeState.Running)
+            {
+                OnInterrupt();
+                enabled = false;
+            }
+
+            nodeState = NodeState.Interrupted;
+        }
+
         internal virtual void Disable()
         {
             if (nodeState == NodeState.Running)
@@ -104,6 +118,8 @@ namespace BrainDesigner.Scripts.Runtime
         protected virtual void OnEnable() { }
 
         protected virtual void OnDisable() { }
+
+        protected virtual void OnInterrupt() { }
 
         protected abstract NodeState OnUpdate();
 
