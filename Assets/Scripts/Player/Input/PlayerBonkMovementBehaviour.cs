@@ -7,16 +7,27 @@ namespace Player
 
     public class PlayerBonkMovementBehaviour : MonoBehaviour
     {
-        [SerializeField] PlayerBonkInputController input;
+        [SerializeField] PlayerInputReciever input;
+        [SerializeField] float followMouseSpeed = 1f;
 
         //bool allowMovement = true;
+        int layerNumber = 3;
+        int layerMask;
+
+        bool isMouseMoved = false;
+        Vector3 targetPosition;
+
         public Vector2 Velocity { get; private set; }
 
-       /* void Start () {this.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition); }*/
+        void Start()
+        {
+            this.layerMask = 1 << this.layerNumber;
+            this.targetPosition = transform.position;
+        }
 
         void OnEnable()
         {
-            PlayerBonkInputController.MovementEvent += OnMovementEvent;
+            PlayerInputReciever.MouseMovementEvent += OnMovementEvent;
             /*ManagersSOHolder.GameStateSO.GameStateChangedEvent += OnGameStateChangeEvent;
             ManagersSOHolder.TimeManagerSO.PrepareToSleepEvent += OnPrepareToSleep;
 */
@@ -25,41 +36,36 @@ namespace Player
 
         void OnDisable()
         {
-            PlayerBonkInputController.MovementEvent -= OnMovementEvent;
+            PlayerInputReciever.MouseMovementEvent -= OnMovementEvent;
       /*      ManagersSOHolder.GameStateSO.GameStateChangedEvent -= OnGameStateChangeEvent;
             ManagersSOHolder.TimeManagerSO.PrepareToSleepEvent -= OnPrepareToSleep;*/
         }
 
         void OnMovementEvent(Vector2 velocity)
-        {
-            /* if (!allowMovement) return;
-             var worldPos = Camera.main.ScreenToWorldPoint(velocity);
-             this.Velocity = velocity;
-             this.transform.position = new Vector3(worldPos.x, worldPos.z);
-             this.transform.localPosition = new Vector3(this.transform.localPosition.x, this.transform.localPosition.y, 0f);*/
-
-
-            // Raycast from the camera to the mouse position in the world
+        { 
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             // Check if the ray hits a plane or collider
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
             {
-                Vector3 targetPosition = hit.point;
-                targetPosition.y = this.gameObject.transform.position.y; // Set the Y position fixed
-
-                // Move the object to the target position
-                transform.position = targetPosition;
+                this.targetPosition = hit.point;
+                this.targetPosition.y = this.gameObject.transform.position.y; // Set the Y position fixed
             }
-
         }
 
-      /*  void OnGameStateChangeEvent(GameState gameState)
+        void FixedUpdate()
         {
-            this.allowMovement = gameState != GameState.DayChanges;
+
+            this.transform.position = Vector3.Lerp(this.transform.position, this.targetPosition, this.followMouseSpeed);
+
         }
 
-        void OnPrepareToSleep() => this.allowMovement = false;*/
+        /*  void OnGameStateChangeEvent(GameState gameState)
+          {
+              this.allowMovement = gameState != GameState.DayChanges;
+          }
+
+          void OnPrepareToSleep() => this.allowMovement = false;*/
     }
 }

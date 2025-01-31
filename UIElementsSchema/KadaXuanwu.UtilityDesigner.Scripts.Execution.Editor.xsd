@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns="Unity.Profiling.Editor.UI" elementFormDefault="qualified" targetNamespace="KadaXuanwu.UtilityDesigner.Scripts.Execution.Editor" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:editor="UnityEditor.UIElements" xmlns:engine="UnityEngine.UIElements" xmlns="KadaXuanwu.UtilityDesigner.Scripts.Execution.Editor" elementFormDefault="qualified" targetNamespace="KadaXuanwu.UtilityDesigner.Scripts.Execution.Editor" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="UnityEngine.UIElements.xsd" namespace="UnityEngine.UIElements" />
   <xs:complexType name="BehaviourTreeViewType">
     <xs:complexContent mixed="false">
@@ -8,6 +8,7 @@
           <xs:element ref="engine:VisualElement" />
         </xs:sequence>
         <xs:attribute default="" name="name" type="xs:string" use="optional" />
+        <xs:attribute default="true" name="enabled" type="xs:boolean" use="optional" />
         <xs:attribute default="" name="view-data-key" type="xs:string" use="optional" />
         <xs:attribute default="Position" name="picking-mode" type="engine:VisualElement_picking-mode_Type" use="optional" />
         <xs:attribute default="" name="tooltip" type="xs:string" use="optional" />
@@ -24,5 +25,5 @@
       </xs:restriction>
     </xs:complexContent>
   </xs:complexType>
-  <xs:element name="BehaviourTreeView" substitutionGroup="engine:VisualElement" xmlns:q1="KadaXuanwu.UtilityDesigner.Scripts.Execution.Editor" type="q1:BehaviourTreeViewType" />
+  <xs:element name="BehaviourTreeView" substitutionGroup="engine:VisualElement" type="BehaviourTreeViewType" />
 </xs:schema>

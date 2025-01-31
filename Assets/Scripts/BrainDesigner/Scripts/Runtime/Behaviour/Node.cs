@@ -6,13 +6,15 @@ using UnityEngine;
 
 using BrainDesigner.Scripts.Utils;
 using UnityEngine.UIElements;
+using System.Collections;
+using System.Reflection;
 
 namespace BrainDesigner.Scripts.Runtime
 {
     /// <summary> Atomic level of a behavior entity. It can be used as action, as sequence or behavior itself as includes all minimum requirements</summary>
 
     [Serializable]
-    public abstract class Node: Named
+    public abstract class Node : Named, ICloneable
     {
         public enum NodeState
         {
@@ -21,7 +23,7 @@ namespace BrainDesigner.Scripts.Runtime
             Failure,
             Interrupted,
             Disabled
-        } 
+        }
         public string Description { get; }
 
         protected GameObject AgentObject => this.agentObject;
@@ -259,5 +261,51 @@ namespace BrainDesigner.Scripts.Runtime
             }
         }
 
+        public object Clone()
+        {
+            Type type = GetType();
+            Node newNode = (Node)Activator.CreateInstance(type);
+
+            BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            FieldInfo[] fields = type.GetFields(flags);
+
+            foreach (FieldInfo field in fields)
+            {
+                object fieldValue = field.GetValue(this);
+                object copiedValue = this.DeepCopy(fieldValue);
+                field.SetValue(newNode, copiedValue);
+            }
+
+            return newNode;
+        }
+
+        object DeepCopy(object original)
+        {
+            switch (original)
+            {
+                case null:
+                    return null;
+                case Node baseNode:
+                    return baseNode.Clone();
+                case IList list:
+                    {
+                        Type listType = original.GetType();
+                        IList newList = (IList)Activator.CreateInstance(listType);
+
+                        foreach (var item in list)
+                        {
+                            object copiedItem = DeepCopy(item);
+                            newList.Add(copiedItem);
+                        }
+
+                        return newList;
+                    }
+                case ICloneable cloneable:
+                    return cloneable.Clone();
+                default:
+                    return original.GetType().IsValueType ? original : null;
+            }
+        }
     }
 }
+

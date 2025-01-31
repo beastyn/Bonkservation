@@ -1,21 +1,20 @@
 using UnityEngine;
-
 using BrainDesigner.Scripts.Utils;
 using System;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
-using Unity.Collections.LowLevel.Unsafe;
-using Codice.Client.BaseCommands.Changelist;
+using System.Reflection;
 
-namespace BrainDesigner.Scripts
+namespace BrainDesigner.Scripts.Runtime
 {
+    using Utils;
+
     [Serializable]
-    public class Indicator : Named
+    public class Indicator : Named, ICloneable
     {
         public float ChangePerSecond => this.changePerSecond;
         public float CurrentTime => this.currentTime;
         public float LastUpdateTime => this.lastUpdateTime;
 
-        public Action ChangeValueAction { get; set; }
+        public System.Action ChangeValueAction { get; set; }
 
         [SerializeField] internal float initialValue;
         [SerializeField] internal bool setMinValue;
@@ -56,6 +55,25 @@ namespace BrainDesigner.Scripts
 
             this.currentValue += changePerSecond * (currentTime - this.lastUpdateTime);
             this.lastUpdateTime = currentTime;
-        }        
+        }
+
+        public object Clone()
+        {
+            Type type = this.GetType();
+            Indicator newIndicator = (Indicator)Activator.CreateInstance(type);
+
+            BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            FieldInfo[] fields = type.GetFields(flags);
+
+            foreach (FieldInfo field in fields)
+            {
+                object fieldValue = field.GetValue(this);
+                object copiedValue = Utils.DeepCopy(fieldValue);
+                field.SetValue(newIndicator, copiedValue);
+            }
+
+            return newIndicator;
+        }
+        
     }
 }

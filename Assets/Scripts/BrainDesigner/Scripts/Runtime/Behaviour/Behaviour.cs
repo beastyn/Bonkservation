@@ -4,9 +4,12 @@ using UnityEditor;
 using UnityEngine;
 using BrainDesigner.Scripts.Utils;
 using System.Linq;
+using System.Reflection;
 
 namespace BrainDesigner.Scripts.Runtime
 {
+    using Utils;
+
     [Serializable]
     public class Behaviour: Named
     {
@@ -17,8 +20,10 @@ namespace BrainDesigner.Scripts.Runtime
         internal Node.NodeState State => this.behaviourSequence.State;
 
         [SerializeField] internal bool active;
+        [SerializeField] internal bool isDefault;
+
         [SerializeField] internal bool critical;
-        [SerializeField] internal float baseScore;
+        [SerializeField] internal float baseScore=0f;
         [SerializeReference] internal Sequence behaviourSequence;
  
         [SerializeReference] List<Task> activationTask = new();
@@ -149,6 +154,24 @@ namespace BrainDesigner.Scripts.Runtime
             }
 
             return children;
+        }
+
+        public object Clone()
+        {
+            Type type = this.GetType();
+            Behaviour newBehaviour = (Behaviour)Activator.CreateInstance(type);
+
+            BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+            FieldInfo[] fields = type.GetFields(flags);
+
+            foreach (FieldInfo field in fields)
+            {
+                object fieldValue = field.GetValue(this);
+                object copiedValue = Utils.DeepCopy(fieldValue);
+                field.SetValue(newBehaviour, copiedValue);
+            }
+
+            return newBehaviour;
         }
 #endif
     }

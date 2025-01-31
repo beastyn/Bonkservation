@@ -1,0 +1,287 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e8d67d5b7e67ba4b910dc0d982e8402, type: 3}
+  m_Name: HakkaBehaviour
+  m_EditorClassIdentifier: 
+  behaviourSet:
+    name: Behaviour Set
+    list:
+    - rid: 4039823593410658322
+    - rid: 4039823593410658323
+    - rid: 4039823593410658324
+    - rid: 4039823795926335780
+    - rid: 4039823795926335784
+    tasks:
+      name: 
+      list: []
+  sensorSet:
+    name: Sensor Set
+    list:
+    - rid: 4039823593410658325
+  indicatorSet:
+    name: Indicator Set
+    list:
+    - rid: 4039823593410658326
+    - rid: 4039823593410658327
+  tasksSet:
+    name: Task Set
+    list:
+    - rid: 4039823593410658328
+    - rid: 4039823593410658329
+    - rid: 4039823593410658330
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4039823593410658322
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Roam
+        active: 1
+        isDefault: 1
+        critical: 0
+        baseScore: 0
+        behaviourSequence:
+          rid: 4039823593410658331
+        activationTask:
+        - rid: 4039823593410658329
+    - rid: 4039823593410658323
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Mischieve
+        active: 1
+        isDefault: 0
+        critical: 0
+        baseScore: 0
+        behaviourSequence:
+          rid: 4039823593410658332
+        activationTask:
+        - rid: 4039823593410658329
+    - rid: 4039823593410658324
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Jump Holes
+        active: 1
+        isDefault: 0
+        critical: 1
+        baseScore: 0
+        behaviourSequence:
+          rid: 4039823593410658333
+        activationTask: []
+    - rid: 4039823593410658325
+      type: {class: SphereSensor, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: Mane Bonk Sensor
+        tag: Bonker
+        radius: 20
+    - rid: 4039823593410658326
+      type: {class: Indicator, ns: BrainDesigner.Scripts, asm: BrainDesigner}
+      data:
+        name: Fear
+        initialValue: 0
+        setMinValue: 1
+        minValue: 0
+        setMaxValue: 1
+        maxValue: 100
+        changedOutside: 1
+        changePerSecond: 10
+        useRealTime: 1
+    - rid: 4039823593410658327
+      type: {class: Indicator, ns: BrainDesigner.Scripts, asm: BrainDesigner}
+      data:
+        name: Energy
+        initialValue: 100
+        setMinValue: 0
+        minValue: 0
+        setMaxValue: 0
+        maxValue: 100
+        changedOutside: 1
+        changePerSecond: 0
+        useRealTime: 1
+    - rid: 4039823593410658328
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Rest Task
+        sensorToCheckName: 
+        indicatorToCheckName: Energy
+        comparatorFirst: 4
+        compareValueFirst: 0
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 20
+        linkedBehaviour:
+        - rid: 4039823795926335784
+    - rid: 4039823593410658329
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Roam Task
+        sensorToCheckName: 
+        indicatorToCheckName: Fear
+        comparatorFirst: 1
+        compareValueFirst: 60
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 4039823593410658322
+        - rid: 4039823593410658323
+    - rid: 4039823593410658330
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Hide Task
+        sensorToCheckName: 
+        indicatorToCheckName: Fear
+        comparatorFirst: 2
+        compareValueFirst: 60
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 4039823795926335780
+    - rid: 4039823593410658331
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: 657c39ba72abb3540adfabde6ddc8376
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4039823817411657859
+        - rid: 4039823593410658335
+    - rid: 4039823593410658332
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: bd5bc9ead0c8deb4e8cc0bddbf10c5d0
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4039823593410658336
+        - rid: 4039823593410658337
+    - rid: 4039823593410658333
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: 8e10392503166ea4bbff0b85bc3501db
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4039823593410658339
+    - rid: 4039823593410658335
+      type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 4bd037db763c557409fded35b8b0f0ca
+        position: {x: 592.2612, y: 266.71588}
+        MinIdleTime: 0.2
+        MaxIdleTime: 0.4
+    - rid: 4039823593410658336
+      type: {class: MoveToMischieve, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: d82fdd0fab0798342b031dfbad3b2239
+        position: {x: 185.04176, y: 236.81747}
+        MinDistance: 5
+        InitialSpeed: 40
+        transformIndex: 3
+    - rid: 4039823593410658337
+      type: {class: Mischieve, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 56d50a2b1beb1204e85c75de08777305
+        position: {x: 504.85483, y: 224.55849}
+        MinMischieveTime: 1
+        MaxMischieveTime: 5
+    - rid: 4039823593410658339
+      type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: c1c2509e6f6d8074c9b74ebe6cd6e2e7
+        position: {x: 520, y: 94}
+        MinIdleTime: 0.1
+        MaxIdleTime: 0.2
+    - rid: 4039823795926335780
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Run Away
+        active: 1
+        isDefault: 0
+        critical: 1
+        baseScore: 9
+        behaviourSequence:
+          rid: 4039823795926335781
+        activationTask:
+        - rid: 4039823593410658330
+    - rid: 4039823795926335781
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: b58e8bf68399fce45aee51509fd2051c
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4039823795926335782
+        - rid: 4039823795926335783
+    - rid: 4039823795926335782
+      type: {class: Jumpscare, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 4cd55e9a876caaa4ba2b25e9ba9fd728
+        position: {x: 128.43199, y: 175.35205}
+        rotationSpeed: 50
+        angleThreshold: 5
+    - rid: 4039823795926335783
+      type: {class: RunAway, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 97dbb9c8c185b6943b31ab87d8653820
+        position: {x: 515, y: 175}
+        MinDistance: 0.1
+        MinLookAhead: 20
+        RunDistance: 200
+        PointChechDistance: 10
+        SearchAngle: 270
+        InitialSpeed: 40
+        transformIndex: 0
+    - rid: 4039823795926335784
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Restore Energy
+        active: 1
+        isDefault: 0
+        critical: 1
+        baseScore: 10
+        behaviourSequence:
+          rid: 4039823795926335785
+        activationTask:
+        - rid: 4039823593410658328
+    - rid: 4039823795926335785
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: 6e6990fe7ba5df1439528530d0417937
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4039823795926335786
+    - rid: 4039823795926335786
+      type: {class: RestoreEnergy, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 217dc4197b3dfb6409985d00d3dbc559
+        position: {x: 370.3407, y: 252.17307}
+    - rid: 4039823817411657859
+      type: {class: MoveToRandomPosition, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 4f0f98de0a4da9c418e93ce9f6309e97
+        position: {x: 170.2413, y: 267}
+        MaxDistance: 300
+        MinDistance: 1
+        InitialSpeed: 10
+        transformIndex: 0

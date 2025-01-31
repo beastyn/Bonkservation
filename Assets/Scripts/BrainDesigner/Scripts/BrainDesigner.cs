@@ -1,24 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 namespace BrainDesigner.Scripts
 {
-    using Utils;
+    using NUnit.Framework.Constraints;
     using Runtime;
-    using UnityEngine.UIElements;
-    using System.Text;
+    using UnityEngine.Assertions.Must;
 
     public class BrainDesigner : MonoBehaviour
     {
-        internal SensorSet SensorSet {get =>this.sensorSet; set { this.sensorSet = value;} }
-        internal IndicatorSet IndicatorSet {get => this.indicatorSet; set { this.indicatorSet = value;} }
-        internal TaskSet TaskSet { get => this.taskSet; set { this.taskSet = value;} }
-        internal BehaviourSet BehaviourSet {get => this.behaviourSet; set { this.behaviourSet = value;} }
+        /// <summary>Notification about new action start. Return first as previous action, second as next action</summary>
+        public System.Action<string, string> ActionChangeEvent;
+        internal SensorSet SensorSet { get => this.sensorSet; set { this.sensorSet = value; } }
+        internal IndicatorSet IndicatorSet { get => this.indicatorSet; set { this.indicatorSet = value; } }
+        internal TaskSet TaskSet { get => this.taskSet; set { this.taskSet = value; } }
+        internal BehaviourSet BehaviourSet { get => this.behaviourSet; set { this.behaviourSet = value; } }
 
         [SerializeField] internal BrainDesignerData data;
         [SerializeField] internal string sceneReferencesObjName;
@@ -26,6 +27,7 @@ namespace BrainDesigner.Scripts
         [SerializeField] internal float behaviourTickRate = 0.1f;
 
         internal List<Task> activeTasks = new();
+        internal List<Behaviour> fallOffBehaviours = new();
 
         internal SceneReferences sceneReferences;
 
@@ -36,17 +38,32 @@ namespace BrainDesigner.Scripts
         TaskSet taskSet;
         BehaviourSet behaviourSet;
 
+        bool isBrainUp = true;
+        Behaviour previousBehaviour;
         Behaviour runningBehaviour;
 
-       
+
+        void OnEnable()
+        {
+            if(!this.isBrainUp) this.Start();
+            
+        }
+
+        void OnDisable()
+        {
+            StopAllCoroutines();
+            this.runningBehaviour.Interrupt();
+            this.runningBehaviour = null;
+            this.isBrainUp= false;
+        }
 
         void Awake()
         {
             this.Initialize();
             if (this.data != null)
             {
-                Load(this.data);
-                //UnlinkUtilityBehaviour();
+                this.Load(this.data);
+                this.LocalizeBrainData();
             }
             else
                 this.brainDataMissing = true;
@@ -59,20 +76,32 @@ namespace BrainDesigner.Scripts
             if (this.data == null)
                 return;
 
+            this.isBrainUp = true;
+
             foreach (var sensor in this.sensorSet.list)
                 sensor.Initialize(this, gameObject);
 
             foreach (var indicator in this.indicatorSet.list)
                 indicator.Initialize();
 
+            foreach (var behaviour in this.behaviourSet.list)
+            {
+                behaviour.Initialize(this, gameObject);
+                if (behaviour.isDefault) this.fallOffBehaviours.Add(behaviour);
+            }
+
             foreach (var task in this.taskSet.list)
                 task.Initialize(this);
 
-            foreach (var behaviour in this.behaviourSet.list)
-                behaviour.Initialize(this, gameObject);
+            if (this.fallOffBehaviours.Count == 0)
+            {
+                Debug.LogError("Need at least one default behaviour");
+                return;
+            }
 
             //StartCoroutine(HeartbeatEvaluation());
             StartCoroutine(TickedExecution());
+
         }
         /*
                 private void Update()
@@ -83,6 +112,7 @@ namespace BrainDesigner.Scripts
                     if (useUpdateAsTickRateForExecution)
                         Execute();
                 }*/
+        #region Public API
         public bool TryGetSensorByName(string sensorName, out Sensor foundSensor)
         {
             if (this.sensorSet != null && this.sensorSet.TryGetElementByName(sensorName, out foundSensor))
@@ -93,7 +123,6 @@ namespace BrainDesigner.Scripts
                 return false;
             }
         }
-
         public bool TryGetSensoredObjects(Sensor sensor, out List<Transform> foundObjects)
         {
             sensor.TryGetSensoredObject(out foundObjects);
@@ -115,13 +144,19 @@ namespace BrainDesigner.Scripts
 
         public float GetIndicatorValue(Indicator indicator) => indicator.GetValue();
 
+        public string GetRunningBehaviourName() => this.runningBehaviour?.Name ?? string.Empty;
+
+        public string GetPreviousBehaviour() => this.previousBehaviour?.Name?? string.Empty;
+
+        #endregion
+
         internal void Initialize() => this.sceneReferences = GameObject.Find(sceneReferencesObjName)?.GetComponent<SceneReferences>();
        
 
 #if UNITY_EDITOR
         internal void Save(string savePath)
         {
-            //UnlinkUtilityBehaviour();
+            this.LocalizeBrainData();
 
             var saveCache = ScriptableObject.CreateInstance<BrainDesignerData>();
 
@@ -209,14 +244,19 @@ namespace BrainDesigner.Scripts
                 if (task.Update())
                     this.activeTasks.Add(task);
 
+            //Remember what is running now.
+            this.previousBehaviour = this.runningBehaviour;
+            var previousAction = this.runningBehaviour?.behaviourSequence.RunningAction ?? null;
             //Predict next behaviour. If it is critical we interrupt current behaviour, otherwise preoceed with the current running one.
             var nextBehaviour = GetNextBehaviour();
             
             
             if(this.runningBehaviour == null)
                 this.runningBehaviour = nextBehaviour; //If nothing is running, apply calculated Behaviour.
+
+            var nextMoreCritical = nextBehaviour.critical && (!runningBehaviour.critical || nextBehaviour.baseScore > runningBehaviour.baseScore); 
           
-            if (nextBehaviour.critical && this.runningBehaviour != nextBehaviour && this.runningBehaviour.State == Node.NodeState.Running) 
+            if (this.runningBehaviour != nextBehaviour && this.runningBehaviour.State == Node.NodeState.Running && nextMoreCritical) 
                 this.runningBehaviour.Interrupt();     //If predicted behaviour is critical and something already is running, interrupt the running one. We still will Tick it so it isproperly disabled.
             
             if (this.runningBehaviour.State != Node.NodeState.Running) 
@@ -224,9 +264,13 @@ namespace BrainDesigner.Scripts
 
             if (this.runningBehaviour?.behaviourSequence != null) 
                 this.runningBehaviour.TickExecution(); //Tick chosen behaviour.
+
+            //Notify only if behaviours node was changed
+            var runningAction = this.runningBehaviour?.behaviourSequence.RunningAction ?? null;
+            if (previousAction?.GetType().Name != runningAction?.GetType().Name) this.ActionChangeEvent?.Invoke(previousAction?.GetType().Name, runningAction?.GetType().Name);
         }
 
-        private Behaviour GetNextBehaviour()
+        Behaviour GetNextBehaviour()
         {
             //Choose Behaviour
             List<Behaviour> possibleBehaviours = new();
@@ -234,11 +278,77 @@ namespace BrainDesigner.Scripts
             {
 
                 var hashActiveTasks = this.activeTasks.ToHashSet();
+
+                var lastBrhaviourScore = 0f;
                 if (hashActiveTasks.Any(item => behaviour.ActivationTasks.Contains(item)))
-                    possibleBehaviours.Add(behaviour);
+                {
+                    if(behaviour.baseScore >= lastBrhaviourScore)
+                        possibleBehaviours.Add(behaviour);
+                    lastBrhaviourScore = behaviour.baseScore;
+                }
             }
 
+            if (possibleBehaviours.Count == 0)
+                possibleBehaviours = this.fallOffBehaviours;
             return possibleBehaviours[Random.Range(0, possibleBehaviours.Count)];
+        }
+
+        void LocalizeBrainData()
+        {
+            /*this.sensorSet = data.sensorSet;
+            this.indicatorSet = data.indicatorSet;
+            this.taskSet = data.tasksSet;
+            this.behaviourSet = data.behaviourSet;
+            this.data = data;*/
+
+            //Create local instances for each brain entity, as currently there is only one instance that was created from Brain Designer Editor.
+
+            //Create copy of sensors
+
+            SensorSet newSensorSet = new();
+            IndicatorSet newIndicatorSet = new();
+            TaskSet newTaskSet = new();
+            BehaviourSet newBehaviourSet = new();
+
+            newSensorSet.Name= this.sensorSet.Name;
+            newIndicatorSet.Name = this.indicatorSet.Name;
+            newTaskSet.Name = this.taskSet.Name;
+            newBehaviourSet.Name = this.behaviourSet.Name;
+
+
+            foreach (var sensor in this.sensorSet.list)            
+            {
+                var newSensor = sensor.Clone();
+                ((Sensor)newSensor).Name = sensor.Name;
+                newSensorSet.list.Add((Sensor)newSensor);
+            }
+            this.sensorSet= newSensorSet;
+
+            foreach (var indicator in this.indicatorSet.list)
+            {
+                var newIndicator = indicator.Clone();
+                ((Indicator)newIndicator).Name = indicator.Name;
+                newIndicatorSet.list.Add((Indicator)newIndicator);
+            }
+            this.indicatorSet= newIndicatorSet;
+
+            foreach (var behaviour in this.behaviourSet.list)
+            {
+                var newBehaviour = behaviour.Clone();
+                ((Behaviour)newBehaviour).Name = behaviour.Name;
+                newBehaviourSet.list.Add((Behaviour)newBehaviour);
+            } 
+            this.behaviourSet= newBehaviourSet;
+
+            foreach (var task in this.taskSet.list)
+            {
+                task.SetBrainDesigner(this);
+                var newTask = task.Clone();
+                ((Task)newTask).Name = task.Name;
+                newTaskSet.list.Add((Task)newTask);
+            }           
+            this.taskSet= newTaskSet;
+           
         }
     }
 }

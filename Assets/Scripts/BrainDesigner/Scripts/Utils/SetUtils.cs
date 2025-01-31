@@ -40,7 +40,7 @@ namespace BrainDesigner.Scripts.Utils
 
             VisualElement CreateElement() => setData.templateElement.Instantiate();
 
-            void OnButtonRemoveElementClick<T>(SetData<T> setData, Action<IEnumerable<object>> LoadElement, VisualElement additionalInfoContainer, int i, T elementReference) where T : Named
+            void OnButtonRemoveElementClick<Tp>(SetData<Tp> setData, Action<IEnumerable<object>> LoadElement, VisualElement additionalInfoContainer, int i, T elementReference) where Tp : Named
             {
                 if (!EditorUtility.DisplayDialog("Confirmation",
                         $"Are you sure you want to remove this {elementReference.GetType().Name}?",

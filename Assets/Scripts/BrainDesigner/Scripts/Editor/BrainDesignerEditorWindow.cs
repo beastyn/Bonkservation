@@ -10,12 +10,14 @@ using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEditor.Animations;
 using UnityEngine.UIElements;
 
 namespace BrainDesigner.Scripts.Editor
 {
     using Utils;
     using Runtime;
+    using System.Runtime.CompilerServices;
 
     public class BrainDesignerEditorWindow : EditorWindow
     {
@@ -42,8 +44,10 @@ namespace BrainDesigner.Scripts.Editor
 
         //Behavipur
         Toggle toggleBehaviourActive;
+        Toggle toggleBehaviourDefault;
         Toggle toggleBehaviourCritical;
         TextField textFieldBehaviourName;
+        FloatField floatBehaviourScore;
 
         //Behaviour sequence
         BehaviourEditView behaviourEditView;
@@ -108,8 +112,8 @@ namespace BrainDesigner.Scripts.Editor
             var managerWindow = GetWindow<BrainDesignerEditorWindow>();
             managerWindow.titleContent = new GUIContent("Brain Designer");
             managerWindow.minSize = windowMinSize;
-
         }
+
         void OnEnable()
         {
             EditorApplication.playModeStateChanged += OnPlayModeChanged;
@@ -174,7 +178,8 @@ namespace BrainDesigner.Scripts.Editor
 
             //Prepare controllers for data manipulation.
             root.Q<Button>("ButtonSave").clicked += Save;
-            root.Q<Button>("ButtonLoad").clicked += Load;            
+            root.Q<Button>("ButtonLoad").clicked += Load;
+            root.Q<Button>("ButtonSync").clicked += SyncToAnimationController;
         }
 
         void SetupUIElements(VisualElement root, string rootDir)
@@ -186,8 +191,10 @@ namespace BrainDesigner.Scripts.Editor
             this.behaviourData = root.Q<VisualElement>("BehaviourData");
             this.behaviourSequence = root.Q<VisualElement>("BehaviourSequence");
             this.toggleBehaviourActive = this.behaviourData.Q<Toggle>("ToggleBehaviourActive");
+            this.toggleBehaviourDefault = root.Q<Toggle>("ToggleBehaviourDefault");
             this.toggleBehaviourCritical = this.behaviourData.Q<Toggle>("ToggleBehaviourCritical");
             this.textFieldBehaviourName = this.behaviourData.Q<TextField>("TextFieldBehaviourName");
+            this.floatBehaviourScore = root.Q<FloatField>("FloatBehaviourScore");
             this.labelNodeDescription = this.behaviourSequence.Q<Label>("LabelNodeDescription");
             this.nodeInspectorContent = root.Q<VisualElement>("NodeInspectorContent");
             this.behaviourEditView = root.Q<BehaviourEditView>();
@@ -313,19 +320,33 @@ namespace BrainDesigner.Scripts.Editor
         void PrepareBehaviourDataPanel()
         {
             VisualElement root = this.behaviourData;
-            //Propogate inpector
+            //Propogate inspector
 
             this.textFieldBehaviourName.RegisterValueChangedCallback(change =>
             {
                 this.selectedBehaviour.Name = change.newValue;
                 this.behavioursListView.Rebuild();
             });
+
+            this.toggleBehaviourDefault.RegisterValueChangedCallback(evt =>
+            {
+                this.selectedBehaviour.isDefault = evt.newValue;
+                this.tasksListView.Rebuild();
+            });
+
             // Register value changed callbacks
             this.toggleBehaviourCritical.RegisterValueChangedCallback(evt =>
             {
                 this.selectedBehaviour.critical = evt.newValue;
                 this.behavioursListView.Rebuild();
             });
+
+            this.floatBehaviourScore.RegisterValueChangedCallback(change =>
+            {
+                this.selectedBehaviour.baseScore= change.newValue;
+                this.behavioursListView.Rebuild();
+            });
+
             // Add button events
             root.Q<Button>("ButtonAddNode").clicked += AddNode;
 
@@ -338,8 +359,8 @@ namespace BrainDesigner.Scripts.Editor
             //Init selected task set name.
             //this.taskToLinkData.style.visibility = Visibility.Hidden;
 
-            this.LoadTaskSetFoLinking();           
-            brainDesigner.TaskSet.ListChangedEvent += this.LoadTaskSetFoLinking;
+            this.LoadTaskSetForLinking();           
+            brainDesigner.TaskSet.ListChangedEvent += this.LoadTaskSetForLinking;
 
         }
 
@@ -350,6 +371,7 @@ namespace BrainDesigner.Scripts.Editor
 
             root.Q<Button>("ButtonSave").clicked -= Save;
             root.Q<Button>("ButtonLoad").clicked -= Load;
+            root.Q<Button>("ButtonSync").clicked -= SyncToAnimationController;
 
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddBehaviour").clicked -= AddBehaviour;
@@ -362,7 +384,7 @@ namespace BrainDesigner.Scripts.Editor
             //root.Q<Button>("ButtonRenameBehaviourSet").clicked += OpenBehaviourSetRenameMenu;
             root.Q<Button>("ButtonAddTask").clicked -= AddTask;
 
-            brainDesigner.TaskSet.ListChangedEvent -= this.LoadTaskSetFoLinking;
+            brainDesigner.TaskSet.ListChangedEvent -= this.LoadTaskSetForLinking;
         }
 
         void Save()
@@ -383,6 +405,36 @@ namespace BrainDesigner.Scripts.Editor
                 else
                     Debug.LogWarning("Invalid save location. Please choose a location within the project's Assets directory.");
             }
+        }
+
+        public static void LoadData()
+        {
+            string loadPath = EditorUtility.OpenFilePanel(
+                "Load Brain Designer Data", Application.dataPath, "asset");
+
+            if (loadPath.Length != 0)
+            {
+                if (loadPath.StartsWith(Application.dataPath))
+                {
+                    brainDesigner = Selection.activeGameObject.GetComponent<BrainDesigner>();
+                    if (brainDesigner.data == null)
+                    {
+                        if (!EditorUtility.DisplayDialog("Confirmation",
+                                "Are you sure you want to *OVERRIDE* everything?",
+                                "Yes", "No"))
+                            return;
+                    }
+
+                    loadPath = "Assets" + loadPath.Substring(Application.dataPath.Length);
+                    if (!brainDesigner.TryLoad(loadPath))
+                        return;
+
+                    OpenWindow();
+                }
+                else
+                    Debug.LogWarning("Invalid load location. Please choose a location within the project's Assets directory.");
+            }
+
         }
 
         void Load()
@@ -411,6 +463,36 @@ namespace BrainDesigner.Scripts.Editor
                 }
                 else
                     Debug.LogWarning("Invalid load location. Please choose a location within the project's Assets directory.");
+            }
+        }
+
+        static void SyncToAnimationController()
+        {
+            // Display the open file panel
+            string filePath = EditorUtility.OpenFilePanel("Select a file", "", "controller");
+
+            // Check if a file was selected
+            if (!string.IsNullOrEmpty(filePath))
+            {
+                filePath = Utils.GetRelativeAssetPath(filePath);
+                AnimatorController animatorController = AssetDatabase.LoadAssetAtPath<AnimatorController>(filePath);
+                foreach (var behaviour in brainDesigner.BehaviourSet.list)
+                {
+                    foreach (var node in behaviour.GetChildren(behaviour.behaviourSequence))
+                    {
+                        if (node is not Action) continue;
+                        // Check if the parameter already exists to avoid duplicates
+                        if (!animatorController.parameters.Any(param => param.name == node.GetType().Name))
+                        {
+                            // Add a new boolean parameter for each AI state
+                            animatorController.AddParameter(node.GetType().Name, AnimatorControllerParameterType.Bool);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("No file selected.");
             }
         }
 
@@ -518,8 +600,10 @@ namespace BrainDesigner.Scripts.Editor
         void LoadBehaviourProperties()
         {
             this.toggleBehaviourActive.value = this.selectedBehaviour.active;
+            this.toggleBehaviourDefault.value = this.selectedBehaviour.isDefault;
             this.toggleBehaviourCritical.value = this.selectedBehaviour.critical;
             this.textFieldBehaviourName.value = this.selectedBehaviour.Name;
+            this.floatBehaviourScore.value = this.selectedBehaviour.baseScore;
         }
 
         //---NODE INSPECTOR
@@ -793,7 +877,7 @@ namespace BrainDesigner.Scripts.Editor
 
         #region TaskLinker
 
-        void LoadTaskSetFoLinking()
+        void LoadTaskSetForLinking()
         {
             this.labelTaskSetName.text = brainDesigner.TaskSet.Name;
             this.scrollViewTasksToLink.Clear();

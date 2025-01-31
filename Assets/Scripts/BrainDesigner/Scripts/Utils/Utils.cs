@@ -12,6 +12,8 @@ using UnityEditor.UIElements;
 
 namespace BrainDesigner.Scripts.Utils
 {
+    using Runtime;
+
     public class Utils
     {
         internal static string VariableNameToReadable(string variableName)
@@ -36,6 +38,31 @@ namespace BrainDesigner.Scripts.Utils
             parentContainer.Add(helpBox);
         }
 
+        public static string GetRelativeAssetPath(string absolutePath)
+        {
+            // Ensure the absolute path uses forward slashes
+            absolutePath = absolutePath.Replace("\\", "/");
+
+            // Get the absolute path to the "Assets" folder
+            string assetsPath = Application.dataPath.Replace("\\", "/");
+
+
+
+
+            // Check if the absolute path contains the "Assets" path
+            int index = absolutePath.IndexOf(assetsPath);
+
+
+            // Extract the relative path starting from "Assets"
+            if (index >= 0)
+                return "Assets" + absolutePath.Remove(index, assetsPath.Length);
+            else
+            {
+                Debug.LogError("The provided path is not within the project's Assets folder.");
+                return null;
+            }
+        }
+
         /*  internal static string VerifyItemName<T>(string prefix, string newDesignation, IEnumerable<T> collection,
             Func<T, string> getDesignation, string oldName = "")
           {
@@ -54,5 +81,37 @@ namespace BrainDesigner.Scripts.Utils
 
               return newDesignation;
           }*/
+
+        public static object DeepCopy(object original)
+        {
+            switch (original)
+            {
+                case null:
+                    return null;
+                case Node baseNode:
+                    return baseNode.Clone();
+                case IList list:
+                    {
+                        Type listType = original.GetType();
+
+                        IList newList = (IList)Activator.CreateInstance(listType);
+
+                        if (list.Count > 0 && (list[0] is not Behaviour && list[0] is not Task))
+                        {
+                            foreach (var item in list)
+                            {
+                                object copiedItem = DeepCopy(item);
+                                newList.Add(copiedItem);
+                            }
+                        }
+
+                        return newList;
+                    }
+                case ICloneable cloneable:
+                    return cloneable.Clone();
+                default:
+                    return original.GetType().IsValueType ? original : null;
+            }
+        }
     }
 }

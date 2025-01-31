@@ -4,42 +4,37 @@ using UnityEngine;
 using BrainDesigner.Scripts.Runtime;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
+using System.Linq;
+using Unity.VisualScripting;
 
 namespace Agent
 {
     public class Jumpscare : Action
     {
-        /*float appearTime = 0.5f;
-        float hideTime = 0.5f;
-        float moveBy = 4f;
+        protected override bool NeedSceneRefs => false;
 
-        bool runSequence = true;
-        bool canHide = true;
-        bool isHideSequence = false;*/
-        protected override bool NeedSceneRefs => true;
+        public float rotationSpeed = 50f;
+        public float angleThreshold = 5.0f;
 
-        [SerializeField] int transformIndex;
-
-        Transform jumpObjectsParent;
-        int jumpObjectsCount;
-        Vector3 positionToJump;
         NavMeshAgent navMeshAgent;
+        Transform maneSan = null;
+        Animator animator;
+        Quaternion lookRotation;
 
-        protected override void RegisterDropdowns()
-        {
-            base.RegisterDropdowns();
-            AddDropdown("Parent for Jumscare hides", SceneRefs.GetListOfType<Transform>(), this.transformIndex,
-              newIndex => { this.transformIndex = newIndex; });
-        }
+        bool animationWasLaunched = false;
+        bool rotationIsFinished = false;
 
         protected override void OnAwake()
         {
             base.OnAwake();
 
             this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.jumpObjectsParent = this.SceneRefs.GetRef<Transform>(this.transformIndex);
+            this.animator = this.AgentObject.GetComponent<Animator>();
 
-            if (this.jumpObjectsParent == null && this.navMeshAgent == null)
+            var indicatorsManager = this.AgentObject.GetComponent<IndicatorsManager>();
+            this.maneSan = indicatorsManager?.GetManeSan();
+
+            if (this.navMeshAgent == null && this.maneSan == null && this.animator == null)
                 this.ReferenceMissing = true;
         }
 
@@ -49,21 +44,26 @@ namespace Agent
                 return;
 
             this.navMeshAgent.speed = 0f;
-            this.jumpObjectsCount = this.jumpObjectsParent.childCount;
-            var objectToJump = this.jumpObjectsParent.GetChild(Random.Range(0, this.jumpObjectsCount));
-            this.positionToJump = new Vector3(objectToJump.position.x, this.AgentObject.transform.position.y, objectToJump.position.z);
+
+            Vector3 direction = (this.maneSan.position - this.AgentObject.transform.position).normalized;
+            this.lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));
         }
 
         protected override NodeState OnUpdate()
         {
-            if (this.jumpObjectsCount <= 0)
+            if (this.ReferenceMissing)
                 return NodeState.Failure;
 
-            if (this.AgentObject.transform.position != this.positionToJump)
+            if (!this.rotationIsFinished)
+                this.AgentObject.transform.rotation = Quaternion.Slerp(this.AgentObject.transform.rotation, this.lookRotation, Time.deltaTime * this.rotationSpeed); //Quaternion.RotateTowards(this.AgentObject.transform.rotation, this.lookRotation, this.rotationSpeed * Time.deltaTime); //Quaternion.Slerp(this.AgentObject.transform.rotation, this.lookRotation, Time.deltaTime * this.rotationSpeed);
+            
+            var animationIsRunning = this.animator.GetCurrentAnimatorStateInfo(0).IsName(this.GetType().Name);
+            if(animationIsRunning) this.animationWasLaunched = true;
+
+            this.rotationIsFinished = Quaternion.Angle(this.AgentObject.transform.rotation, this.lookRotation) < this.angleThreshold;
+
+            if (!this.rotationIsFinished || !this.animationWasLaunched)
             {
-                this.AgentObject.transform.localScale = Vector3.zero;
-                this.AgentObject.transform.position = this.positionToJump;
-                this.AgentObject.transform.localScale = Vector3.one;
                 return NodeState.Running;
             }
 
@@ -73,7 +73,8 @@ namespace Agent
 
         protected override void OnDisable()
         {
-            
+            this.rotationIsFinished = false;
+            this.animationWasLaunched = false;
         }
 
     }
