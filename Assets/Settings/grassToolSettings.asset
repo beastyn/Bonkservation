@@ -24,12 +24,12 @@ MonoBehaviour:
   layerFading: 0100000000000000
   VertexColorSettings: 0
   VertexFade: 0
-  sizeWidth: 0.756
-  sizeLength: 0.5
+  sizeWidth: 0.098
+  sizeLength: 0.048
   adjustWidth: 0
-  adjustLength: 0
+  adjustLength: -0.82
   adjustWidthMax: 2
-  adjustHeightMax: 2
+  adjustHeightMax: 0.149
   reprojectOffset: 1
   rangeR: 0.337
   rangeG: 0.194
