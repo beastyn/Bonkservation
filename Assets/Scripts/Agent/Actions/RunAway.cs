@@ -1,9 +1,7 @@
-using Gameplay;
 using UnityEngine;
 using UnityEngine.AI;
 using BrainDesigner.Scripts.Runtime;
 using Unity.AI.Navigation;
-using UnityEditorInternal;
 
 namespace Agent
 {

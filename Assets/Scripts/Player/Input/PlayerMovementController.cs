@@ -175,16 +175,16 @@ namespace Player
                                 break;
                         }
 
-                        //Run input. Velocity change in UpdateVelocity.
-                        if (inputs.Run)
-                            this.AddVelocity(_moveInputVector * RunSpeedModificator);
-
                         // Jumping input
                         if (inputs.JumpDown)
                         {
                             _timeSinceJumpRequested = 0f;
                             _jumpRequested = true;
                         }
+
+                        //Run input. Velocity change in UpdateVelocity.
+                        if (inputs.Run && !_jumpConsumed)
+                            this.AddVelocity(_moveInputVector * RunSpeedModificator);
 
                         // Crouching input
                         if (inputs.CrouchDown)

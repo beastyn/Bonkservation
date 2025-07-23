@@ -30,11 +30,12 @@ namespace Agent
 
             this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
             this.animator = this.AgentObject.GetComponent<Animator>();
+            this.animator ??= this.AgentObject.GetComponentInChildren<Animator>();
 
             var indicatorsManager = this.AgentObject.GetComponent<IndicatorsManager>();
             this.maneSan = indicatorsManager?.GetManeSan();
 
-            if (this.navMeshAgent == null && this.maneSan == null && this.animator == null)
+            if (this.navMeshAgent == null || this.maneSan == null || this.animator == null)
                 this.ReferenceMissing = true;
         }
 

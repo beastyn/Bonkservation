@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7502629279182215113}
   - component: {fileID: 2649005708384686526}
   - component: {fileID: 4417985275482733004}
-  - component: {fileID: 7293047492086164660}
   m_Layer: 0
   m_Name: TestPlaneBoidFish
   m_TagString: Untagged
@@ -87,21 +86,3 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5289697308295842532}
   m_Mesh: {fileID: -3071380337512292834, guid: 1201ba7809f41c249a531f12a9fa61aa, type: 3}
---- !u!114 &7293047492086164660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5289697308295842532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23445426574c97d41939663fe1661134, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CellRadius: 0.1
-  SeparationWeight: 0
-  AlignmentWeight: 0
-  TargetWeight: 1
-  ObstacleAversionDistance: 0.1
-  MoveSpeed: 10

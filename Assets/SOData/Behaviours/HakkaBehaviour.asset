@@ -20,6 +20,8 @@ MonoBehaviour:
     - rid: 4039823593410658324
     - rid: 4039823795926335780
     - rid: 4039823795926335784
+    - rid: 4135848859772649476
+    - rid: 4135848859772649481
     tasks:
       name: 
       list: []
@@ -32,12 +34,16 @@ MonoBehaviour:
     list:
     - rid: 4039823593410658326
     - rid: 4039823593410658327
+    - rid: 4135848859772649472
+    - rid: 4135848859772649473
   tasksSet:
     name: Task Set
     list:
     - rid: 4039823593410658328
     - rid: 4039823593410658329
     - rid: 4039823593410658330
+    - rid: 4135848859772649474
+    - rid: 4135848859772649475
   references:
     version: 2
     RefIds:
@@ -47,6 +53,7 @@ MonoBehaviour:
         name: Roam
         active: 1
         isDefault: 1
+        usesPhysics: 0
         critical: 0
         baseScore: 0
         behaviourSequence:
@@ -59,6 +66,7 @@ MonoBehaviour:
         name: Mischieve
         active: 1
         isDefault: 0
+        usesPhysics: 0
         critical: 0
         baseScore: 0
         behaviourSequence:
@@ -71,7 +79,8 @@ MonoBehaviour:
         name: Jump Holes
         active: 1
         isDefault: 0
-        critical: 1
+        usesPhysics: 0
+        critical: 0
         baseScore: 0
         behaviourSequence:
           rid: 4039823593410658333
@@ -197,6 +206,7 @@ MonoBehaviour:
         position: {x: 504.85483, y: 224.55849}
         MinMischieveTime: 1
         MaxMischieveTime: 5
+        BaseMischieveProbobality: 10
     - rid: 4039823593410658339
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
@@ -211,8 +221,9 @@ MonoBehaviour:
         name: Run Away
         active: 1
         isDefault: 0
-        critical: 1
-        baseScore: 9
+        usesPhysics: 0
+        critical: 0
+        baseScore: 1
         behaviourSequence:
           rid: 4039823795926335781
         activationTask:
@@ -253,8 +264,9 @@ MonoBehaviour:
         name: Restore Energy
         active: 1
         isDefault: 0
-        critical: 1
-        baseScore: 10
+        usesPhysics: 0
+        critical: 0
+        baseScore: 2
         behaviourSequence:
           rid: 4039823795926335785
         activationTask:
@@ -283,3 +295,131 @@ MonoBehaviour:
         MinDistance: 1
         InitialSpeed: 10
         transformIndex: 0
+    - rid: 4135848859772649472
+      type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Night
+        initialValue: 0
+        setMinValue: 1
+        minValue: 0
+        setMaxValue: 1
+        maxValue: 100
+        changedOutside: 1
+        changePerSecond: 0
+        useRealTime: 0
+    - rid: 4135848859772649473
+      type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Bonked
+        initialValue: 0
+        setMinValue: 1
+        minValue: 0
+        setMaxValue: 1
+        maxValue: 100
+        changedOutside: 1
+        changePerSecond: 0
+        useRealTime: 0
+    - rid: 4135848859772649474
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Go To Sleep
+        sensorToCheckName: 
+        indicatorToCheckName: Night
+        comparatorFirst: 0
+        compareValueFirst: 0
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 4135848859772649476
+    - rid: 4135848859772649475
+      type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: React To Bonk
+        sensorToCheckName: 
+        indicatorToCheckName: Bonked
+        comparatorFirst: 2
+        compareValueFirst: 100
+        needSecondCondition: 0
+        comparatorSecond: 0
+        compareValueSecond: 0
+        linkedBehaviour:
+        - rid: 4135848859772649481
+    - rid: 4135848859772649476
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: Sleep
+        active: 1
+        isDefault: 0
+        usesPhysics: 0
+        critical: 1
+        baseScore: 20
+        behaviourSequence:
+          rid: 4135848859772649477
+        activationTask:
+        - rid: 4135848859772649474
+    - rid: 4135848859772649477
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: 89b64a5e63f5e3a47898c6e563dd4a01
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4135848859772649478
+        - rid: 4135848859772649479
+        - rid: 4135848859772649480
+    - rid: 4135848859772649478
+      type: {class: MoveToObject, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: d033f87728c6dac43b55755b4298db94
+        position: {x: 54, y: 121.92}
+        MinDistance: 2
+        InitialSpeed: 20
+        transformIndex: 10
+    - rid: 4135848859772649479
+      type: {class: Sleep, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 86aada83cbd9a2a44b062f966a900211
+        position: {x: 377, y: 163.99997}
+        RestoreEnergySpeed: 100
+    - rid: 4135848859772649480
+      type: {class: WakeUp, ns: , asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 5f704c7ba390b2f4783c3a3d31496d23
+        position: {x: 663.1015, y: 93.99999}
+        WakeupTime: 1
+    - rid: 4135848859772649481
+      type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: React To Bonk
+        active: 1
+        isDefault: 0
+        usesPhysics: 0
+        critical: 1
+        baseScore: 30
+        behaviourSequence:
+          rid: 4135848859772649482
+        activationTask:
+        - rid: 4135848859772649475
+    - rid: 4135848859772649482
+      type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
+      data:
+        name: 
+        guid: bb50b7c900ff76b4699abed3f8332184
+        position: {x: 375, y: 10}
+        children:
+        - rid: 4135848859772649483
+    - rid: 4135848859772649483
+      type: {class: BonkReaction, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 57d6db3ffe809e847b05407105b2d67b
+        position: {x: 209.88075, y: 129.09189}
+        FlyAwayForceY: 50
+        FlyAwayForceXZ: 100
+        rigidbodyVelocityThreshold: 4
+        upAngled: 0
+        upNormalized: 0.2

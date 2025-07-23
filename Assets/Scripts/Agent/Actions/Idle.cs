@@ -33,6 +33,7 @@ namespace Agent
                 return;
 
             this.navMeshAgent.speed = 0f;
+            this.startTime = Time.realtimeSinceStartup;
             this.goalIdleTime = this.GetRandomIdleTime();
         }
 

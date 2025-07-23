@@ -15,4 +15,4 @@ MonoBehaviour:
   maxFill: 100
   speed: 20
   stressAmount: 2
-  filledStressAmount: 30
+  filledStressAmount: 20

@@ -4,6 +4,7 @@ using UnityEngine;
 using BrainDesigner.Scripts.Runtime;
 using UnityEngine.AI;
 using Managers;
+using Gameplay;
 
 namespace Agent
 {
@@ -11,22 +12,32 @@ namespace Agent
     { 
         public float MinMischieveTime = 1f;
         public float MaxMischieveTime = 5f;
+        public int BaseMischieveProbobality = 10;
         protected override bool NeedSceneRefs => false;
        
 
         NavMeshAgent navMeshAgent;
+        AgentSOHolder soHolder;
         SOMischieve agentMischieve;
+        SOAudioCollection audioCollection;
+        Damageable damageable;
+        AudioSource audioSource;
         float goalMischieveTime = 1f;
         float startTime;
         float currentTime;
+        bool requestMischieve = false;
 
         protected override void OnAwake()
         {
             base.OnAwake();
             this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.agentMischieve = this.AgentObject.GetComponent<AgentSOHolder>()?.AgentMischieve;
+            this.soHolder = this.AgentObject.GetComponent<AgentSOHolder>();
+            this.agentMischieve = soHolder?.AgentMischieve;
+            this.audioCollection = soHolder?.AudioCollections;
+            this.damageable = this.AgentObject.GetComponent<Damageable>();
+            this.audioSource = this.AgentObject.GetComponent<AudioSource>();
 
-            if (this.navMeshAgent == null && this.agentMischieve == null)
+            if (this.navMeshAgent == null || this.agentMischieve == null || this.damageable == null)
                 this.ReferenceMissing = true;
         }
 
@@ -40,12 +51,16 @@ namespace Agent
             this.goalMischieveTime = this.GetRandomMischieveTime();
 
             this.startTime = Time.realtimeSinceStartup;
+            this.damageable.SetProtection(false);
+
+            this.requestMischieve = ManagersSOHolder.SODifficultySettings.ShouldLaunchActionByDifficulty(this.BaseMischieveProbobality);
+            if (requestMischieve) AudioMixerManager.PlayRundomCollectionClip(this.audioSource, this.audioCollection, AudioCollectionName.LoreDropMischieve);
         }
 
         protected override NodeState OnUpdate()
         {
 
-            if (this.ReferenceMissing)
+            if (this.ReferenceMissing || !this.requestMischieve)
                 return NodeState.Failure;
 
             this.currentTime = Time.realtimeSinceStartup;
@@ -63,10 +78,11 @@ namespace Agent
         {
             this.startTime = 0f;
             this.currentTime = 0f;
+            this.damageable.SetProtection(true);
         }
 
         protected override void OnInterrupt() => this.OnDisable();
 
-        public float GetRandomMischieveTime() => Random.Range(this.MinMischieveTime, this.MaxMischieveTime);
+        public float GetRandomMischieveTime() => ManagersSOHolder.SODifficultySettings.GetMischieveTimeWithModification(Random.Range(this.MaxMischieveTime, this.MaxMischieveTime));
     }
 }

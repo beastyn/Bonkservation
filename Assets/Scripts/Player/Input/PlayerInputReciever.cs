@@ -17,7 +17,7 @@ namespace Player
         public static UnityAction MainActionEvent;
         public static UnityAction SecondActionEvent;
         public static UnityAction<float> SlotButton;
-        public static UnityAction SettingsToggle;
+        public static UnityAction PauseUIToggle;
 
         [SerializeField] PlayerInput playerInput;
 
@@ -73,7 +73,7 @@ namespace Player
 
         public void OnMenuButton(InputAction.CallbackContext context)
         {
-            if (context.performed) SettingsToggle?.Invoke();
+            if (context.performed) PauseUIToggle?.Invoke();
         }
        
     }

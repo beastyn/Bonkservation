@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Gameplay;
 
-public class ScoreBoardUI : MonoBehaviour
+public class ScoreBoardUI : BaseWindowUI
 {
     [SerializeField] GameObject emptyInfo;
     [SerializeField] GameObject highScore;
@@ -70,11 +70,6 @@ public class ScoreBoardUI : MonoBehaviour
         for (var i = 0; i < ManagersSOHolder.SOScoreManager.LastScore.Bonks.Count; i++)
             this.SetupBonks(this.lastIdolsRecords, i, ManagersSOHolder.SOScoreManager.LastScore);
     }
-
-    public void RestartObservation() => SceneManager.LoadScene(1);
-    public void LoadTitleScreen() => SceneManager.LoadScene(0);
-
-    public void Close() => UIManager.CloseUI(this.gameObject);
 
     void SetupBonks(TextMeshProUGUI[] descriptionScoreRecords, int index, ScoreElement scoreManager)
     {

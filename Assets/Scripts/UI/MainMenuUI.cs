@@ -10,9 +10,10 @@ namespace UI
         [SerializeField] GameObject scoreBoard;
         [SerializeField] GameObject settings;
 
-        //public void Play() => ManagersSOHolder.SOScoreManager.StartLevel();
+        public void Play() => ManagersSOHolder.SOSceneManager.StartLevel();
         public void OpenScoreBoard() => UIManager.OpenUI(scoreBoard);
         public void OpenSettings() => UIManager.OpenUI(settings);
+        public void Quit() => ManagersSOHolder.SOSceneManager.Quit();
 
 
     }

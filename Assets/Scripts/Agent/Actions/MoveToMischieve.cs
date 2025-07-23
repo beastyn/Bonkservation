@@ -1,10 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Unity.AI.Navigation;
 using BrainDesigner.Scripts.Runtime;
-using static UnityEditor.FilePathAttribute;
+using Managers;
 
 namespace Agent
 {
@@ -47,7 +44,7 @@ namespace Agent
             if (this.ReferenceMissing)
                 return;
 
-            this.navMeshAgent.speed = this.InitialSpeed;
+            this.navMeshAgent.speed = ManagersSOHolder.SODifficultySettings.GetSpeedWithModification(this.InitialSpeed);
             this.navMeshAgent.stoppingDistance = this.MinDistance;
             this.currDestination = this.GetRandomMischieve();
         }

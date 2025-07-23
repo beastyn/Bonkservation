@@ -21,7 +21,7 @@ namespace Agent
             this.agentEnergy = this.AgentObject.GetComponent<AgentSOHolder>()?.AgentEnergy;
             this.damageable = this.AgentObject.GetComponent<Damageable>();
 
-            if (this.navMeshAgent == null && this.agentEnergy == null && this.damageable == null)
+            if (this.navMeshAgent == null || this.agentEnergy == null || this.damageable == null)
                 this.ReferenceMissing = true;
         }
 
@@ -32,7 +32,6 @@ namespace Agent
                 return;
 
             this.navMeshAgent.speed = 0f;
-            this.damageable.SetProtection(true);
             this.agentEnergy.SetEnergyRestore(true);
         }
 
@@ -48,7 +47,6 @@ namespace Agent
                 return NodeState.Running;
             }
 
-            this.damageable.SetProtection(false);
             return NodeState.Success;
         }
     }

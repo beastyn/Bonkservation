@@ -27,12 +27,14 @@ namespace Player
         {
             PlayerInputReciever.MouseMovementEvent -= OnMouseMovementEvent;
             PlayerInputReciever.PlayerMovementEvent -= OnPlayerMovementEvent;
+            PlayerInputReciever.RunEvent -= OnRunEvent;
 
         }
 
         private void Start()
         {
             Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
 
             // Tell camera to follow transform
             PlayerCamera.SetFollowTransform(Player.CameraFollowPoint);

@@ -12,6 +12,7 @@ namespace Agent
         [SerializeField] NavMeshAgent agent;
         [SerializeField] BrainDesigner brainDesigner;
         [SerializeField] float turnThreshold;
+        [SerializeField] float scale;
 
         SOEnergy soEnergy;
         float velocity = 0.0f;
@@ -21,6 +22,7 @@ namespace Agent
         void Awake()
         {
             this.animator ??= this.GetComponent<Animator>();
+            this.animator ??= this.GetComponentInChildren<Animator>();
             this.agent ??= this.GetComponent<NavMeshAgent>();
             this.soEnergy = this.GetComponent<AgentSOHolder>().AgentEnergy;
             this.velocityHash = Animator.StringToHash("Velocity");
@@ -38,6 +40,11 @@ namespace Agent
         {
             this.brainDesigner.ActionChangeEvent -= OnActionChangeEvent;
             this.soEnergy.EnergyChangeEvent -= OnEnergyChangeEvent;
+        }
+
+        void Start()
+        {
+            this.transform.localScale = new Vector3(this.scale, this.scale, this.scale);
         }
 
 

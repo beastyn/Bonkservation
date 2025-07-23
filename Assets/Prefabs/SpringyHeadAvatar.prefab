@@ -1,0 +1,6 @@
+% Unity Prefab Placeholder %
+This prefab includes:
+- Animated humanoid model (root, spine, arms, legs)
+- Rigidbody-based head with ConfigurableJoint
+- Animator with looping idle animation
+- Rigidbody on head with spring joint settings

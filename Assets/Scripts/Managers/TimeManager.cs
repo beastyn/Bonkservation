@@ -11,6 +11,10 @@ namespace Managers
     public class TimeManager : MonoBehaviour
     {
         public static int CurrentDay => currentDay;
+        public static bool IsSunRisen => isSunRisen;
+        public static Action SunriseEvent;
+        public static Action SunsetEvent;
+
 
         [SerializeField] TextMeshProUGUI dayText;
         [SerializeField] TextMeshProUGUI timeText;
@@ -54,7 +58,8 @@ namespace Managers
 
         static bool gameIsPaused = false;
         
-        static int currentDay = 1;        
+        static int currentDay = 1;
+        static bool isSunRisen = false;
         TimeService service;
 
         
@@ -77,9 +82,8 @@ namespace Managers
             service = new TimeService(ManagersSOHolder.SOTimeSettings);
             volume.profile.TryGet(out colorAdjustments);
             OnHourChange += () => OnHourChangeAction();
-/*            OnSunrise += () => Debug.Log("Sunrise");
-            OnSunset += () => Debug.Log("Sunset");
-            OnHourChange += () => Debug.Log("Hour change");*/
+            OnSunrise += () => SunriseEvent?.Invoke();
+            OnSunset += () => SunsetEvent?.Invoke();
 
             //initialDialRotation = dial?.rotation.eulerAngles.z;
         }
@@ -105,7 +109,7 @@ namespace Managers
         {
             float dotProduct = Vector3.Dot(sun.transform.forward, Vector3.up);
             float blend = Mathf.Lerp(0, 1, lightIntensityCurve.Evaluate(dotProduct));
-            skyboxMaterial.SetFloat("_Blend", blend);
+            skyboxMaterial.SetVector("_MainLightDirection", this.sun.transform.forward);
         }
 
         void UpdateLightSettings()
@@ -113,11 +117,13 @@ namespace Managers
             float dotProduct = Vector3.Dot(sun.transform.forward, Vector3.down);
             float lightIntensity = lightIntensityCurve.Evaluate(dotProduct);
 
-            //sun.intensity = Mathf.Lerp(0, maxSunIntensity, lightIntensity);
-            //moon.intensity = Mathf.Lerp(maxMoonIntensity, 0, lightIntensity);
+            this.sun.intensity = Mathf.Lerp(0, maxSunIntensity, lightIntensity);
+            this.moon.intensity = Mathf.Lerp(maxMoonIntensity, 0, lightIntensity);
+            this.sun.color = Color.Lerp(this.nightSunLight, this.daySunLight, lightIntensity);
+            this.moon.color = Color.Lerp(this.nightSunLight, this.daySunLight, lightIntensity);
 
-            this.cloudedSun.intensity = Mathf.Lerp(maxMoonIntensity, maxSunIntensity, lightIntensity);
-            this.cloudedSun.color = Color.Lerp(this.nightSunLight, this.daySunLight, lightIntensity);
+            //this.cloudedSun.intensity = Mathf.Lerp(maxMoonIntensity, maxSunIntensity, lightIntensity);
+            //this.cloudedSun.color = Color.Lerp(this.nightSunLight, this.daySunLight, lightIntensity);
 
             RenderSettings.ambientLight = Color.Lerp(nightAmbientLight, dayAmbientLight, lightIntensity);
         }
@@ -125,8 +131,10 @@ namespace Managers
         void RotateSun()
         {
             float fakeSunRotation = service.CalculateSunAngle();
+            float fakeMoonRotation = service.CalculateMoonAngle();
             float cloudedSunRotation = service.CalculateCookieAngle();
             this.sun.transform.rotation = Quaternion.AngleAxis(fakeSunRotation, Vector3.right);
+            this.moon.transform.rotation = Quaternion.AngleAxis(fakeMoonRotation, Vector3.right);
             cloudedSun.transform.rotation = Quaternion.AngleAxis(cloudedSunRotation, Vector3.right);
             //dial?.rotation = Quaternion.Euler(0, 0, rotation + initialDialRotation);
         }
@@ -135,9 +143,7 @@ namespace Managers
         {
             service.UpdateTime(Time.deltaTime);
             if (timeText != null)
-                timeText.text = service.CurrentTime.ToString("HH:mm");
-
-            
+                timeText.text = service.CurrentTime.ToString("HH:mm");            
         }
 
         void OnHourChangeAction()
@@ -149,7 +155,8 @@ namespace Managers
                 if (this.dayText != null)
                     dayText.text = "Day " + currentDay;
             }
-           
+            isSunRisen = service.IsDay;
+
         }
     }
 }

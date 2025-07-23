@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Agent
 {
-    [CreateAssetMenu(fileName = "Mischieve Settings", menuName = "Bonkservation/Mischieves Settings")]
+    [CreateAssetMenu(fileName = "Mischieve Settings", menuName = "Bonkservation/Idols/Mischieves Settings")]
     public class SOMischieve : ScriptableObject
     {
         public UnityAction<SOMischieve> FullMischieveEvent;

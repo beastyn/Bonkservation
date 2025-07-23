@@ -17,7 +17,8 @@ namespace Player
             foreach(var stressDealer in stressDealers) 
             {
                 stressDealer.AgentMischieve.FullMischieveEvent += this.OnFullMischieveEvent;
-            }            
+            }
+            Damageable.DamageReflectEvent += OnDamageReflectValue;
         }
 
         void OnDisable()
@@ -26,11 +27,17 @@ namespace Player
             {
                 stressDealer.AgentMischieve.FullMischieveEvent -= this.OnFullMischieveEvent;
             }
+            Damageable.DamageReflectEvent -= OnDamageReflectValue;
         }
 
         void OnFullMischieveEvent(SOMischieve mischieveInfo)
         {
             this.playerStress.ChangeEnergy(mischieveInfo.FilledStressAmount);
+        }
+
+        void OnDamageReflectValue(float reflectAmount) 
+        {
+            this.playerStress.ChangeEnergy(reflectAmount);
         }
     }
 }

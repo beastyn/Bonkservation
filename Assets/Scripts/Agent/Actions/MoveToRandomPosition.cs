@@ -34,7 +34,7 @@ namespace Agent
             var groundTransform = this.SceneRefs.GetRef<Transform>(this.transformIndex);
             this.navMeshSurface = groundTransform.GetComponent<NavMeshSurface>();
 
-            if (this.navMeshAgent == null && this.navMeshSurface==null)
+            if (this.navMeshAgent == null || this.navMeshSurface==null)
                 this.ReferenceMissing = true;
         }
 

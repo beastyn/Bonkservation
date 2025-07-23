@@ -14,6 +14,7 @@ namespace Gameplay
         readonly TimeSpan sunsetTime;
 
         public DateTime CurrentTime => currentTime;
+        public bool IsDay => this.isDayTime;
 
         public event Action OnSunrise = delegate { };
         public event Action OnSunset = delegate { };
@@ -38,7 +39,7 @@ namespace Gameplay
 
         public void UpdateTime(float deltaTime)
         {
-            currentTime = currentTime.AddSeconds(deltaTime * settings.timeMultiplier);
+            currentTime = isDayTime ? currentTime.AddSeconds(deltaTime * settings.timeMultiplier) : currentTime.AddSeconds(deltaTime * settings.timeMultiplier * settings.nightTimeSpeedMultiplayer);
             isDayTime.Value = IsDayTime();
             currentHour.Value = currentTime.Hour;
         }
@@ -56,6 +57,13 @@ namespace Gameplay
             double percentage = elapsedTime.TotalMinutes / totalTime.TotalMinutes;
             return Mathf.Lerp(startDegree, startDegree + 180, (float)percentage);
         }
+
+        public float CalculateMoonAngle()
+        {
+            var sunAngle = this.CalculateSunAngle();
+            return sunAngle + 180;
+        }
+
         public float CalculateCookieAngle()
         {
             bool isDay = IsDayTime();

@@ -30,6 +30,11 @@ namespace Managers
             playerStress.FullEnergyEvent -= OnFullEnergyEvent;
         }
 
+        void Start()
+        {
+            TimeManager.SetPause(false);            
+        }
+
         void OnFullEnergyEvent()
         {
             this.currentGameState = GameState.GameOver;
