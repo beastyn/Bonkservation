@@ -163,6 +163,7 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658316
+        - rid: 9196367506248826880
         - rid: 4039823593410658317
     - rid: 4039823593410658314
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
@@ -172,6 +173,7 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658318
+        - rid: 9196367506248826881
         - rid: 4039823593410658319
     - rid: 4039823593410658315
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
@@ -186,7 +188,7 @@ MonoBehaviour:
       data:
         name: 
         guid: 70073e13e0fb8854aa7c067cffcdcc91
-        position: {x: 212, y: 153}
+        position: {x: -48.312973, y: 69}
         MaxDistance: 300
         MinDistance: 1
         InitialSpeed: 10
@@ -196,7 +198,7 @@ MonoBehaviour:
       data:
         name: 
         guid: 4bd037db763c557409fded35b8b0f0ca
-        position: {x: 592.2612, y: 266.71588}
+        position: {x: 655.8769, y: 110.99997}
         MinIdleTime: 0.2
         MaxIdleTime: 0.4
     - rid: 4039823593410658318
@@ -204,7 +206,7 @@ MonoBehaviour:
       data:
         name: 
         guid: d82fdd0fab0798342b031dfbad3b2239
-        position: {x: 185.04176, y: 236.81747}
+        position: {x: 65.03249, y: 195}
         MinDistance: 5
         InitialSpeed: 50
         transformIndex: 5
@@ -213,9 +215,10 @@ MonoBehaviour:
       data:
         name: 
         guid: 56d50a2b1beb1204e85c75de08777305
-        position: {x: 504.85483, y: 224.55849}
+        position: {x: 655.3226, y: 237.00002}
         MinMischieveTime: 2
-        MaxMischieveTime: 8
+        MaxMischieveTime: 10
+        BaseMischieveProbobality: 20
     - rid: 4039823593410658321
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
@@ -379,7 +382,7 @@ MonoBehaviour:
         children:
         - rid: 4135848859772649842
         - rid: 4135848859772649843
-        - rid: 4135848859772649844
+        - rid: 9196367600327589966
     - rid: 4135848859772649841
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -404,21 +407,40 @@ MonoBehaviour:
         guid: ed63a2ddde9bb48448333b59580445b8
         position: {x: 302.6541, y: 152.99997}
         RestoreEnergySpeed: 100
-    - rid: 4135848859772649844
-      type: {class: WakeUp, ns: , asm: Assembly-CSharp}
-      data:
-        name: 
-        guid: 75453de0fd7d44a408c7a5ce617e9ecb
-        position: {x: 599.9091, y: 94.000015}
-        WakeupTime: 1
     - rid: 4135848859772649845
       type: {class: BonkReaction, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: ef18ee1c838a0e34e924ce9e97e1930e
         position: {x: 349.4225, y: 188.71722}
-        FlyAwayForceY: 50
-        FlyAwayForceXZ: 100
         rigidbodyVelocityThreshold: 4
-        upAngled: 0
-        upNormalized: 0.2
+    - rid: 9196367506248826880
+      type: {class: DetectionMischieve, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 1d211e015db1cf74cb818b4be0321527
+        position: {x: 281.36188, y: 194.99998}
+        MaxDistance: 300
+        MinDistance: 5
+        DistanceToStop: 1
+        InitialSpeed: 10
+        BaseProbability: 20
+        minTimeToStop: 0.1
+        maxTimeToStop: 0.3
+        maxTimeToMischieve: 10
+        transformIndex: 0
+    - rid: 9196367506248826881
+      type: {class: DoJob, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: fa7b4767642564f439d2245d6611a404
+        position: {x: 347.96475, y: 169.19542}
+        MinJobTime: 1
+        MaxJobTime: 5
+    - rid: 9196367600327589966
+      type: {class: WakeUp, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 28c4eca202c7f174ca6547e9222d29a1
+        position: {x: 657.71375, y: 152.99992}
+        WakeupTime: 1

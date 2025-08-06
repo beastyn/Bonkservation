@@ -8,7 +8,7 @@ namespace Player
 
     public class StressManager : MonoBehaviour
     {
-        [SerializeField] List<AgentSOHolder> stressDealers;
+        [SerializeField] List<AgentManagersAndData> stressDealers;
         [SerializeField] SOEnergy playerStress;
 
         void Awake() => this.playerStress.Reset();

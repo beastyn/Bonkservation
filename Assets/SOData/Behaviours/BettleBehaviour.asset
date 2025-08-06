@@ -163,6 +163,7 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658316
+        - rid: 9196367506248827080
         - rid: 4039823593410658317
     - rid: 4039823593410658314
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
@@ -172,6 +173,7 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658318
+        - rid: 9196367506248827081
         - rid: 4039823593410658319
     - rid: 4039823593410658315
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
@@ -186,7 +188,7 @@ MonoBehaviour:
       data:
         name: 
         guid: 70073e13e0fb8854aa7c067cffcdcc91
-        position: {x: 212, y: 153}
+        position: {x: 105.31063, y: 224.99997}
         MaxDistance: 300
         MinDistance: 1
         InitialSpeed: 10
@@ -196,7 +198,7 @@ MonoBehaviour:
       data:
         name: 
         guid: 4bd037db763c557409fded35b8b0f0ca
-        position: {x: 592.2612, y: 266.71588}
+        position: {x: 745.9125, y: 224.99998}
         MinIdleTime: 0.5
         MaxIdleTime: 1
     - rid: 4039823593410658318
@@ -213,9 +215,10 @@ MonoBehaviour:
       data:
         name: 
         guid: 56d50a2b1beb1204e85c75de08777305
-        position: {x: 504.85483, y: 224.55849}
+        position: {x: 809.17505, y: 237.00002}
         MinMischieveTime: 1
-        MaxMischieveTime: 5
+        MaxMischieveTime: 10
+        BaseMischieveProbobality: 20
     - rid: 4039823593410658321
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
@@ -379,7 +382,6 @@ MonoBehaviour:
         children:
         - rid: 4135848864245088264
         - rid: 4135848864245088265
-        - rid: 4135848864245088266
     - rid: 4135848864245088263
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -404,13 +406,6 @@ MonoBehaviour:
         guid: 88ca5391b9d223f43b3bcd3d5d192cc5
         position: {x: 316.57013, y: 165.52597}
         RestoreEnergySpeed: 100
-    - rid: 4135848864245088266
-      type: {class: WakeUp, ns: , asm: Assembly-CSharp}
-      data:
-        name: 
-        guid: 78a039068a82dc64ba8f6a432cd6166b
-        position: {x: 589.4151, y: 123.99991}
-        WakeupTime: 1
     - rid: 4135848864245088267
       type: {class: BonkReaction, ns: Agent, asm: Assembly-CSharp}
       data:
@@ -422,3 +417,26 @@ MonoBehaviour:
         rigidbodyVelocityThreshold: 4
         upAngled: 0
         upNormalized: 0.2
+    - rid: 9196367506248827080
+      type: {class: DetectionMischieve, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: cf0c2dc59efd6974a98bc9a5123bc5ea
+        position: {x: 416.00003, y: 267.0001}
+        MaxDistance: 300
+        MinDistance: 5
+        DistanceToStop: 1
+        InitialSpeed: 10
+        BaseProbability: 20
+        minTimeToStop: 0
+        maxTimeToStop: 0
+        maxTimeToMischieve: 10
+        transformIndex: 0
+    - rid: 9196367506248827081
+      type: {class: DoJob, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 60c4ad8a59e10b64faa5844e53fa7ac9
+        position: {x: 499.50003, y: 237.00003}
+        MinJobTime: 1
+        MaxJobTime: 5

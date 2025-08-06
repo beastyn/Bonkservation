@@ -16,9 +16,12 @@ namespace Agent
         public float rotationSpeed = 50f;
         public float angleThreshold = 5.0f;
 
+        AgentManagersAndData agentManagersAndData;
+
         NavMeshAgent navMeshAgent;
-        Transform maneSan = null;
         Animator animator;
+
+        Transform maneSan = null;
         Quaternion lookRotation;
 
         bool animationWasLaunched = false;
@@ -28,14 +31,15 @@ namespace Agent
         {
             base.OnAwake();
 
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.animator = this.AgentObject.GetComponent<Animator>();
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;
+            this.animator = this.agentManagersAndData?.AnimatorComponent;
             this.animator ??= this.AgentObject.GetComponentInChildren<Animator>();
 
-            var indicatorsManager = this.AgentObject.GetComponent<IndicatorsManager>();
-            this.maneSan = indicatorsManager?.GetManeSan();
+            this.maneSan = this.agentManagersAndData?.IndicatorsManager.GetManeSan();
 
-            if (this.navMeshAgent == null || this.maneSan == null || this.animator == null)
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || !this.navMeshAgent.isOnNavMesh || this.maneSan == null || this.animator == null)
                 this.ReferenceMissing = true;
         }
 

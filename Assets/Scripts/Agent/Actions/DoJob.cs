@@ -12,6 +12,7 @@ namespace Agent
         public float MaxJobTime = 5f;
         protected override bool NeedSceneRefs => false;
 
+        AgentManagersAndData agentManagersAndData;
 
         NavMeshAgent navMeshAgent;
         SOMischieve agentMischieve;
@@ -22,10 +23,13 @@ namespace Agent
         protected override void OnAwake()
         {
             base.OnAwake();
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.agentMischieve = this.AgentObject.GetComponent<AgentSOHolder>()?.AgentMischieve;
 
-            if (this.navMeshAgent == null || this.agentMischieve == null)
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;
+            this.agentMischieve = this.agentManagersAndData?.AgentMischieve;
+
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || this.agentMischieve == null)
                 this.ReferenceMissing = true;
         }
 

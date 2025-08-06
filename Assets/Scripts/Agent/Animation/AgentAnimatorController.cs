@@ -24,7 +24,7 @@ namespace Agent
             this.animator ??= this.GetComponent<Animator>();
             this.animator ??= this.GetComponentInChildren<Animator>();
             this.agent ??= this.GetComponent<NavMeshAgent>();
-            this.soEnergy = this.GetComponent<AgentSOHolder>().AgentEnergy;
+            this.soEnergy = this.GetComponent<AgentManagersAndData>().AgentEnergy;
             this.velocityHash = Animator.StringToHash("Velocity");
             this.turnHash = Animator.StringToHash("Turn");
             this.isBonkedHash = Animator.StringToHash("IsBonked");

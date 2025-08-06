@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Player.Actions
 {
     using Managers;
     using Gameplay;
     using BrainDesigner.Scripts;
+    using Unity.Cinemachine;
 
     public class BonkAction : ActionBase
     {
@@ -31,6 +33,7 @@ namespace Player.Actions
             PlayerInputReciever.MainActionEvent -= OnMainActionEvent;
         }
 
+
         void OnMainActionEvent() => this.activated = true;
 
         protected override void OnDoAction ()
@@ -38,9 +41,16 @@ namespace Player.Actions
             if (this.canDamage)
             {
                 this.damagableComp = this.currentIdol.gameObject.GetComponent<Damageable>();
-                this.damagableComp?.InflictDamage(this.CurrentDamage);
-                this.damagableComp?.BobbleHead.AddForce(this.transform.up * this.bonkForce);
+                if (this.damagableComp == null) return;
+
+                this.damagableComp.InflictDamage(this.CurrentDamage, this.gameObject.transform, this.currentIdol.gameObject.GetComponent<NavMeshAgent>());
+                this.damagableComp.BobbleHead.AddForce(this.transform.up * this.bonkForce);
                 AudioMixerManager.PlayClip(this.audioSource, this.bonkSounds[UnityEngine.Random.Range(0, this.bonkSounds.Length)]);
+
+                this.damagableComp.SoftMaterial.SetFloat("_BonkTrigger", 1f);
+                this.damagableComp.SoftMaterial.SetVector("_ContactPoint", new Vector3(0,1,0));
+                this.damagableComp.SoftMaterial.SetFloat("_ContactTime", Time.time);
+
             }
         }
         public void OnTriggerEnter(Collider collision)

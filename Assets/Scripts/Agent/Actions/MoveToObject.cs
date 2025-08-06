@@ -12,8 +12,9 @@ namespace Agent
         [SerializeField] int transformIndex;
         protected override bool NeedSceneRefs => true;
 
+        AgentManagersAndData agentManagersAndData;
+
         NavMeshAgent navMeshAgent;
-        //CollisionDetector collisionDetector;
 
         Transform targetObject;
         Transform currentMischieve;
@@ -29,30 +30,30 @@ namespace Agent
         {
             base.OnAwake();
 
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            //this.collisionDetector = this.AgentObject.GetComponent<CollisionDetector>();
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;
             this.targetObject = this.SceneRefs.GetRef<Transform>(this.transformIndex);
 
-            if (this.navMeshAgent == null)
+            if (this.agentManagersAndData == null || this.navMeshAgent == null)
                 this.ReferenceMissing = true;
         }
 
         protected override void OnEnable()
         {
 
-            if (this.ReferenceMissing)
+            if (this.ReferenceMissing || !this.navMeshAgent.isOnNavMesh)
                 return;
 
             this.navMeshAgent.speed = this.InitialSpeed;
             this.navMeshAgent.stoppingDistance = this.MinDistance;
             this.currDestination = this.targetObject.position;
+            this.navMeshAgent.destination = this.currDestination;
         }
 
         protected override NodeState OnUpdate()
         {
-            this.navMeshAgent.destination = this.currDestination;
-
-            if (this.ReferenceMissing || this.currDestination == Vector3.zero || this.navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
+            if (this.ReferenceMissing || !this.navMeshAgent.isOnNavMesh || this.currDestination == Vector3.zero || this.navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
                 return NodeState.Failure;
 
             /*float sqrDistanceToTarget = (this.agentTransform.position - this.currDestination).sqrMagnitude;

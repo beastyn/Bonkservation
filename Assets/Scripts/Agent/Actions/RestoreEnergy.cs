@@ -10,6 +10,8 @@ namespace Agent
     {
         protected override bool NeedSceneRefs => false;
 
+        AgentManagersAndData agentManagersAndData;
+
         NavMeshAgent navMeshAgent;
         SOEnergy agentEnergy;
         Damageable damageable;
@@ -17,11 +19,14 @@ namespace Agent
         protected override void OnAwake()
         {
             base.OnAwake();
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.agentEnergy = this.AgentObject.GetComponent<AgentSOHolder>()?.AgentEnergy;
-            this.damageable = this.AgentObject.GetComponent<Damageable>();
 
-            if (this.navMeshAgent == null || this.agentEnergy == null || this.damageable == null)
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;
+            this.agentEnergy = this.agentManagersAndData?.AgentEnergy;
+            this.damageable = this.agentManagersAndData?.DamageableComponent;
+
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || !this.navMeshAgent.isOnNavMesh || this.agentEnergy == null || this.damageable == null)
                 this.ReferenceMissing = true;
         }
 

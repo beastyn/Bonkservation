@@ -15,7 +15,7 @@ namespace Agent
 
         void Awake()
         {
-            var soHolder = this.GetComponent<AgentSOHolder>();
+            var soHolder = this.GetComponent<AgentManagersAndData>();
             this.idolHealth = soHolder?.AgentEnergy;
         }
 

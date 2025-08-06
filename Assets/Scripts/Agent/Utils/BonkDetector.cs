@@ -8,10 +8,12 @@ namespace Agent
     public class BonkDetector : MonoBehaviour
     {
         public bool IsBonkerDetected => this.isBonkerDetected;
+        public Transform Bonker => this.bonker;
 
         [SerializeField] Outline outliner;
 
         bool isBonkerDetected;
+        Transform bonker;
 
         void Start() => this.outliner.enabled = false;
 
@@ -21,6 +23,7 @@ namespace Agent
             {
                 this.outliner.enabled = true;
                 this.isBonkerDetected= true;
+                this.bonker = other.transform;
             }
         }
 

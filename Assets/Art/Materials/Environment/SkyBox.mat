@@ -137,7 +137,7 @@ Material:
     - _GroundColor: {r: 0.10110357, g: 0.18119347, b: 0.30188674, a: 1}
     - _GuildHallPlace: {r: 0.45, g: -0.04, b: 1.61, a: 0}
     - _HorizonColor: {r: 0.759434, g: 0.9850621, b: 1, a: 0}
-    - _MainLightDirection: {r: 0, g: -0.9778662, b: -0.20923209, a: 0}
+    - _MainLightDirection: {r: 0, g: -0.9986515, b: 0.051915348, a: 0}
     - _MoonColor: {r: 0.57849765, g: 0.9208091, b: 0.9811321, a: 0}
     - _NightHorizonColor: {r: 0.056510508, g: 0.026432894, b: 0.16981131, a: 0}
     - _NightSkyColor: {r: 0.06720491, g: 0.048015304, b: 0.122641504, a: 0}

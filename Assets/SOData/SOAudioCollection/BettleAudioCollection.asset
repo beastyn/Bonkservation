@@ -16,3 +16,9 @@ MonoBehaviour:
   - CollectionName: 0
     AudioClips:
     - {fileID: 8300000, guid: c0fb9327bb52bc447a352d32b837fc94, type: 3}
+  - CollectionName: 1
+    AudioClips:
+    - {fileID: 8300000, guid: 0e47864dab139bc4ab42336be285d9a3, type: 3}
+  - CollectionName: 2
+    AudioClips:
+    - {fileID: 8300000, guid: 39950885a3f84204eb97ee18bf1ff31b, type: 3}

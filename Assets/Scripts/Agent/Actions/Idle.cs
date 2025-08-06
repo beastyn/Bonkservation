@@ -11,6 +11,8 @@ namespace Agent
         public float MinIdleTime = 1f;
         public float MaxIdleTime = 5f;
 
+        AgentManagersAndData agentManagersAndData;
+
         NavMeshAgent navMeshAgent;
 
         float startTime;
@@ -20,9 +22,11 @@ namespace Agent
         protected override void OnAwake()
         {
             base.OnAwake();
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
 
-            if (this.navMeshAgent == null)
+            this.navMeshAgent = this.agentManagersAndData.NavMeshAgentComponent;
+
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || !this.navMeshAgent.isOnNavMesh)
                 this.ReferenceMissing = true;
         }
 

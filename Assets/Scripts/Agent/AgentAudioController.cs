@@ -22,7 +22,7 @@ namespace Agent
         {
             this.collisionDerector ??= this.GetComponent<CollisionDetector>();
             this.audioSource ??= this.GetComponent<AudioSource>();
-            this.soAudioCollection= this.GetComponent<AgentSOHolder>().AudioCollections;            
+            this.soAudioCollection= this.GetComponent<AgentManagersAndData>().AudioCollections;            
         }
         void OnHardImpactEvent() => AudioMixerManager.PlayRundomCollectionClip(this.audioSource, this.soAudioCollection, AudioCollectionName.GroundImpactSounds);
     }

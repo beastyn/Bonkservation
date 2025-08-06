@@ -14,13 +14,15 @@ namespace Agent
         public float MaxMischieveTime = 5f;
         public int BaseMischieveProbobality = 10;
         protected override bool NeedSceneRefs => false;
-       
+
+        AgentManagersAndData agentManagersAndData;
 
         NavMeshAgent navMeshAgent;
-        AgentSOHolder soHolder;
+        AgentManagersAndData soHolder;
         SOMischieve agentMischieve;
         SOAudioCollection audioCollection;
         Damageable damageable;
+        EffectsController effectController;
         AudioSource audioSource;
         float goalMischieveTime = 1f;
         float startTime;
@@ -30,14 +32,16 @@ namespace Agent
         protected override void OnAwake()
         {
             base.OnAwake();
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();
-            this.soHolder = this.AgentObject.GetComponent<AgentSOHolder>();
-            this.agentMischieve = soHolder?.AgentMischieve;
-            this.audioCollection = soHolder?.AudioCollections;
-            this.damageable = this.AgentObject.GetComponent<Damageable>();
-            this.audioSource = this.AgentObject.GetComponent<AudioSource>();
 
-            if (this.navMeshAgent == null || this.agentMischieve == null || this.damageable == null)
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;            
+            this.agentMischieve = this.agentManagersAndData?.AgentMischieve;
+            this.audioCollection = this.agentManagersAndData?.AudioCollections;
+            this.damageable = this.agentManagersAndData?.DamageableComponent;
+            this.audioSource = this.agentManagersAndData?.AudioSourceComponent;
+
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || !this.navMeshAgent.isOnNavMesh || this.agentMischieve == null || this.damageable == null)
                 this.ReferenceMissing = true;
         }
 
@@ -52,9 +56,11 @@ namespace Agent
 
             this.startTime = Time.realtimeSinceStartup;
             this.damageable.SetProtection(false);
+            this.agentManagersAndData.EffectsController.SwitchMischieveEffect(true);
+
 
             this.requestMischieve = ManagersSOHolder.SODifficultySettings.ShouldLaunchActionByDifficulty(this.BaseMischieveProbobality);
-            if (requestMischieve) AudioMixerManager.PlayRundomCollectionClip(this.audioSource, this.audioCollection, AudioCollectionName.LoreDropMischieve);
+            if (requestMischieve) AudioMixerManager.PlayRundomCollectionClip(this.audioSource, this.audioCollection, AudioCollectionName.JobMischieves);
         }
 
         protected override NodeState OnUpdate()
@@ -79,6 +85,7 @@ namespace Agent
             this.startTime = 0f;
             this.currentTime = 0f;
             this.damageable.SetProtection(true);
+            this.agentManagersAndData.EffectsController.SwitchMischieveEffect(false);
         }
 
         protected override void OnInterrupt() => this.OnDisable();

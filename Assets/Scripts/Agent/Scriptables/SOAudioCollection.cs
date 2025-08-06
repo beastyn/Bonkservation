@@ -6,8 +6,8 @@ namespace Agent
     public enum AudioCollectionName
     {
         GroundImpactSounds,
-        LoreDropMischieve,
-        LoreRumbleMischieve,
+        JobMischieves,
+        RumbleMischieves,
         Theme,
 
     }

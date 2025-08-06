@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e8d67d5b7e67ba4b910dc0d982e8402, type: 3}
-  m_Name: FleyBehaviour
+  m_Name: FlayBehaviour
   m_EditorClassIdentifier: 
   behaviourSet:
     name: Behaviour Set

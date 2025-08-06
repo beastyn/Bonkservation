@@ -29,7 +29,7 @@ public class JumpHoles : Action
         this.jumpObjectsParent = this.SceneRefs.GetRef<Transform>(this.transformIndex);
         this.scale = this.AgentObject.transform.localScale;
 
-        if (this.jumpObjectsParent == null || this.navMeshAgent == null)
+        if (this.jumpObjectsParent == null || this.navMeshAgent == null || !this.navMeshAgent.isOnNavMesh)
             this.ReferenceMissing = true;
     }
 

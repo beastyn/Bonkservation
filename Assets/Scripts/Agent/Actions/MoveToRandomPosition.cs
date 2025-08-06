@@ -14,6 +14,8 @@ namespace Agent
 
         [SerializeField] int transformIndex;
 
+        AgentManagersAndData agentManagersAndData;
+
         NavMeshAgent navMeshAgent;
         NavMeshSurface navMeshSurface;
 
@@ -29,31 +31,33 @@ namespace Agent
         protected override void OnAwake()
         {
             base.OnAwake();
-            this.navMeshAgent = this.AgentObject.GetComponent<NavMeshAgent>();  
+
+            this.agentManagersAndData = this.AgentObject.GetComponent<AgentManagersAndData>();
+
+            this.navMeshAgent = this.agentManagersAndData?.NavMeshAgentComponent;  
             
             var groundTransform = this.SceneRefs.GetRef<Transform>(this.transformIndex);
             this.navMeshSurface = groundTransform.GetComponent<NavMeshSurface>();
 
-            if (this.navMeshAgent == null || this.navMeshSurface==null)
+            if (this.agentManagersAndData == null || this.navMeshAgent == null || this.navMeshSurface==null)
                 this.ReferenceMissing = true;
         }
 
         protected override void OnEnable()
         {
            
-            if (this.ReferenceMissing)
+            if (this.ReferenceMissing || !this.navMeshAgent.isOnNavMesh)
                 return;
 
             this.navMeshAgent.speed = this.InitialSpeed;
             this.navMeshAgent.stoppingDistance = this.MinDistance;
             this.currDestination = this.GetRandomPointInNavMeshVolume();
+            this.navMeshAgent.destination = this.currDestination;
         }
 
         protected override NodeState OnUpdate()
         {
-            this.navMeshAgent.destination = this.currDestination;
-
-            if (this.ReferenceMissing || this.navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
+            if (this.ReferenceMissing || !this.navMeshAgent.isOnNavMesh || this.navMeshAgent.pathStatus != NavMeshPathStatus.PathComplete)
             {
                 return NodeState.Failure;
             }

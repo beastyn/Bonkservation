@@ -14,6 +14,7 @@ namespace Agent
 
     public class IndicatorsManager : MonoBehaviour
     {
+
         [SerializeField] BrainDesigner agentBrain;
         [SerializeField] SOEnergy agentEnergy;
 
@@ -44,7 +45,7 @@ namespace Agent
             agentBrain.TryGetSensorByName(maneSanSensorName, out this.maneSanSensor);
             agentBrain.TryGetSensorByName(maneGazeSensorName, out this.maneGazeSensor);
 
-            this.agentEnergy ??= this.GetComponent<AgentSOHolder>().AgentEnergy;
+            this.agentEnergy ??= this.GetComponent<AgentManagersAndData>().AgentEnergy;
 
             if (this.fearIndicator != null && this.maneSanSensor != null) this.fearIndicator.ChangeValueAction = this.ChangeFearValue;
             if ((this.energyIndicator != null || this.bonkedIndicator != null) && this.agentEnergy != null) this.agentEnergy.EnergyChangeEvent  += this.OnEnergyChangeEvent;
@@ -102,10 +103,7 @@ namespace Agent
         {
             this.agentBrain.SetIndicatorValue(this.energyIndicator, this.agentEnergy.CurrentValue);
             if (!isRestoring)
-            {
                 this.agentBrain.SetIndicatorValue(this.bonkedIndicator, this.bonkedIndicator.MaxValue);
-                StartCoroutine(NotBonkedAnymore());
-            }
         }
 
         void OnSunriseEvent()
@@ -118,10 +116,6 @@ namespace Agent
             this.agentBrain.SetIndicatorValue(this.nightIndicator, this.nightIndicator.MaxValue);
         }
 
-        IEnumerator NotBonkedAnymore()
-        {
-            yield return new WaitForSeconds(0.5f);
-            this.agentBrain.SetIndicatorValue(this.bonkedIndicator, this.bonkedIndicator.MinValue);
-        }
+        public void ResetBonkedIndicator() => this.agentBrain.SetIndicatorValue(this.bonkedIndicator, this.bonkedIndicator.MinValue);
     }
 }

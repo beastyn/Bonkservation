@@ -47,6 +47,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4039823593410658322
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -90,6 +92,8 @@ MonoBehaviour:
       data:
         name: Mane Bonk Sensor
         tag: Bonker
+        sensoredObjects: []
+        enabled: 0
         radius: 20
     - rid: 4039823593410658326
       type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
@@ -103,6 +107,9 @@ MonoBehaviour:
         changedOutside: 1
         changePerSecond: 10
         useRealTime: 1
+        currentValue: 0
+        currentTime: 0
+        lastUpdateTime: 0
     - rid: 4039823593410658327
       type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -115,6 +122,9 @@ MonoBehaviour:
         changedOutside: 1
         changePerSecond: 0
         useRealTime: 1
+        currentValue: 0
+        currentTime: 0
+        lastUpdateTime: 0
     - rid: 4039823593410658328
       type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -128,6 +138,27 @@ MonoBehaviour:
         compareValueSecond: 20
         linkedBehaviour:
         - rid: 4039823795926335784
+        sensor:
+          name: 
+          tag: 
+          sensoredObjects: []
+          enabled: 0
+        indicator:
+          name: 
+          initialValue: 0
+          setMinValue: 0
+          minValue: 0
+          setMaxValue: 0
+          maxValue: 0
+          changedOutside: 0
+          changePerSecond: 0
+          useRealTime: 0
+          currentValue: 0
+          currentTime: 0
+          lastUpdateTime: 0
+        brainDesigner: {fileID: 0}
+        lastSensoredFound: 0
+        lastConditionMet: 0
     - rid: 4039823593410658329
       type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -142,6 +173,27 @@ MonoBehaviour:
         linkedBehaviour:
         - rid: 4039823593410658322
         - rid: 4039823593410658323
+        sensor:
+          name: 
+          tag: 
+          sensoredObjects: []
+          enabled: 0
+        indicator:
+          name: 
+          initialValue: 0
+          setMinValue: 0
+          minValue: 0
+          setMaxValue: 0
+          maxValue: 0
+          changedOutside: 0
+          changePerSecond: 0
+          useRealTime: 0
+          currentValue: 0
+          currentTime: 0
+          lastUpdateTime: 0
+        brainDesigner: {fileID: 0}
+        lastSensoredFound: 0
+        lastConditionMet: 0
     - rid: 4039823593410658330
       type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -155,6 +207,27 @@ MonoBehaviour:
         compareValueSecond: 0
         linkedBehaviour:
         - rid: 4039823795926335780
+        sensor:
+          name: 
+          tag: 
+          sensoredObjects: []
+          enabled: 0
+        indicator:
+          name: 
+          initialValue: 0
+          setMinValue: 0
+          minValue: 0
+          setMaxValue: 0
+          maxValue: 0
+          changedOutside: 0
+          changePerSecond: 0
+          useRealTime: 0
+          currentValue: 0
+          currentTime: 0
+          lastUpdateTime: 0
+        brainDesigner: {fileID: 0}
+        lastSensoredFound: 0
+        lastConditionMet: 0
     - rid: 4039823593410658331
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -163,7 +236,9 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823817411657859
+        - rid: 9196367487544066131
         - rid: 4039823593410658335
+        currentChild: 0
     - rid: 4039823593410658332
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -172,7 +247,9 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658336
+        - rid: 9196367487544066130
         - rid: 4039823593410658337
+        currentChild: 0
     - rid: 4039823593410658333
       type: {class: Sequence, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -181,40 +258,73 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823593410658339
+        currentChild: 0
     - rid: 4039823593410658335
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 4bd037db763c557409fded35b8b0f0ca
         position: {x: 592.2612, y: 266.71588}
+        referenceMissing: 0
         MinIdleTime: 0.2
         MaxIdleTime: 0.4
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        startTime: 0
+        currentTime: 0
+        goalIdleTime: 1
     - rid: 4039823593410658336
       type: {class: MoveToMischieve, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: d82fdd0fab0798342b031dfbad3b2239
         position: {x: 185.04176, y: 236.81747}
+        referenceMissing: 0
         MinDistance: 5
         InitialSpeed: 40
         transformIndex: 3
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        collisionDetector: {fileID: 0}
+        parentForMischives: {fileID: 0}
+        currentMischieve: {fileID: 0}
+        currDestination: {x: 0, y: 0, z: 0}
     - rid: 4039823593410658337
       type: {class: Mischieve, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 56d50a2b1beb1204e85c75de08777305
-        position: {x: 504.85483, y: 224.55849}
+        position: {x: 731.8026, y: 258}
+        referenceMissing: 0
         MinMischieveTime: 1
-        MaxMischieveTime: 5
-        BaseMischieveProbobality: 10
+        MaxMischieveTime: 10
+        BaseMischieveProbobality: 20
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        soHolder: {fileID: 0}
+        agentMischieve: {fileID: 0}
+        audioCollection: {fileID: 0}
+        damageable: {fileID: 0}
+        effectController: {fileID: 0}
+        audioSource: {fileID: 0}
+        goalMischieveTime: 1
+        startTime: 0
+        currentTime: 0
+        requestMischieve: 0
     - rid: 4039823593410658339
       type: {class: Idle, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: c1c2509e6f6d8074c9b74ebe6cd6e2e7
         position: {x: 520, y: 94}
+        referenceMissing: 0
         MinIdleTime: 0.1
         MaxIdleTime: 0.2
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        startTime: 0
+        currentTime: 0
+        goalIdleTime: 1
     - rid: 4039823795926335780
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -223,7 +333,7 @@ MonoBehaviour:
         isDefault: 0
         usesPhysics: 0
         critical: 0
-        baseScore: 1
+        baseScore: 0
         behaviourSequence:
           rid: 4039823795926335781
         activationTask:
@@ -237,20 +347,30 @@ MonoBehaviour:
         children:
         - rid: 4039823795926335782
         - rid: 4039823795926335783
+        currentChild: 0
     - rid: 4039823795926335782
       type: {class: Jumpscare, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 4cd55e9a876caaa4ba2b25e9ba9fd728
         position: {x: 128.43199, y: 175.35205}
+        referenceMissing: 0
         rotationSpeed: 50
         angleThreshold: 5
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        animator: {fileID: 0}
+        maneSan: {fileID: 0}
+        lookRotation: {x: 0, y: 0, z: 0, w: 0}
+        animationWasLaunched: 0
+        rotationIsFinished: 0
     - rid: 4039823795926335783
       type: {class: RunAway, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 97dbb9c8c185b6943b31ab87d8653820
         position: {x: 515, y: 175}
+        referenceMissing: 0
         MinDistance: 0.1
         MinLookAhead: 20
         RunDistance: 200
@@ -258,6 +378,12 @@ MonoBehaviour:
         SearchAngle: 270
         InitialSpeed: 40
         transformIndex: 0
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        navMeshSurface: {fileID: 0}
+        maneSan: {fileID: 0}
+        randomRunDestination: {x: 0, y: 0, z: 0}
+        destinationExists: 0
     - rid: 4039823795926335784
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -279,22 +405,33 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4039823795926335786
+        currentChild: 0
     - rid: 4039823795926335786
       type: {class: RestoreEnergy, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 217dc4197b3dfb6409985d00d3dbc559
         position: {x: 370.3407, y: 252.17307}
+        referenceMissing: 0
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        agentEnergy: {fileID: 0}
+        damageable: {fileID: 0}
     - rid: 4039823817411657859
       type: {class: MoveToRandomPosition, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 4f0f98de0a4da9c418e93ce9f6309e97
-        position: {x: 170.2413, y: 267}
+        position: {x: -1.4026031, y: 266.9999}
+        referenceMissing: 0
         MaxDistance: 300
         MinDistance: 1
         InitialSpeed: 10
         transformIndex: 0
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        navMeshSurface: {fileID: 0}
+        currDestination: {x: 0, y: 0, z: 0}
     - rid: 4135848859772649472
       type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -307,6 +444,9 @@ MonoBehaviour:
         changedOutside: 1
         changePerSecond: 0
         useRealTime: 0
+        currentValue: 0
+        currentTime: 0
+        lastUpdateTime: 0
     - rid: 4135848859772649473
       type: {class: Indicator, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -319,6 +459,9 @@ MonoBehaviour:
         changedOutside: 1
         changePerSecond: 0
         useRealTime: 0
+        currentValue: 0
+        currentTime: 0
+        lastUpdateTime: 0
     - rid: 4135848859772649474
       type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -332,6 +475,27 @@ MonoBehaviour:
         compareValueSecond: 0
         linkedBehaviour:
         - rid: 4135848859772649476
+        sensor:
+          name: 
+          tag: 
+          sensoredObjects: []
+          enabled: 0
+        indicator:
+          name: 
+          initialValue: 0
+          setMinValue: 0
+          minValue: 0
+          setMaxValue: 0
+          maxValue: 0
+          changedOutside: 0
+          changePerSecond: 0
+          useRealTime: 0
+          currentValue: 0
+          currentTime: 0
+          lastUpdateTime: 0
+        brainDesigner: {fileID: 0}
+        lastSensoredFound: 0
+        lastConditionMet: 0
     - rid: 4135848859772649475
       type: {class: Task, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -345,6 +509,27 @@ MonoBehaviour:
         compareValueSecond: 0
         linkedBehaviour:
         - rid: 4135848859772649481
+        sensor:
+          name: 
+          tag: 
+          sensoredObjects: []
+          enabled: 0
+        indicator:
+          name: 
+          initialValue: 0
+          setMinValue: 0
+          minValue: 0
+          setMaxValue: 0
+          maxValue: 0
+          changedOutside: 0
+          changePerSecond: 0
+          useRealTime: 0
+          currentValue: 0
+          currentTime: 0
+          lastUpdateTime: 0
+        brainDesigner: {fileID: 0}
+        lastSensoredFound: 0
+        lastConditionMet: 0
     - rid: 4135848859772649476
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -367,30 +552,38 @@ MonoBehaviour:
         children:
         - rid: 4135848859772649478
         - rid: 4135848859772649479
-        - rid: 4135848859772649480
+        currentChild: 0
     - rid: 4135848859772649478
       type: {class: MoveToObject, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: d033f87728c6dac43b55755b4298db94
         position: {x: 54, y: 121.92}
+        referenceMissing: 0
         MinDistance: 2
         InitialSpeed: 20
         transformIndex: 10
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        targetObject: {fileID: 0}
+        currentMischieve: {fileID: 0}
+        currDestination: {x: 0, y: 0, z: 0}
     - rid: 4135848859772649479
       type: {class: Sleep, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 86aada83cbd9a2a44b062f966a900211
         position: {x: 377, y: 163.99997}
+        referenceMissing: 0
         RestoreEnergySpeed: 100
-    - rid: 4135848859772649480
-      type: {class: WakeUp, ns: , asm: Assembly-CSharp}
-      data:
-        name: 
-        guid: 5f704c7ba390b2f4783c3a3d31496d23
-        position: {x: 663.1015, y: 93.99999}
-        WakeupTime: 1
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        agentEnergy: {fileID: 0}
+        damageable: {fileID: 0}
+        startTime: 0
+        currentTime: 0
+        goalIdleTime: 1
+        requestWakeUp: 0
     - rid: 4135848859772649481
       type: {class: Behaviour, ns: BrainDesigner.Scripts.Runtime, asm: BrainDesigner}
       data:
@@ -412,14 +605,61 @@ MonoBehaviour:
         position: {x: 375, y: 10}
         children:
         - rid: 4135848859772649483
+        currentChild: 0
     - rid: 4135848859772649483
       type: {class: BonkReaction, ns: Agent, asm: Assembly-CSharp}
       data:
         name: 
         guid: 57d6db3ffe809e847b05407105b2d67b
         position: {x: 209.88075, y: 129.09189}
-        FlyAwayForceY: 50
-        FlyAwayForceXZ: 100
+        referenceMissing: 0
         rigidbodyVelocityThreshold: 4
-        upAngled: 0
-        upNormalized: 0.2
+        skipFrame: 1
+        agentManagersAndData: {fileID: 0}
+        indicatorManager: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        rigidbody: {fileID: 0}
+    - rid: 9196367487544066130
+      type: {class: DoJob, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: 0d085af480eb1cd4488d6a0865730b39
+        position: {x: 445.00003, y: 258.00003}
+        referenceMissing: 0
+        MinJobTime: 1
+        MaxJobTime: 5
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        agentMischieve: {fileID: 0}
+        goalMischieveTime: 1
+        startTime: 0
+        currentTime: 0
+    - rid: 9196367487544066131
+      type: {class: DetectionMischieve, ns: Agent, asm: Assembly-CSharp}
+      data:
+        name: 
+        guid: c6dba205d35e8144ca12dcb5230dc2bb
+        position: {x: 311.76035, y: 284.0841}
+        referenceMissing: 0
+        MaxDistance: 300
+        MinDistance: 5
+        DistanceToStop: 1
+        InitialSpeed: 10
+        BaseProbability: 20
+        minTimeToStop: 0.1
+        maxTimeToStop: 0.6
+        maxTimeToMischieve: 10
+        startTime: 0
+        currentTime: 0
+        transformIndex: 0
+        agentManagersAndData: {fileID: 0}
+        navMeshAgent: {fileID: 0}
+        damageable: {fileID: 0}
+        bonkDetector: {fileID: 0}
+        audioSource: {fileID: 0}
+        audioCollection: {fileID: 0}
+        agentMischieve: {fileID: 0}
+        navMeshSurface: {fileID: 0}
+        requestMischieve: 0
+        currDestination: {x: 0, y: 0, z: 0}
+        waitStopping: 0
