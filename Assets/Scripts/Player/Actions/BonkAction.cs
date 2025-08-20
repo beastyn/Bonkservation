@@ -47,10 +47,7 @@ namespace Player.Actions
                 this.damagableComp.BobbleHead.AddForce(this.transform.up * this.bonkForce);
                 AudioMixerManager.PlayClip(this.audioSource, this.bonkSounds[UnityEngine.Random.Range(0, this.bonkSounds.Length)]);
 
-                this.damagableComp.SoftMaterial.SetFloat("_BonkTrigger", 1f);
-                this.damagableComp.SoftMaterial.SetVector("_ContactPoint", new Vector3(0,1,0));
-                this.damagableComp.SoftMaterial.SetFloat("_ContactTime", Time.time);
-
+                this.damagableComp.SoftBodyData.ApplyUpToDownForce();
             }
         }
         public void OnTriggerEnter(Collider collision)

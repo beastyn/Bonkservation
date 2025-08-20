@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Utils;
 
 namespace Gameplay
 {
@@ -17,7 +18,7 @@ namespace Gameplay
         [SerializeField] Rigidbody bodyToThrough;
 
         public Rigidbody BobbleHead;
-        public Material SoftMaterial;
+        public SoftBodyData SoftBodyData;
 
         bool haveProtection = false;
 
