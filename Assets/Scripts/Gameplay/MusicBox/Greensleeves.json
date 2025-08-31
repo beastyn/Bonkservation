@@ -1,0 +1,105 @@
+{
+  "title": "Greensleeves — Fragment",
+  "bpm": 96,
+  "beats": 16,
+  "teeth": [
+    {
+      "id": "C4",
+      "display": "C",
+      "combLength": 1.5,
+      "audioKey": "C4"
+    },
+    {
+      "id": "D4",
+      "display": "D",
+      "combLength": 1.3,
+      "audioKey": "D4"
+    },
+    {
+      "id": "E4",
+      "display": "E",
+      "combLength": 1.1,
+      "audioKey": "E4"
+    },
+    {
+      "id": "F4",
+      "display": "F",
+      "combLength": 0.9,
+      "audioKey": "F4"
+    },
+    {
+      "id": "G4",
+      "display": "G",
+      "combLength": 0.7,
+      "audioKey": "G4"
+    },
+    {
+      "id": "A4",
+      "display": "A",
+      "combLength": 0.5,
+      "audioKey": "A4"
+    }
+  ],
+  "targetPins": [
+    {
+      "tooth": "A4",
+      "beats": [
+        1,
+        9,
+        13
+      ]
+    },
+    {
+      "tooth": "G4",
+      "beats": [
+        2,
+        10,
+        14
+      ]
+    },
+    {
+      "tooth": "F4",
+      "beats": [
+        3,
+        11
+      ]
+    },
+    {
+      "tooth": "E4",
+      "beats": [
+        12
+      ]
+    }
+  ],
+  "previewPins": [
+    {
+      "tooth": "A4",
+      "beats": [
+        1,
+        9,
+        13
+      ]
+    },
+    {
+      "tooth": "G4",
+      "beats": [
+        2,
+        10,
+        14
+      ]
+    },
+    {
+      "tooth": "F4",
+      "beats": [
+        3,
+        11
+      ]
+    },
+    {
+      "tooth": "E4",
+      "beats": [
+        12
+      ]
+    }
+  ]
+}

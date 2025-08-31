@@ -51,7 +51,7 @@ namespace Agent
 
             this.navMeshAgent.speed = this.InitialSpeed;
             this.navMeshAgent.stoppingDistance = this.MinDistance;
-            this.currDestination = this.GetRandomPointInNavMeshVolume();
+            this.currDestination = Utils.UtilsTools.GetRandomPointInNavMeshVolume(this.navMeshSurface, this.MaxDistance);
             this.navMeshAgent.destination = this.currDestination;
         }
 
@@ -71,28 +71,5 @@ namespace Agent
         }
 
         protected override void OnInterrupt() => this.OnDisable();
-
-        public Vector3 GetRandomPointInNavMeshVolume()
-        {
-            // Get the bounds of the NavMesh surface
-            Bounds navMeshBounds = this.navMeshSurface.navMeshData.sourceBounds;
-
-            Vector3 randomPoint;
-            NavMeshHit hit;
-
-            // Try to generate a point inside the volume bounds
-            do
-            {
-                randomPoint = new Vector3(
-                    Random.Range(navMeshBounds.min.x, navMeshBounds.max.x), // Random x
-                    navMeshBounds.center.y,                                // Fixed Y level
-                    Random.Range(navMeshBounds.min.z, navMeshBounds.max.z)  // Random z
-                );
-
-                // Check if the random point is on the NavMesh within maxDistance
-            } while (!NavMesh.SamplePosition(randomPoint, out hit, this.MaxDistance, NavMesh.AllAreas));
-
-            return hit.position; // Return the valid point inside the NavMesh volume
-        }       
     }
 }

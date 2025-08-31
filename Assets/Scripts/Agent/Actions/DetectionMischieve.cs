@@ -80,7 +80,7 @@ namespace Agent
 
             this.navMeshAgent.speed = this.InitialSpeed;
             this.navMeshAgent.stoppingDistance = this.DistanceToStop;
-            this.currDestination = this.GetRandomPointInNavMeshVolume();
+            this.currDestination = Utils.UtilsTools.GetRandomPointInNavMeshVolume(this.navMeshSurface, this.MaxDistance);
             this.navMeshAgent.destination = this.currDestination;
             this.startTime = Time.realtimeSinceStartup;
 
@@ -164,42 +164,6 @@ namespace Agent
                 this.agentManagersAndData.EffectsController.SwitchMischieveEffect(false);
                 this.wantUnpause = true;
             }
-        }
-
-        Vector3 GetRandomPointInNavMeshVolume()
-        {
-            // Get the bounds of the NavMesh surface
-            Bounds navMeshBounds = this.navMeshSurface.navMeshData.sourceBounds;
-
-            Vector3 randomPoint;
-            NavMeshHit hit;
-            // Try to generate a point inside the volume bounds
-            do
-            {
-                randomPoint = new Vector3(
-                    Random.Range(navMeshBounds.min.x, navMeshBounds.max.x), // Random x
-                    navMeshBounds.center.y,                                // Fixed Y level
-                    Random.Range(navMeshBounds.min.z, navMeshBounds.max.z)  // Random z
-                );
-
-                // Check if the random point is on the NavMesh within maxDistance
-            } while (!NavMesh.SamplePosition(randomPoint, out hit, this.MaxDistance, NavMesh.AllAreas) && this.CheckPath(hit.position, this.MinDistance));
-
-            return hit.position; // Return the valid point inside the NavMesh volume
-        }
-
-        bool CheckPath(Vector3 hit, float minDistance)
-        {
-            NavMeshPath path = new NavMeshPath();
-            if (NavMesh.CalculatePath(this.AgentObject.transform.position, hit, NavMesh.AllAreas, path))
-            {
-                float pathLength = 0f;
-                for (int i = 1; i < path.corners.Length; i++)
-                    pathLength += Vector3.Distance(path.corners[i - 1], path.corners[i]);
-
-                return pathLength >= minDistance;
-            }
-            return false;
         }
     }
 }

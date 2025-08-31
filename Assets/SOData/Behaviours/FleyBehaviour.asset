@@ -207,7 +207,7 @@ MonoBehaviour:
         name: 
         guid: d82fdd0fab0798342b031dfbad3b2239
         position: {x: 65.03249, y: 195}
-        MinDistance: 5
+        MinDistance: 1
         InitialSpeed: 50
         transformIndex: 5
     - rid: 4039823593410658319

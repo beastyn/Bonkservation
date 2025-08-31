@@ -60,10 +60,10 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Defend",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "4e4f658f-4794-4644-a9bb-ecb388a3c859",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -108,7 +108,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Defend",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -15,7 +15,7 @@ namespace Player
         public static UnityAction JumpEvent;
         public static UnityAction<bool> RunEvent;
         public static UnityAction MainActionEvent;
-        public static UnityAction SecondActionEvent;
+        public static UnityAction InteractActionEvent;
         public static UnityAction<float> SlotButton;
         public static UnityAction PauseUIToggle;
 
@@ -59,10 +59,10 @@ namespace Player
             if(context.performed)
                 MainActionEvent?.Invoke();
         }
-        public void OnDefend(InputAction.CallbackContext context)
+        public void OnInteract(InputAction.CallbackContext context)
         {
             if (context.performed)
-                SecondActionEvent?.Invoke();
+                InteractActionEvent?.Invoke();
         }
 
         public void OnSlotButton(InputAction.CallbackContext context)
@@ -74,7 +74,6 @@ namespace Player
         public void OnMenuButton(InputAction.CallbackContext context)
         {
             if (context.performed) PauseUIToggle?.Invoke();
-        }
-       
+        }       
     }
 }

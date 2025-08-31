@@ -33,8 +33,8 @@ namespace Player
 
         private void Start()
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
+            //Cursor.visible = false;
 
             // Tell camera to follow transform
             PlayerCamera.SetFollowTransform(Player.CameraFollowPoint);

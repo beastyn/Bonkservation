@@ -7,7 +7,7 @@ namespace Utils
         [SerializeField] uint outlineBitIndex = 8; // use the same bit you set in Render Objects
         [SerializeField] Color outlineColor;
         [SerializeField] float outlineThickness = 0.1f;
-        Renderer r;
+        Renderer renderer;
         MaterialPropertyBlock mpb;
 
         public string normalLayer = "Idol";
@@ -17,11 +17,11 @@ namespace Utils
         static readonly int ColorID = Shader.PropertyToID("_OutlineColor");
         static readonly int ThickID = Shader.PropertyToID("_OutlineThickness");
 
-        void Awake() { r = GetComponent<Renderer>(); mpb = new MaterialPropertyBlock(); }
+        void Awake() { renderer = GetComponent<Renderer>(); mpb = new MaterialPropertyBlock(); }
 
         void Start()
         {
-            if (r == null)
+            if (renderer == null)
             {
                 Debug.LogError("AgentOutliner requires a Renderer component.");
                 return;
@@ -39,15 +39,15 @@ namespace Utils
         public void SetEnabled(bool on)
         {
             int layer = LayerMask.NameToLayer(on ? outlineLayer : normalLayer);
-            r.gameObject.layer = layer; // moves ONLY this renderer GO
+            renderer.gameObject.layer = layer; // moves ONLY this renderer GO
         }
 
         public void SetStyle(Color color, float thickness)
         {
-            r.GetPropertyBlock(mpb);
+            renderer.GetPropertyBlock(mpb);
             mpb.SetColor(ColorID, color);
             mpb.SetFloat(ThickID, thickness);
-            r.SetPropertyBlock(mpb);
+            renderer.SetPropertyBlock(mpb);
         }
     }
 }

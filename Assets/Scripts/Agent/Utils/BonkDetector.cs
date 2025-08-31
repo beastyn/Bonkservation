@@ -21,7 +21,7 @@ namespace Agent
         {
             if (other.CompareTag("Bonker"))
             {
-                this.agentManagersAndData.EffectsController.SwitchTargetEffect(true);
+                this.agentManagersAndData?.EffectsController.SwitchTargetEffect(true);
                 this.isBonkerDetected= true;
                 this.outliner.SetEnabled(true);
                 this.bonker = other.transform;
@@ -32,7 +32,7 @@ namespace Agent
         {
             if (other.CompareTag("Bonker"))
             {
-                this.agentManagersAndData.EffectsController.SwitchTargetEffect(false);
+                this.agentManagersAndData?.EffectsController.SwitchTargetEffect(false);
                 this.isBonkerDetected= false;
                 this.outliner.SetEnabled(false);
             }
